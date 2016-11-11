@@ -41,4 +41,10 @@ public interface NewsAndNoticeDao {
      */
     void delete(NewsAndNotice newsAndNotice);
 
+    /**
+     * 返回某一类的新闻列表
+     * @return
+     */
+    List<NewsAndNotice> findByCategoryId(String categoryId);
+
 }

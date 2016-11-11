@@ -38,22 +38,22 @@ public class NewsAndNoticeServiceImpl implements NewsAndNoticeService{
              }else{
                  return result;
              }
-          }catch (DataAccessException e){
+          }catch (Exception e){
               logger.error(e.getMessage(),e);
-             throw e;
+             throw new DataAccessException(e.getMessage());
           }
     }
     @Transactional
     public void update(NewsAndNotice newsAndNotice) throws DataAccessException {
         try {
             if (newsAndNotice!=null){
-                newsAndNoticeDao.save(newsAndNotice);
+                newsAndNoticeDao.update(newsAndNotice);
             }else{
-
+                throw new DataAccessException("空数据异常");
             }
-        }catch (DataAccessException e){
+        }catch (Exception e){
             logger.error(e.getMessage(),e);
-            throw e;
+            throw new DataAccessException(e.getMessage());
         }
     }
     @Transactional
@@ -64,13 +64,13 @@ public class NewsAndNoticeServiceImpl implements NewsAndNoticeService{
               }else{
                   throw new DataAccessException("空数据异常");
               }
-          }catch (DataAccessException e){
+          }catch (Exception e){
               logger.error(e.getMessage(),e);
-              throw e;
+             throw new DataAccessException(e.getMessage());
           }
     }
 
     public List<NewsAndNotice> findByCategoryId(String categoryId) {
-        return null;
+        return newsAndNoticeDao.findByCategoryId(categoryId);
     }
 }

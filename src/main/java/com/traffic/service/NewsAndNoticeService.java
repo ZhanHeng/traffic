@@ -27,7 +27,7 @@ public interface NewsAndNoticeService {
      * @param newsAndNotice
      * @return
      */
-    Integer save(NewsAndNotice newsAndNotice);
+    Integer save(NewsAndNotice newsAndNotice) throws DataAccessException;
 
     /**
      * 修改一个新闻

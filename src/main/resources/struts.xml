@@ -62,11 +62,9 @@
         <action name="upAction" class="NewsAndNoticeActionForMgr" method="uploadTest">
             <result name="uploadc" >/addNews.jsp</result>
         </action>
-        <action name="loginAction" class="LoginAction">
-            <result name="login" type="json">
-                <param name="root">loginError</param>
-            </result>
-            <result type="json" />
+        <action name="loginAction" class="LoginAction" method="login">
+            <result name="success">adminMainPage.jsp</result>
+            <result name="input">/adminLogin.jsp</result>
         </action>
         <action name="logout" class="LoginAction" method="logout">
             <result name="logout">/adminLogin.jsp</result>

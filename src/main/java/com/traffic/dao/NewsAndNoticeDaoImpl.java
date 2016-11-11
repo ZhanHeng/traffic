@@ -1,6 +1,7 @@
 package com.traffic.dao;
 
 import com.traffic.model.NewsAndNotice;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,11 @@ public class NewsAndNoticeDaoImpl extends HibernateDaoSupport implements NewsAnd
     public List<NewsAndNotice> findAll() {
         List<NewsAndNotice> list = getCurrentSession().createQuery("from NewsAndNotice").list();
         return list;
+    }
+
+    public List<NewsAndNotice> findByCategoryId(String categoryId) {
+        String hql = "from NewsAndNotice news  where news.category.categoryId = ? ";
+        return getCurrentSession().createQuery(hql).setString(0,categoryId).list() ;
     }
 
     public Integer save(NewsAndNotice newsAndNotice) {
