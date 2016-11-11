@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+        'http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd'>
+<hibernate-mapping package="com.traffic.model">
+    <class name="UserInfo" table="user_info">
+        <id name="userId" column="userId" >
+            <generator class="uuid" />
+        </id>
+        <property name="userName" column="userName" />
+        <property name="passWord" column="passWord" />
+    </class>
+    <class name="NewsAndNotice" table="news_and_notice">
+        <id name="id">
+            <column name="id" />
+            <generator class="uuid" />
+        </id>
+        <property name="title">
+            <column name="title" />
+        </property>
+        <property name="content">
+            <column name="content" />
+        </property>
+        <property name="time">
+            <column name="time" />
+        </property>
+        <many-to-one name="category"
+                     class="com.traffic.model.NewsAndNoticeCategory"
+                     lazy="false">
+            <column name="categoryID" />
+        </many-to-one>
+        <property name="author">
+            <column name="author" />
+        </property>
+
+        <property name="path">
+            <column name="path" />
+        </property>
+        <property name="focusFlag">
+            <column name="focusFlag" />
+        </property>
+        <property name="htmlPath">
+            <column name="htmlPath" />
+        </property>
+        <property name="orderTime">
+            <column name="orderTime"/>
+        </property>
+    </class>
+
+    <class name="NewsAndNoticeCategory" table="news_and_notice_category">
+        <id name="categoryId" column="categoryID" type="java.lang.Integer">
+            <generator class="increment" />
+        </id>
+
+        <property name="categoryName" column="categoryName" ></property>
+        <many-to-one name="parentCategory"
+                     class="com.traffic.model.ParentCategory"
+                     lazy="false">
+            <column name="parentCategoryId" />
+        </many-to-one>
+    </class>
+
+    <class name="ParentCategory" table="parent_category">
+        <id name="parentCategoryId" column="parentCategoryID" type="java.lang.Integer">
+            <generator class="increment" />
+        </id>
+        <property name="parentCategoryName" column="parentCategoryName"></property>
+    </class>
+
+</hibernate-mapping>
