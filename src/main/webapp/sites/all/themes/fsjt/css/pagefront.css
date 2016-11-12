@@ -1,0 +1,465 @@
+
+body{text-align: center; font-family:"宋体",arial;margin:0; padding:0; background: #fff; font-size:12px; color:#000;}
+#content{
+    width:1000px;
+    margin:5px auto 0px auto;
+}
+#left{
+    float:left;
+    width:227px;
+}
+#left .title{
+    float:left;
+    background-image:url('/sites/all/themes/fsjt/images/titleBg.jpg');
+    background-repeat:repeat-x;
+    height:28px;
+    width:225px;
+}
+#left .title label{
+    float:left;
+    border:0;
+    padding-left:12px;
+    padding-top:8px;
+    font-size:14px;
+    font-weight:bold;
+    color:#A10000;
+    background-image:url('/sites/all/themes/fsjt/images/labelBg.jpg');
+    height:20px;
+    width:101px;
+}
+#left .content{
+    float:left;
+    padding:10px 0px 0px 12px;
+}
+#left .content div{
+    background-image:url('/sites/all/themes/fsjt/images/icon.jpg');
+    background-repeat:no-repeat;
+    background-position:left 4px;
+    width:200px;
+    float:left;
+    margin-top:2px;
+}
+#left .content div a{
+    clear:both;
+    display:block;
+    background:none;
+    margin-left:14px;
+    color:#262626;
+    line-height:20px;
+    text-decoration:none;
+}
+#left .content div a:hover{
+    text-decoration:underline;
+}
+#left .gd{
+    float:right;
+    display:inline;
+    margin:5px 10px 0 0;
+    padding-bottom:10px;
+    width:215px;
+}
+#left .more{
+    float:right;
+    color:#A10000;
+    font-size:12px;
+    width:36px;
+    text-decoration:none;
+}
+#left .more:hover{
+    text-decoration:underline;
+}
+.left1{
+    float:left;
+    text-align:left;
+    border:1px #D9D9D9 solid;
+}
+.left2{
+    float:left;
+    text-align:left;
+    border:1px #D9D9D9 solid;
+    margin-top:5px;
+}
+.left3{
+    float:left;
+    text-align:left;
+    border:1px #D9D9D9 solid;
+    margin-top:5px;
+}
+.left3 .content select{
+    float:left;
+    width:150px;
+    margin:5px 0 0 23px;
+    font-size:12px;
+    white-space:nowrap;
+}
+.left3 .content{
+    /*height:164px;*/
+}
+#middle{
+    float:left;
+    margin-left:5px;
+    width:610px;
+    text-align:left;
+}
+#middle1{
+    float:left;
+    border:1px #D9D9D9 solid;
+    width:609px;
+    height:276px;
+}
+#middle .title{
+    background-image:url('/sites/all/themes/fsjt/images/midtitleBg.jpg');
+    background-repeat:repeat-x;
+    height:28px;
+    width:609px;
+    float:left;
+}
+#middle .title label{
+    float:left;
+    border:0;
+    margin:0 0 0 10px;
+    padding:8px 0 0 10px;
+    font-size:14px;
+    font-weight:bold;
+    color:#A10000;
+    background:url('/sites/all/themes/fsjt/images/titleIcon.jpg') no-repeat left;
+    height:20px;
+}
+#middle .more{
+    float:right;
+    color:#A10000;
+    margin:8px 12px;
+    font-size:12px;
+    font-weight:normal;
+}
+#middle .content{
+    margin:0;
+    padding:0;
+    display:inline;
+    float:left;
+    width:609px;
+    /*height:210;*/
+}
+
+.middleflash{
+    float:left;
+    margin:0;
+    padding:0;
+    border-bottom:1px #B50D00 solid;
+    padding-top:10px;
+    width:268px;
+    height:233px;
+}
+.middleflash table{
+    border-collapse:collapse;
+}
+
+#middle1 #flash{
+    float:left;
+    margin:0;
+    padding:0;
+    width:268px;
+    height:233px;
+
+    padding-top:10px;
+
+}
+#flash span{
+    float:left;
+}
+#middle .content .list{
+    float:left;
+    display:inline;
+    padding:16px 0 0 16px;
+}
+
+#middle .list div{
+    float:left;
+    background-image:url('/sites/all/themes/fsjt/images/icon.jpg');
+    background-repeat:no-repeat;
+    background-position:left 3px;
+    color:#262626;
+    margin-bottom:5px;
+    width:300px;
+    /*line-height:130%!important;*/
+    line-height:130%\9;/*所有IE*/
+    *line-height:150%;/*IE7*/
+    _line-height:150%;/*IE6 Hack*/
+}
+#mid1{
+    width:310px;
+    margin-right:0px;
+    padding:1px 0 0 15px
+
+}
+
+#mid1 .list a{
+    float:left;
+}
+
+
+#middle .list a{
+    float:left;
+    color:#262626;
+    display:inline;
+    padding-left:15px;
+    text-decoration:none;
+    font-size:14px;
+    /*line-height:100%;*/
+}
+#middle .list a:hover{
+    text-decoration:underline;
+}
+#middle2{
+    float:right;
+    border:1px #D9D9D9 solid;
+    width:609px;
+    height:212px;
+    margin-top:5px;
+}
+/*
+#content{
+	width:1000px;
+	margin:5px auto 0px auto;
+}
+#middle .content{
+	margin:0;
+	padding:0;
+	display:inline;
+	float:left;
+	width:609px;
+
+}
+
+#middle .content .list{
+	float:left;
+        display:inline;
+        padding:16px 0 0 16px;
+}
+
+*/
+#middle2 .pic1 {
+    float:left;
+    width:150px;
+    height:170px;
+    background-image:url('/sites/all/themes/fsjt/images/gcjs2.jpg');
+    background-repeat:no-repeat;
+    background-position:center;
+    margin:5px;
+}
+
+#middle2 .pic2 {
+    float:left;
+    width:150px;
+    height:170px;
+    background-image:url('/sites/all/themes/fsjt/images/hygl1.jpg');
+    background-repeat:no-repeat;
+    background-position:center;
+    margin:5px;
+}
+#middle2 .pic3 {
+    float:left;
+    width:150px;
+    height:170px;
+    background-image:url('/sites/all/themes/fsjt/images/hywm1.jpg');
+    background-repeat:no-repeat;
+    background-position:center;
+    margin:5px;
+}
+
+
+#middle2 .list div{
+    /*width:498px;
+        line-height:20px;
+        width:569px;*/
+    width:415px;
+    line-height:20px;
+    float:left;
+}
+#middle2 .list{
+    margin:7px 0 0 5px;
+    float:left;
+}
+#middle2 .list a{
+    font-size:12px;
+}
+#middle2 .time{
+    float:right;
+    height:20px;
+    line-height:20px;
+}
+#right{
+    float:left;
+    margin-left:5px;
+    width:150px;
+    text-align:left;
+}
+#right .title{
+    float:left;
+    color:#A10000;
+    background-image:url('/sites/all/themes/fsjt/images/titleBg.jpg');
+    background-repeat:repeat-x;
+    height:30px;
+    width:150px;
+}
+#right .title label{
+    float:left;
+    border:0;
+    padding-left:12px;
+    padding-top:8px;
+    font-size:14px;
+    font-weight:bold;
+    color:#A10000;
+    background-image:url('/sites/all/themes/fsjt/images/labelBg.jpg');
+    height:20px;
+    width:101px;
+}
+#right .title a{
+    float:left;
+    border:0;
+    padding-left:12px;
+    padding-top:8px;
+    font-size:14px;
+    font-weight:bold;
+    color:#A10000;
+    background-image:url('/sites/all/themes/fsjt/images/labelBg.jpg');
+    height:20px;
+    width:101px;
+}
+#right .title2{
+    float:left;
+    color:#A10000;
+    background-image:url('/sites/all/themes/fsjt/images/titleBg.jpg');
+    background-repeat:repeat-x;
+    height:50px;
+    width:150px;
+}
+#right .title2 label{
+    float:left;
+    border:0;
+    padding-left:12px;
+    padding-top:8px;
+    font-size:14px;
+    font-weight:bold;
+    color:#A10000;
+    background-image:url('/sites/all/themes/fsjt/images/labelBg.jpg');
+    height:20px;
+    width:101px;
+}
+#right .title2 a{
+    float:left;
+    border:0;
+    padding-left:12px;
+    padding-top:8px;
+    font-size:14px;
+    font-weight:bold;
+    color:#A10000;
+    background-image:url('/sites/all/themes/fsjt/images/labelBg.jpg');
+    height:20px;
+    width:101px;
+}
+#right .more{
+    float:right;
+    color:#A10000;
+    font-size:12px;
+    width:36px;
+    margin-right:10px;
+    text-decoration:none;
+}
+#right .more:hover{
+    text-decoration:underline;
+}
+#right .content{
+    float:left;
+    padding:10px 0 10px 12px;
+    width:115px;
+}
+
+#right .content ul{
+    float:left;
+    padding:0;
+    margin:8px;
+    display:inline;
+    list-style:none;
+
+}
+
+#right .content div{
+    background-image:url('/sites/all/themes/fsjt/images/icon.jpg');
+    background-repeat:no-repeat;
+    background-position:left 3px;
+    width:120px;
+    color:#262626;
+    float:left;
+    margin-top:2px;
+
+}
+#right .content div a{
+    clear:both;
+    color:#262626;
+    text-decoration:none;
+    display:block;
+    margin-left:15px;
+    line-height:20px;
+}
+#right .content div a:hover{
+    text-decoration:underline;
+}
+#right1{
+    border:1px #D9D9D9 solid;
+    float:left;
+}
+#right2{
+    border:1px #D9D9D9 solid;
+    float:left;
+    margin-top:5px;
+    /*height:391px;*/
+}
+#right2 .content{
+    float:left;
+    padding:16px 0 0 19px;
+    width:115px;
+    /*height:343px;*/
+}
+#right2 .content label{
+    float:left;
+    border:0;
+    padding:0 0 5px 10px;
+    font-weight:bold;
+    color:#A10000;
+    background-image:url('/sites/all/themes/fsjt/images/cxjt.jpg');
+    background-repeat:no-repeat;
+    background-position:left top;
+    text-decoration:underline;
+}
+#right2 .content div{
+    float:left;
+    width:110px;
+    background:none;
+}
+#right2 .content div a{
+    clear:both;
+    border:0;
+    margin-left:10px;
+    display:inline;
+    color:black;
+    text-decoration:none;
+}
+#right2 .content div a:hover{
+    text-decoration:underline;
+}
+#right2 .content img{
+    float:left;
+    margin:5px 0 5px 10px;
+    border:0;
+}
+#top{
+    width:1000px;
+    margin:auto;
+    clear:both;
+}
+#bottom{
+    clear:both;
+    width:1000px;
+    margin:auto;
+}
