@@ -22,6 +22,18 @@ public class Tag {
      */
     private int passFlag;
 
+    public Tag() {
+        this.tagName="";
+        this.tagLevel=1;
+        this.passFlag=1;
+    }
+
+    public Tag(String tagName, int tagLevel, int passFlag) {
+        this.tagName = tagName;
+        this.tagLevel = tagLevel;
+        this.passFlag = passFlag;
+    }
+
     public long getTagId() {
         return tagId;
     }

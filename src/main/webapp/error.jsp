@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html class="error-page" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" dir="ltr">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -22,7 +22,7 @@
                     <h1>Oopssss<span>!</span></h1>
                     <h2 class="error-code">404  ERROR_PAGE_NOT_FOUND</h2>
                     <p>The page you are looking for was moved, removed,<br/>renamed or might never existed.</p>
-                    <a class="btn btn-border btn-lg" href="login" title="HOME"><i class="fa fa-chevron-left"></i>返 回</a>
+                    <a class="btn btn-border btn-lg" href="login" title="HOME">返 回</a>
                 </div>
             </div>
         </div>

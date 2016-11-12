@@ -1,6 +1,5 @@
 package com.traffic.dao;
 
-import com.traffic.model.ParentCategory;
 import com.traffic.model.Tag;
 
 import java.util.List;
@@ -46,4 +45,10 @@ public interface TagDao {
      * 根据级别查询
      */
     List<Tag> findByLevel(int level);
+
+
+    /**
+     * 根据名称查询
+     */
+    List<Tag> findByName(String name);
 }

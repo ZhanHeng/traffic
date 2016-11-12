@@ -17,6 +17,7 @@ public class NewsAndNotice {
     private String htmlPath;				// 静态Html页的存储地址
     private String orderTime;				// 系统排序时间
 
+
     public String getId() {
         return id;
     }
@@ -91,20 +92,5 @@ public class NewsAndNotice {
 
     public void setOrderTime(String orderTime) {
         this.orderTime = orderTime;
-    }
-
-    @Override
-    public String toString() {
-        return "NewsAndNotice{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", content=" + Arrays.toString(content) +
-                ", time='" + time + '\'' +
-                ", author='" + author + '\'' +
-                ", path='" + path + '\'' +
-                ", focusFlag='" + focusFlag + '\'' +
-                ", htmlPath='" + htmlPath + '\'' +
-                ", orderTime='" + orderTime + '\'' +
-                '}';
     }
 }

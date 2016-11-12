@@ -1,10 +1,7 @@
 package com.traffic.dao;
 
 import com.traffic.model.NewsAndNotice;
-import com.traffic.model.NewsAndNoticeCategory;
-import com.traffic.model.ParentCategory;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +38,6 @@ public class NewsAndNoticeDaoImpl extends HibernateDaoSupport implements NewsAnd
         List<NewsAndNotice> list = getCurrentSession().createQuery("from NewsAndNotice").list();
         return list;
     }
-    ////查询某个二级菜单的新闻
-    public List<NewsAndNotice> findByCategoryId(String categoryId) {
-        String hql = "from NewsAndNotice  where category.categoryId = ? order by time desc,orderTime desc";
-        return getCurrentSession().createQuery(hql).setString(0,categoryId).list() ;
-    }
 
     public void save(NewsAndNotice newsAndNotice) {
         getCurrentSession().save(newsAndNotice);
@@ -60,7 +52,7 @@ public class NewsAndNoticeDaoImpl extends HibernateDaoSupport implements NewsAnd
     }
 
 
-    public List<NewsAndNotice> queryInfo(int categoryId, String queryNewsTitle,String queryNewsAuthor, String queryTime1, String queryTime2) {
+  /*  public List<NewsAndNotice> queryInfo(int categoryId, String queryNewsTitle,String queryNewsAuthor, String queryTime1, String queryTime2) {
         String hql = "from NewsAndNotice where 1=1";
         if (!"".equals(queryNewsTitle) && queryNewsTitle != null) {
             hql += " and title like '%" + queryNewsTitle + "%'";
@@ -78,9 +70,8 @@ public class NewsAndNoticeDaoImpl extends HibernateDaoSupport implements NewsAnd
             hql += "  and category.categoryId =" + categoryId+ " order by time desc";
         }
         return getCurrentSession().createQuery(hql).list();
-    }
+    }*/
 
-    // TODO Auto-generated method stub
 /*    public PageBean queryForPage(int categoryId, String queryNewsTitle,
                                  String queryNewsAuthor, String queryTime1, String queryTime2,
                                  int pageSize, int page) {
@@ -132,11 +123,6 @@ public class NewsAndNoticeDaoImpl extends HibernateDaoSupport implements NewsAnd
         String hql = "from NewsAndNotice as e where e.focusFlag='YES' ";
         return getCurrentSession().createQuery(hql).list();
     }
-    //查询某个一级菜单下的新闻
-    public List<NewsAndNotice> showNewsList(int parentCategoryId){
-        String hql = "from NewsAndNotice as e where e.category.parentCategory.parentCategoryId= ? order by time desc,orderTime desc";
-        return getCurrentSession().createQuery(hql).setInteger(0,parentCategoryId).list() ;
-    }
     //获取焦点图的数量
     public int getCountNumber() {
         return getCurrentSession().createQuery("from NewsAndNotice as e where e.focusFlag ='YES' ").list().size();
@@ -159,18 +145,5 @@ public class NewsAndNoticeDaoImpl extends HibernateDaoSupport implements NewsAnd
             query.executeUpdate();
         }
     }
-    //所有的二级菜单
-    public List<NewsAndNoticeCategory> getCategoryTab() {
-        return getCurrentSession().createQuery("from NewsAndNoticeCategory").list();
-    }
-    //所有的一级菜单
-    public List<NewsAndNoticeCategory> getParentCategory() {
-        return getCurrentSession().createQuery("from ParentCategory").list();
-    }
 
-    //列出某一级菜单下的所有二级菜单
-    public List<NewsAndNoticeCategory> showMenuList(int parentCategoryId){
-        String hql = " from NewsAndNoticeCategory as e where  e.parentCategory.parentCategoryId = ? ";
-        return getCurrentSession().createQuery(hql).setInteger(0,parentCategoryId).list() ;
-    }
 }

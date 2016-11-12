@@ -1,7 +1,6 @@
 package com.traffic.dao;
 
 import com.traffic.model.NewsAndNotice;
-import com.traffic.model.NewsAndNoticeCategory;
 
 import java.util.List;
 
@@ -42,11 +41,6 @@ public interface NewsAndNoticeDao {
      */
     void delete(NewsAndNotice newsAndNotice);
 
-    /**
-     * 返回某一类的新闻列表
-     * @return
-     */
-    List<NewsAndNotice> findByCategoryId(String categoryId);
 
     /**
      * 多条件查询
@@ -57,7 +51,7 @@ public interface NewsAndNoticeDao {
      * @param queryTime2
      * @return
      */
-     List<NewsAndNotice> queryInfo(int categoryId, String queryNewsTitle,String queryNewsAuthor, String queryTime1, String queryTime2);
+    // List<NewsAndNotice> queryInfo(int categoryId, String queryNewsTitle,String queryNewsAuthor, String queryTime1, String queryTime2);
 
     /**
      * 查出所有焦点图新闻
@@ -65,12 +59,6 @@ public interface NewsAndNoticeDao {
      */
      List<NewsAndNotice> showFocusPicture();
 
-    /**
-     * 查询某个一级菜单下的新闻
-     * @param parentCategoryId
-     * @return
-     */
-     List<NewsAndNotice> showNewsList(int parentCategoryId);
 
     /**
      * 获取焦点图的数量
@@ -84,22 +72,5 @@ public interface NewsAndNoticeDao {
      */
     void bacthDeleteNewsAndNotice(List<String> newsList);
 
-    /**
-     * 列出所有的二级菜单
-     * @return
-     */
-     List<NewsAndNoticeCategory> getCategoryTab();
 
-    /**
-     * 列出所有的一级菜单
-     * @return
-     */
-     List<NewsAndNoticeCategory> getParentCategory();
-
-    /**
-     * 列出某一级菜单下的所有二级菜单
-     * @param parentCategoryId
-     * @return
-     */
-     List<NewsAndNoticeCategory> showMenuList(int parentCategoryId);
 }

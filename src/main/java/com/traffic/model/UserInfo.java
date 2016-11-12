@@ -5,7 +5,7 @@ package com.traffic.model;
  * Created by ZhanHeng on 2016/11/11.
  */
 public class UserInfo {
-    private String userId;
+    private long userId;
     private String userName;
     private String passWord;
 
@@ -17,12 +17,12 @@ public class UserInfo {
         this.passWord = passWord;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public long getUserId() {
+        return userId;
     }
 
-    public String getUserId() {
-        return userId;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {

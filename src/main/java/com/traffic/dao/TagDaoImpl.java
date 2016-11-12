@@ -1,6 +1,5 @@
 package com.traffic.dao;
 
-import com.traffic.model.ParentCategory;
 import com.traffic.model.Tag;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -34,7 +33,7 @@ public class TagDaoImpl extends HibernateDaoSupport implements TagDao {
     }
 
     public List<Tag> findAll() {
-        return getCurrentSession().createQuery("from ParentCategory").list();
+        return getCurrentSession().createQuery("from Tag").list();
     }
 
     public void save(Tag tag) {
@@ -53,6 +52,13 @@ public class TagDaoImpl extends HibernateDaoSupport implements TagDao {
         String hql = "from Tag where passFlag = 1 and  tagLevel = ? ";
         Query query = getCurrentSession().createQuery(hql) ;
         query.setInteger(0,level);
+        return query.list();
+    }
+
+    public List<Tag> findByName(String name) {
+        String hql = "from Tag where passFlag = 1 and  tagName = ? ";
+        Query query = getCurrentSession().createQuery(hql) ;
+        query.setString(0,name);
         return query.list();
     }
 }

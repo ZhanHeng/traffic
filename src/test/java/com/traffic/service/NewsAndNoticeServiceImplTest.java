@@ -30,4 +30,13 @@ public class NewsAndNoticeServiceImplTest {
         logger.info("Title = "+newsAndNotice.getTitle());
     }
 
+    @Test
+    public void addNews() throws Exception {
+        NewsAndNotice news = new NewsAndNotice();
+        news.setAuthor("公路管理局");
+    /*    String content = "2016年11月4日，市交通局农村候车亭竣工验收小组对新宾县19处、清原县11处新建农村候车亭进行现场验收。验收组成员为：市局规划处潘俊辉处长";
+        news.setContent(content.getBytes());*/
+        news.setTitle("今日头条");
+        newsAndNoticeService.save(news);
+    }
 }

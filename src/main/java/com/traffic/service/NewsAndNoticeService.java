@@ -41,10 +41,4 @@ public interface NewsAndNoticeService {
      */
     void delete(NewsAndNotice newsAndNotice) throws DataAccessException;
 
-
-    /**
-     * 返回某一类的新闻列表
-     * @return
-     */
-    List<NewsAndNotice> findByCategoryId(String categoryId);
 }

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
+ * 新闻类Service
  * Created by ZhanHeng on 2016/11/11.
  */
 @Transactional
@@ -64,9 +65,5 @@ public class NewsAndNoticeServiceImpl implements NewsAndNoticeService{
               logger.error(e.getMessage(),e);
              throw new DataAccessException(e.getMessage());
           }
-    }
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public List<NewsAndNotice> findByCategoryId(String categoryId) {
-        return newsAndNoticeDao.findByCategoryId(categoryId);
     }
 }

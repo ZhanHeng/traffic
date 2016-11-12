@@ -69,6 +69,7 @@ public class LoginAction extends ActionSupport {
             if (userInfo!=null){
                 Execution execution = userInfoService.validateUser(userInfo);
                 if (execution.getState()>0){
+                    ActionContext.getContext().getSession().put("userInfo",	userInfo);
                     ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
                     return SUCCESS;
                 }else{
@@ -87,7 +88,36 @@ public class LoginAction extends ActionSupport {
             return INPUT;
         }
     }
-
+    /**
+     * 用户添加
+     * @return
+     */
+    @Action( //表示请求的Action及处理方法
+            value="addUser",  //表示action的请求名称
+            results={  //表示结果跳转
+                    @Result(name="success",location="/adminMainPage.jsp"),
+                    @Result(name="input",location="/adminLogin.jsp"),
+                    @Result(name="error",location="/error.jsp")
+            },
+            interceptorRefs={   //表示拦截器引用
+                    @InterceptorRef("defaultStack")
+            },
+            exceptionMappings={  //映射映射声明
+                    @ExceptionMapping(exception="java.lang.Exception",result="error")
+            }
+    )
+    public String addUser(){
+        try {
+            Execution execution = userInfoService.add(userInfo);
+            ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
+            return SUCCESS;
+        } catch (Exception e){
+            logger.error(e.getMessage() , e );
+            Execution execution = new Execution(LoginEnum.INNER_ERROR);
+            ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
+            return INPUT;
+        }
+    }
     public UserInfo getUserInfo() {
         return userInfo;
     }

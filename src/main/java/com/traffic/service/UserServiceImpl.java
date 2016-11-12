@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
         try {
             if (userInfo!=null){
                 List<UserInfo> list = userDao.findByName(userInfo.getUserName());
-                if(list!=null){ //用户名已存在
+                if(list!=null&&!list.isEmpty()){ //用户名已存在
                     return new Execution(LoginEnum.REPEAT_NAME);
                 }else{
                     UserInfo user = new UserInfo(userInfo.getUserName(),getMD5(userInfo.getPassWord()).toString());

@@ -9,7 +9,7 @@ public enum LoginEnum {
     INSERT_SUCCESS(0,"添加成功"),
     LOGIN_ERROR(-1,"用户名/密码错误"),
     INNER_ERROR(-2,"系统异常"),
-    REPEAT_NAME(-3,"用户名已存在");
+    REPEAT_NAME(-3,"该名称已被占用");
     private int state ;
     private String stateInfo ;
 
