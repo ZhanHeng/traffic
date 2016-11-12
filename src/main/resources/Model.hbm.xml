@@ -24,11 +24,6 @@
         <property name="time">
             <column name="time" />
         </property>
-        <many-to-one name="category"
-                     class="com.traffic.model.NewsAndNoticeCategory"
-                     lazy="false">
-            <column name="categoryID" />
-        </many-to-one>
         <property name="author">
             <column name="author" />
         </property>
@@ -47,24 +42,29 @@
         </property>
     </class>
 
-    <class name="NewsAndNoticeCategory" table="news_and_notice_category">
-        <id name="categoryId" column="categoryID" type="java.lang.Integer">
-            <generator class="increment" />
+    <class name="Tag" table="tag">
+        <id name="tagId" column="categoryID" type="java.lang.Integer">
+            <generator class="identity" />
         </id>
+        <property name="tagName" column="categoryName" type="java.lang.String"/>
+        <property name="tagLevel" column="tagLevel" type="java.lang.Integer"/>
+        <property name="passFlag" column="passFlag" type="java.lang.Integer"/>
+    </class>
 
-        <property name="categoryName" column="categoryName" ></property>
-        <many-to-one name="parentCategory"
-                     class="com.traffic.model.ParentCategory"
+    <class name="NewsPublish" table="news_publish">
+        <id name="newsId" column="news_id" type="java.lang.String">
+            <generator class="uuid" />
+        </id>
+        <many-to-one name="tag"
+                     class="com.traffic.model.Tag"
                      lazy="false">
-            <column name="parentCategoryId" />
+            <column name="tagId" />
         </many-to-one>
+        <many-to-one name="newsAndNotice"
+                     class="com.traffic.model.NewsAndNotice"
+                     lazy="false">
+            <column name="newsAndNoticeId" />
+        </many-to-one>
+        <property name="createTime" column="create_time" type="timestamp"></property>
     </class>
-
-    <class name="ParentCategory" table="parent_category">
-        <id name="parentCategoryId" column="parentCategoryID" type="java.lang.Integer">
-            <generator class="increment" />
-        </id>
-        <property name="parentCategoryName" column="parentCategoryName"></property>
-    </class>
-
 </hibernate-mapping>

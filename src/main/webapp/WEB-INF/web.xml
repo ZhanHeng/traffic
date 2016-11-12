@@ -5,7 +5,6 @@
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1"
          metadata-complete="true">
-
   <!-- spring 和  Hibernate的配置文件 -->
   <context-param>
     <param-name>contextConfigLocation</param-name>
@@ -54,7 +53,6 @@
   </listener>
 
   <!-- Struts2 filter -->
-
   <filter>
     <filter-name>struts2</filter-name>
     <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
@@ -64,19 +62,35 @@
     <filter-name>struts2</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+    <!-- Login 验证 filter -->
+    <filter>
+        <filter-name>MyServlet</filter-name>
+        <filter-class>com.traffic.Interceptor.ReDispatcherFilter</filter-class>
+        <init-param>
+            <param-name>includeServlets</param-name>
+            <param-value>connector.java</param-value>
+        </init-param>
+    </filter>
 
+    <filter-mapping>
+        <filter-name>MyServlet</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>loginFilter</filter-name>
+        <filter-class>com.traffic.Interceptor.Loginfilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>loginFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
-  <filter-mapping>
-    <filter-name>openSessionInViewFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
-
-  <!-- 配置session超时时间，单位分钟 -->
+    <!-- 配置session超时时间，单位分钟 -->
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>
-
+  ss
   <welcome-file-list>
-    <welcome-file>/index.jsp</welcome-file>
+    <welcome-file>/trafficMain.jsp</welcome-file>
   </welcome-file-list>
 </web-app>

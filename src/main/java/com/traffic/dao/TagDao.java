@@ -1,6 +1,7 @@
 package com.traffic.dao;
 
 import com.traffic.model.ParentCategory;
+import com.traffic.model.Tag;
 
 import java.util.List;
 
@@ -8,37 +9,41 @@ import java.util.List;
  * 一级菜单类别Dao
  * Created by ZhanHeng on 2016/11/12.
  */
-public interface ParentCategoryDao {
+public interface TagDao {
     /**
      * 根据主键查询
      * @param id
      * @return
      */
-    ParentCategory findById(String id );
+    Tag findById(String id );
 
     /**
      * 返回所有
      * @return
      */
-    List<ParentCategory> findAll();
+    List<Tag> findAll();
 
     /**
      * 添加保存
-     * @param parentCategory
+     * @param tag
      * @return
      */
-    void save(ParentCategory parentCategory);
+    void save(Tag tag);
 
     /**
      * 修改
-     * @param parentCategory
+     * @param tag
      */
-    void update(ParentCategory parentCategory);
+    void update(Tag tag);
 
     /**
      * 删除
-     * @param parentCategory
+     * @param tag
      */
-    void delete(ParentCategory parentCategory);
+    void delete(Tag tag);
 
+    /**
+     * 根据级别查询
+     */
+    List<Tag> findByLevel(int level);
 }

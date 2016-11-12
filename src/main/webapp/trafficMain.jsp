@@ -62,18 +62,10 @@
                                         <div class="views-field views-field-title">        <span class="field-content"><a href="/content/%E6%8A%9A%E9%A1%BA%E5%B8%82%E7%BD%91%E7%BB%9C%E9%A2%84%E7%BA%A6%E5%87%BA%E7%A7%9F-%E6%B1%BD%E8%BD%A6%E7%BB%8F%E8%90%A5%E6%9C%8D%E5%8A%A1%E7%AE%A1%E7%90%86%E5%AE%9E%E6%96%BD%E7%BB%86%E5%88%99">抚顺市网络预约出租 汽车经营服务管理实施细则</a></span>  </div>  </div>
                                 </div>
 
-
-
-
-
-
                             </div></div>
-
 
                         </div>
                     </div> <!-- /block -->
-
-
                 </marquee>
             </div>
             <div class="gd"><a href="/tzgg/" class="more">[更多]</a></div>
@@ -159,9 +151,6 @@
                 <div><a href="http://www.mxwz.com/"  target="_blank" >民心网</a></div>
                 <div><a href="http://www.lncredit.gov.cn/"  target="_blank" >信用辽宁</a></div>
                 <div><a href="http://www.fscredit.gov.cn/"  target="_blank" >信用抚顺</a></div>
-
-
-
 
             </div>
         </div>

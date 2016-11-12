@@ -11,7 +11,6 @@ public class NewsAndNotice {
     private String title;					// 标题
     private byte[] content; 			    // 内容
     private String time;					// 发布时间
-    private NewsAndNoticeCategory category; // 类别
     private String author;					// 作者
     private String path;					// 焦点图的图片存储路径
     private String focusFlag;				// 是否是焦点图新闻的标志位
@@ -52,14 +51,6 @@ public class NewsAndNotice {
 
     public void setTime(String time) {
         this.time = time;
-    }
-
-    public void setCategory(NewsAndNoticeCategory category) {
-        this.category = category;
-    }
-
-    public NewsAndNoticeCategory getCategory() {
-        return category;
     }
 
     public String getAuthor() {
@@ -109,7 +100,6 @@ public class NewsAndNotice {
                 ", title='" + title + '\'' +
                 ", content=" + Arrays.toString(content) +
                 ", time='" + time + '\'' +
-                ", category=" + category +
                 ", author='" + author + '\'' +
                 ", path='" + path + '\'' +
                 ", focusFlag='" + focusFlag + '\'' +

@@ -22,9 +22,10 @@
     <!-- 对于WebLogic,Orion,OC4J此属性应该设置成true -->
     <constant name="struts.dispatcher.parametersWorkaround" value="false" />
 
+
     <!-- 用于CRUD Action的parent package -->
-    <package name="crud-default" extends="convention-default">
-        <!-- 基于paramsPrepareParamsStack, 增加store interceptor保证actionMessage在redirect后不会丢失 -->
+    <!-- 基于paramsPrepareParamsStack, 增加store interceptor保证actionMessage在redirect后不会丢失 -->
+<!--    <package name="crud-default" extends="convention-default">
         <interceptors>
             <interceptor-stack name="crudStack">
                 <interceptor-ref name="store">
@@ -34,13 +35,32 @@
             </interceptor-stack>
         </interceptors>
         <default-interceptor-ref name="crudStack" />
-    </package>
+    </package>-->
 
+
+    <!-- 配置全局拦截器 -->
+    <package name="all" extends="struts-default">
+        <interceptors>
+            <interceptor name="LoginInterceptor" class="com.traffic.Interceptor.LoginInterceptor"></interceptor>
+            <interceptor-stack name="myStack">
+                <interceptor-ref name="LoginInterceptor"/>
+                <interceptor-ref name="defaultStack"/>     <!--必需引用这个，否则点下一个子ACTION会报错-->
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="myStack"></default-interceptor-ref>
+        <!-- 定义全局处理结果 -->
+        <global-results>
+            <!-- 逻辑名为login的结果，映射到/login.jsp页面 -->
+            <result name="login">/login.jsp</result>
+            <result name="error">/error.jsp</result>
+            <result name="expire">/expire.jsp</result>
+        </global-results>
+    </package>
     <!-- 使用Convention插件,实现约定大于配置的零配置文件风格. 特殊的Result路径在Action类中使用@Result设定. -->
-    <package name="newsandnotice" namespace="/"
+<!--    <package name="newsandnotice" namespace="/"
              extends="struts-default,json-default">
 
-        <!-- Action -->
+        &lt;!&ndash; Action &ndash;&gt;
         <action name="home" class="RediretAction" method="showIndex">
             <result name="success" >${url}</result>
         </action>
@@ -63,7 +83,7 @@
             <result name="uploadc" >/addNews.jsp</result>
         </action>
         <action name="loginAction" class="LoginAction" method="login">
-            <result name="success">adminMainPage.jsp</result>
+            <result name="success">/adminMainPage.jsp</result>
             <result name="input">/adminLogin.jsp</result>
         </action>
         <action name="logout" class="LoginAction" method="logout">
@@ -81,7 +101,7 @@
         </action>
 
         <action name="newsAndNoticeAction" class="NewsAndNoticeAction">
-            <!-- 用户 -->
+            &lt;!&ndash; 用户 &ndash;&gt;
             <result name="searchNewsList">
                 /front-situation.jsp
             </result>
@@ -90,7 +110,7 @@
             </result>
             <result type="json" />
         </action>
-    </package>
+    </package>-->
 
     <package name="actions" extends="struts-default" namespace="/actions">
         <action name="ckeditorUpload" class="edu.neu.economic.newsandnotice.action.CkeditorUpload">

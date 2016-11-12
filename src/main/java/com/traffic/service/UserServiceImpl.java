@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
             }else{
                 String md5 = getMD5(userInfo.getPassWord());
                 List<UserInfo> list = userDao.findByNameAndPassword(userInfo.getUserName(),md5);
-                if(list!=null){ //验证成功
+                if(list!=null&&list.size()>0){ //验证成功
                      UserInfo user = list.get(0);
                      return new Execution(LoginEnum.SUCCESS,user);
                 }else{//验证失败
