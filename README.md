@@ -2,7 +2,7 @@
 
 抚顺交通局门户网站 Department of Transportation
 
-包括后台实现和前端台设计
+项目流程：需求分析、数据库设计、编码实现、前端设计、系统测试、项目验收、运营维护
 
 开发环境：Windows7 , Intellij IDEA 2016.2.5 ,JDK 1.7 , Tomcat 8.5.6 , MySQL 5.5.38 , Maven 3.3.9
 
