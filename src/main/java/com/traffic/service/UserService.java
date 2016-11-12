@@ -11,6 +11,13 @@ import java.util.List;
  * Created by lenovo on 2016/11/11.
  */
 public interface UserService {
+
+
+    /**
+     * 根据用户名 查用户
+     * @return
+     */
+    List<UserInfo> findByName(String name);
     /**
      * 查询所有用户
      * @return
@@ -22,7 +29,7 @@ public interface UserService {
      * @param userInfo
      * @return
      */
-    int add(UserInfo userInfo) throws DataAccessException;
+    Execution add(UserInfo userInfo) throws DataAccessException;
 
     /**
      * 删除用户
@@ -42,5 +49,5 @@ public interface UserService {
      * @return
      * @throws DataAccessException
      */
-    Execution validate(UserInfo userInfo) throws DataAccessException;
+    Execution validateUser(UserInfo userInfo) throws DataAccessException;
 }

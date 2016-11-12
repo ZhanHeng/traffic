@@ -21,7 +21,6 @@ public class ParentCategory {
         this.parentCategoryName = parentCategoryName;
     }
 
-    @Override
     public String toString() {
         return "ParentCategory{" +
                 "parentCategoryId=" + parentCategoryId +

@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
@@ -19,6 +20,7 @@ import java.util.List;
 /**
  * Created by lenovo on 2016/11/11.
  */
+@Transactional
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -35,19 +37,38 @@ public class UserServiceImpl implements UserService {
         String md5 = DigestUtils.md5DigestAsHex(base.getBytes());
         return md5;
     }
-
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public List<UserInfo> findByName(String name) throws DataAccessException  {
+         try {
+             if(name!=null){
+                 List<UserInfo> list =userDao.findByName(name);
+                 return list;
+             }else{
+                 throw new DataAccessException(DataEnum.DATA_ERROR.getStateInfo());
+             }
+          }catch (Exception e){
+              logger.error(e.getMessage(),e);
+             throw new DataAccessException(e.getMessage());
+          }
+    }
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public List<UserInfo> findAll() {
         return userDao.findAll();
     }
 
-    @Transactional
-    public int add(UserInfo userInfo) throws DataAccessException {
+    public Execution add(UserInfo userInfo) throws DataAccessException {
         try {
-            int result = userDao.add(userInfo);
-            if (result <= 0) {
+            if (userInfo!=null){
+                List<UserInfo> list = userDao.findByName(userInfo.getUserName());
+                if(list!=null){ //用户名已存在
+                    return new Execution(LoginEnum.REPEAT_NAME);
+                }else{
+                    UserInfo user = new UserInfo(userInfo.getUserName(),getMD5(userInfo.getPassWord()).toString());
+                    userDao.add(user); //添加到数据库
+                    return new Execution(LoginEnum.INSERT_SUCCESS);
+                }
+            }else{
                 throw new DataAccessException(DataEnum.DATA_ERROR.getStateInfo());
-            } else {
-                return result;
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -58,7 +79,8 @@ public class UserServiceImpl implements UserService {
     public void update(UserInfo userInfo) throws DataAccessException {
         try {
             if (userInfo != null) {
-                userDao.update(userInfo);
+                UserInfo user = new UserInfo(userInfo.getUserName(),getMD5(userInfo.getPassWord()).toString());
+                userDao.update(user);
             } else {
                 throw new DataAccessException(DataEnum.DATA_ERROR.getStateInfo());
             }
@@ -80,8 +102,8 @@ public class UserServiceImpl implements UserService {
             throw new DataAccessException(e.getMessage());
         }
     }
-    @Transactional
-    public Execution validate(UserInfo userInfo) throws DataAccessException {
+
+    public Execution validateUser(UserInfo userInfo) throws DataAccessException {
         try {
             if(userInfo==null){
                 throw new DataAccessException(DataEnum.DATA_ERROR.getStateInfo());

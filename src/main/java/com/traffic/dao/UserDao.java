@@ -21,7 +21,7 @@ public interface UserDao {
      * @param userInfo
      * @return
      */
-    int add(UserInfo userInfo);
+    void add(UserInfo userInfo);
 
     /**
      * 删除用户
@@ -42,4 +42,13 @@ public interface UserDao {
      * @return
      */
     List<UserInfo> findByNameAndPassword(String name ,String md5);
+
+    /**
+     * 根据用户名查询 用户是否已存在(保证用户名唯一)
+     * @param name
+     * @return
+     */
+    public List<UserInfo> findByName(String name);
+
+
 }

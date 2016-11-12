@@ -9,6 +9,9 @@ public class UserInfo {
     private String userName;
     private String passWord;
 
+    public UserInfo() {
+    }
+
     public UserInfo(String userName, String passWord) {
         this.userName = userName;
         this.passWord = passWord;

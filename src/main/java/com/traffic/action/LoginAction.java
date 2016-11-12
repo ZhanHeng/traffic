@@ -44,7 +44,7 @@ public class LoginAction extends ActionSupport {
                 ActionContext.getContext().put("loginResult",new LoginResult<Execution>(false,execution));
                 return INPUT;
             }else{
-                Execution execution = userInfoService.validate(userInfo);
+                Execution execution = userInfoService.validateUser(userInfo);
                 if (execution.getState()>0){
                     ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
                     return INPUT;

@@ -4,6 +4,7 @@ import com.traffic.model.UserInfo;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -27,15 +28,15 @@ public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
     }
 
     private Session getCurrentSession() {
-        return this.sessionFactory.openSession();
+        return this.sessionFactory.getCurrentSession();
     }
 
     public List<UserInfo> findAll() {
         return getCurrentSession().createQuery("from UserInfo").list();
     }
 
-    public int add(UserInfo userInfo) {
-        return (Integer) getCurrentSession().save(userInfo);
+    public void add(UserInfo userInfo) {
+        getCurrentSession().save(userInfo);
     }
 
     public void delete(UserInfo userInfo) {
@@ -51,6 +52,12 @@ public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
         Query query = getCurrentSession().createQuery(hql) ;
         query.setString(0,name);
         query.setString(1,md5);
+        return query.list();
+    }
+    public List<UserInfo> findByName(String name) {
+        String hql = "from UserInfo where userName = ? ";
+        Query query = getCurrentSession().createQuery(hql) ;
+        query.setString(0,name);
         return query.list();
     }
 }
