@@ -46,6 +46,7 @@
                 overflow-y: auto;
                 background-color: #f5f5f5;
                 border-right: 1px solid #eee;
+                width: 14%;
             }
         }
         .nav-sidebar {
@@ -120,7 +121,7 @@
             <a class="navbar-brand" href="javascript:void(0)" style="cursor:pointer">抚顺交通局后台管理</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav col-sm-offset-1">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">个人中心 <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
@@ -145,19 +146,19 @@
         <div class="col-sm-2 col-md-2 sidebar">
 
             <ul class="nav nav-sidebar">
-                <li class="active"><a href=""><span class="glyphicon glyphicon-user">&nbsp;用户模块</span></a></li>
+                <li ><a href="javascript:void(0)"><span class="glyphicon glyphicon-user"></span>&nbsp;用户模块</a></li>
                 <li><a href="javascript:void(0)" id="userBtn">添加用户</a></li>
-                <li><a href="">管理用户</a></li>
+                <li><a href="userList">用户管理</a></li>
             </ul>
             <ul class="nav nav-sidebar">
-                <li class="active"><a href=""><span class="glyphicon glyphicon-tag">&nbsp;标签模块</span></a></li>
+                <li ><a href="javascript:void(0)"><span class="glyphicon glyphicon-tag"></span>&nbsp;标签模块</a></li>
                 <li><a href="javascript:void(0)" id="openBtn">添加标签</a></li>
-                <li><a href="tagList" target="main">管理标签</a></li>
+                <li><a href="tagList" target="main">标签管理</a></li>
             </ul>
             <ul class="nav nav-sidebar">
-                <li class="active"><a href=""><span class="glyphicon glyphicon-list-alt">&nbsp;新闻模块</span></a></li>
-                <li><a href="javascript:void(0)" >添加新闻</a></li>
-                <li><a href="#">管理新闻</a></li>
+                <li><a href="javascript:void(0)"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;新闻模块</a></li>
+                <li><a href="javascript:void(0)">发布新闻</a></li>
+                <li><a href="#">新闻管理</a></li>
             </ul>
         </div>
         <div id="killPhoneModal" class="modal fade">
@@ -238,7 +239,7 @@
             </div>
         </div>
 
-        <div class="col-sm-10 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 main">
             <div id="repeat" class="alert alert-success">
                 <a href="#" class="close" data-dismiss="alert">
                     &times;
