@@ -10,7 +10,7 @@
 <html xml:lang="zh-cn" xmlns="http://www.w3.org/1999/xhtml" lang="zh-cn"><head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-
+    <link rel="shortcut icon" href="icon/favicon.ico" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>抚顺市交通局</title>
     <!-- base -->

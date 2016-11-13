@@ -7,13 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="mainframe">
     <meta name="author" content="console">
+    <link rel="shortcut icon" href="icon/favicon.ico" />
     <%
         response.setHeader("Pragma", "No-cache");
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Cache-Control", "no-store");
         response.setDateHeader("Expires", 0);
     %>
-    <title>管理页</title>
+    <title>后台管理</title>
 
     <!-- Bootstrap core CSS -->
     <link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -120,19 +121,28 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">修改密码</a></li>
-                <li><a href="logout">注销登录</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">个人中心 <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="dropdown-header">账户设置</li>
+                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> 账户信息</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-edit"></span> 修改密码</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">系统设置</li>
+                        <li><a href="logout"><span class="glyphicon glyphicon-off"></span> 注销登录</a></li>
+                    </ul>
+                </li>
             </ul>
-            <form class="navbar-form navbar-right">
+          <%--  <form class="navbar-form navbar-right">
                 <input type="text" class="form-control" placeholder="Search...">
-            </form>
+            </form>--%>
         </div>
     </div>
 </nav>
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
+        <div class="col-sm-2 col-md-2 sidebar">
 
             <ul class="nav nav-sidebar">
                 <li class="active"><a href=""><span class="glyphicon glyphicon-user">&nbsp;用户模块</span></a></li>
@@ -142,7 +152,7 @@
             <ul class="nav nav-sidebar">
                 <li class="active"><a href=""><span class="glyphicon glyphicon-tag">&nbsp;标签模块</span></a></li>
                 <li><a href="javascript:void(0)" id="openBtn">添加标签</a></li>
-                <li><a href="">管理标签</a></li>
+                <li><a href="tagList" target="main">管理标签</a></li>
             </ul>
             <ul class="nav nav-sidebar">
                 <li class="active"><a href=""><span class="glyphicon glyphicon-list-alt">&nbsp;新闻模块</span></a></li>
@@ -156,13 +166,13 @@
                     <div class="modal-header">
                         <h3 class="modal-title text-center">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <span class="glyphicon glyphicon-tag ">添加标签</span>
+                            <span class="glyphicon glyphicon-tag "></span> 添加标签
                         </h3>
                     </div>
                     <div class="modal-body">
                             <form action="addTag" class="form-horizontal" role="form" method="post">
                                 <div class="form-group">
-                                    <label for="firstname" class="col-sm-2 control-label">标签名称</label>
+                                    <label for="firstname" class="col-sm-2 control-label offset2">标签名称</label>
                                     <div class="col-sm-8">
                                         <input type="text" name="tag.tagName" class="form-control" id="firstname" placeholder="请输入标签名称" required autofocus>
                                     </div>
@@ -170,7 +180,7 @@
                                 <div class="form-group">
                                 </div>
                                 <div class = "form-group">
-                                    <label class="col-sm-2 control-label" for = "level">选择级别</label>
+                                    <label class="col-sm-2 control-label offset2" for = "level">选择级别</label>
                                     <div class="col-sm-8">
                                         <select id = "level" name="tag.tagLevel" class = "form-control">
                                             <option value=1>一级标签</option>
@@ -195,11 +205,11 @@
                     <div class="modal-header">
                         <h3 class="modal-title text-center">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <span class="glyphicon glyphicon-user ">添加用户</span>
+                            <span class="glyphicon glyphicon-user "></span> 添加用户
                         </h3>
                     </div>
                     <div class="modal-body">
-                        <form action="addUser" class="form-horizontal" role="form" method="post">
+                        <form action="addUser" id="userForm" class="form-horizontal" role="form" method="post">
                             <div class="form-group">
                                 <label for="uname" class="col-sm-2 control-label">用户名</label>
                                 <div class="col-sm-8">
@@ -220,114 +230,26 @@
                             </div>
                             <div class="modal-footer">
                                 <input type="button" class="btn btn-default" data-dismiss="modal" value="关闭">
-                                <input type="submit" class="btn btn-primary" value="提交">
+                                <input type="submit" id="addUserbtn" class="btn btn-primary" value="提交">
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-           <h2 class="page-header">title <span id="killPhoneMessage" class="text-center"></span></h2>
-            <div class="table-responsive">
-                <div id="repeat" class="alert alert-danger" style="display:none">
-                    <a  href="#" class="close" data-dismiss="alert">
-                        &times;
-                    </a>
-                    <strong>${loginResult.data.stateInfo} !</strong>
-                </div>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>1,001</td>
-                        <td>Lorem</td>
-                        <td>ipsum</td>
-                        <td>dolor</td>
-                        <td>sit</td>
-                    </tr>
-                    <tr>
-                        <td>1,002</td>
-                        <td>amet</td>
-                        <td>consectetur</td>
-                        <td>adipiscing</td>
-                        <td>elit</td>
-                    </tr>
-                    <tr>
-                        <td>1,003</td>
-                        <td>Integer</td>
-                        <td>nec</td>
-                        <td>odio</td>
-                        <td>Praesent</td>
-                    </tr>
-                    <tr>
-                        <td>1,003</td>
-                        <td>libero</td>
-                        <td>Sed</td>
-                        <td>cursus</td>
-                        <td>ante</td>
-                    </tr>
-                    <tr>
-                        <td>1,004</td>
-                        <td>dapibus</td>
-                        <td>diam</td>
-                        <td>Sed</td>
-                        <td>nisi</td>
-                    </tr>
-                    <tr>
-                        <td>1,005</td>
-                        <td>Nulla</td>
-                        <td>quis</td>
-                        <td>sem</td>
-                        <td>at</td>
-                    </tr>
-                    <tr>
-                        <td>1,006</td>
-                        <td>nibh</td>
-                        <td>elementum</td>
-                        <td>imperdiet</td>
-                        <td>Duis</td>
-                    </tr>
-                    <tr>
-                        <td>1,007</td>
-                        <td>sagittis</td>
-                        <td>ipsum</td>
-                        <td>Praesent</td>
-                        <td>mauris</td>
-                    </tr>
-                    <tr>
-                        <td>1,008</td>
-                        <td>Fusce</td>
-                        <td>nec</td>
-                        <td>tellus</td>
-                        <td>sed</td>
-                    </tr>
-                    <tr>
-                        <td>1,009</td>
-                        <td>augue</td>
-                        <td>semper</td>
-                        <td>porta</td>
-                        <td>Mauris</td>
-                    </tr>
-                    <tr>
-                        <td>1,010</td>
-                        <td>massa</td>
-                        <td>Vestibulum</td>
-                        <td>lacinia</td>
-                        <td>arcu</td>
-                    </tr>
-                    </tbody>
-                </table>
+
+        <div class="col-sm-10 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div id="repeat" class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert">
+                    &times;
+                </a>
+                <strong>${loginResult.data.stateInfo}!</strong>
             </div>
+            <iframe name="main" id="mainFrame" frameborder="0" scrolling="no" src="" style="width: 100%"  onload="setIframeHeight(this)">
+
+            </iframe>
         </div>
+
     </div>
 </div>
 
@@ -340,9 +262,9 @@
     $(function () {
         var state = '${loginResult.data.state}';
         if(state < 0){
-            $('#repeat').css('display','block').delay(2000).hide(0);
+            $('#repeat').removeClass('alert-success').addClass('alert-danger').css('display','block').delay(1500).hide(0);
         }else{
-            $('#repeat').css('display','block').removeClass('alert-danger').addClass('alert-info').delay(2000).hide(0);
+            $('#repeat').css('display','block').removeClass('alert-danger').addClass('alert-success').delay(1500).hide(0);
         }
         $('#openBtn').click(function () {
             $('#killPhoneModal').modal({
@@ -358,7 +280,27 @@
                 keyboard : false        //关闭键盘事件
             });
         });
+        $('#addUserbtn').click(function () {
+            if($("#psw").val()!=$("#psw2").val()){
+                alert("两次输入的密码不一致");
+                return false;
+            }else{
+                return true;
+            }
+        });
     });
+    function setIframeHeight(iframe) {
+        if (iframe) {
+            var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+            if (iframeWin.document.body) {
+                iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+            }
+        }
+    };
+
+    window.onload = function () {
+        setIframeHeight(document.getElementById('mainFrame'));
+    };
 </script>
 <%--<script src="../../assets/js/docs.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

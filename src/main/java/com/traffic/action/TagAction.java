@@ -1,5 +1,6 @@
 package com.traffic.action;
 
+import com.alibaba.fastjson.JSONArray;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.traffic.dto.Execution;
@@ -7,6 +8,7 @@ import com.traffic.dto.LoginResult;
 import com.traffic.enums.LoginEnum;
 import com.traffic.model.Tag;
 import com.traffic.service.TagService;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,20 +17,31 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+
 /**
  * 标签的Action
  * Created by ZhanHeng on 2016/11/12.
  */
-@Controller
+
+@Namespace(value="/")             //表示当前Action所在命名空间
+@Results({@Result(name ="tagjson",type ="json")}) //向前台传json数据必须要这句
 @Scope("session")                  //支持多例
 @ParentPackage("all")              //表示继承的父包
-@Namespace(value="/")             //表示当前Action所在命名空间
 public class TagAction extends ActionSupport {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private TagService tagService;
     private Tag tag;
+    private String id;
+    private List<String> tagList;
+    private Tag editTag;
 
+    private  void INITAL(){
+        this.setTag(null);
+        ActionContext.getContext().put("list",null);
+    }
     @Action( //表示请求的Action及处理方法
             value="addTag",  //表示action的请求名称
             results={  //表示结果跳转
@@ -41,7 +54,6 @@ public class TagAction extends ActionSupport {
                     @ExceptionMapping(exception="java.lang.Exception",result="error")
             }
     )
-    @ResponseBody
     public String addTag(){
         try {
             Execution execution = tagService.add(tag);
@@ -59,13 +71,162 @@ public class TagAction extends ActionSupport {
             return INPUT;
         }
     }
+    @Action( //表示请求的Action及处理方法
+            value="tagList",  //表示action的请求名称
+            results={  //表示结果跳转
+                    @Result(name="success",location="/tag/list.jsp")
+            },
+            interceptorRefs={   //表示拦截器引用
+                    @InterceptorRef("myStack")
+            },
+            exceptionMappings={  //映射映射声明
+                    @ExceptionMapping(exception="java.lang.Exception",result="error")
+            }
+    )
+    public String listAll(){//TODO 加入Redis 缓存优化
+         try {
+             INITAL();
+             List<Tag> list = tagService.findAll();
+             ActionContext.getContext().put("list",list);
+             return SUCCESS;
+          }catch (Exception e){
+              logger.error(e.getMessage(),e);
+             return ERROR;
+          }
+    }
+
+    @Action( //表示请求的Action及处理方法
+            value="searchTag",  //表示action的请求名称
+            results={  //表示结果跳转
+                    @Result(name="success",location="/tag/list.jsp")
+            },
+            interceptorRefs={   //表示拦截器引用
+                    @InterceptorRef("myStack")
+            },
+            exceptionMappings={  //映射映射声明
+                    @ExceptionMapping(exception="java.lang.Exception",result="error")
+            }
+    )
+    public String query(){
+         try {
+             List<Tag> list = tagService.findByTagProperty(tag);
+             ActionContext.getContext().put("list",list);
+             return SUCCESS;
+          }catch (Exception e){
+              logger.error(e.getMessage(),e);
+              return ERROR;
+          }
+    }
+
+    @Action( //表示请求的Action及处理方法
+            value="batchDel",  //表示action的请求名称
+            results={  //表示结果跳转
+                    @Result(name="success",location="/tag/list.jsp")
+            },
+            interceptorRefs={   //表示拦截器引用
+                    @InterceptorRef("myStack")
+            },
+            exceptionMappings={  //映射映射声明
+                    @ExceptionMapping(exception="java.lang.Exception",result="error")
+            }
+    )
+    public String batchDelete(){
+        try {
+            tagService.bacthDeleteTag(tagList);
+            List<Tag> list = tagService.findAll();
+            ActionContext.getContext().put("list",list);
+            return SUCCESS;
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            return ERROR;
+        }
+    }
+
+    @Action( //表示请求的Action及处理方法
+            value="del",  //表示action的请求名称
+            results={  //表示结果跳转
+                    @Result(name="success",location="/tag/list.jsp")
+            },
+            interceptorRefs={   //表示拦截器引用
+                    @InterceptorRef("myStack")
+            },
+            exceptionMappings={  //映射映射声明
+                    @ExceptionMapping(exception="java.lang.Exception",result="error")
+            }
+    )
+    public String delete(){
+         try {
+             Tag tag = tagService.findById(Long.parseLong(id));
+             tagService.delete(tag);
+             List<Tag> list = tagService.findAll();
+             ActionContext.getContext().put("list",list);
+             return SUCCESS;
+          }catch (Exception e){
+              logger.error(e.getMessage(),e);
+             return ERROR;
+          }
+    }
+
+    @Action( //表示请求的Action及处理方法
+            value="update",  //表示action的请求名称
+            results={  //表示结果跳转
+                    @Result(name="success",location="/tag/list.jsp")
+            },
+            interceptorRefs={   //表示拦截器引用
+                    @InterceptorRef("myStack")
+            },
+            exceptionMappings={  //映射映射声明
+                    @ExceptionMapping(exception="java.lang.Exception",result="error")
+            }
+    )
+    public String update(){
+        try {
+            tagService.update(tag);
+            List<Tag> list = tagService.findAll();
+            ActionContext.getContext().put("list",list);
+            this.setTag(null);
+            return SUCCESS;
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            return ERROR;
+        }
+    }
 
 
+    @Action(value="getTag", results={@Result(type="json", params={"root","editTag"})})
+    public String get() {
+        editTag = tagService.findById(Long.parseLong(id));
+        return "tagjson";
+    }
     public Tag getTag() {
         return tag;
     }
 
     public void setTag(Tag tag) {
         this.tag = tag;
+    }
+
+    public List<String> getTagList() {
+        return tagList;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setTagList(List<String> tagList) {
+        this.tagList = tagList;
+    }
+
+    public Tag getEditTag() {
+        return editTag;
+    }
+
+    public void setEditTag(Tag editTag) {
+        this.editTag = editTag;
     }
 }

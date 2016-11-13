@@ -26,7 +26,7 @@ public class TagServiceImpl implements TagService {
     @Autowired
     private TagDao tagDao ;
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public Tag findById(String id) {
+    public Tag findById(long id) {
         return tagDao.findById(id);
     }
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
@@ -87,5 +87,33 @@ public class TagServiceImpl implements TagService {
             logger.error(e.getMessage() , e );
             throw new DataAccessException(e.getMessage());
         }
+    }
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public List<Tag> findByTagProperty(Tag tag) throws DataAccessException {
+         try {
+             if(tag!=null){
+                 List<Tag> list = tagDao.findByTagProperty(tag);
+                 return list;
+             }else {
+                 throw new DataAccessException(DataEnum.DATA_ERROR.getStateInfo());
+             }
+          }catch (Exception e){
+              logger.error(e.getMessage(),e);
+              throw new DataAccessException(e.getMessage());
+          }
+    }
+
+    public void bacthDeleteTag(List<String> newsList) throws DataAccessException{
+         try {
+             if (newsList!=null && !newsList.isEmpty()){
+                 tagDao.bacthDeleteTag(newsList);
+             }else {
+                 throw new DataAccessException(DataEnum.DATA_ERROR.getStateInfo());
+             }
+          }catch (Exception e){
+              logger.error(e.getMessage(),e);
+              throw new DataAccessException(e.getMessage());
+          }
+
     }
 }

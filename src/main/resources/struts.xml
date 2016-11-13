@@ -39,7 +39,7 @@
 
 
     <!-- 配置全局拦截器 -->
-    <package name="all" extends="struts-default">
+    <package name="all" extends="struts-default,json-default">
         <interceptors>
             <interceptor name="LoginInterceptor" class="com.traffic.Interceptor.LoginInterceptor"></interceptor>
             <interceptor-stack name="myStack">

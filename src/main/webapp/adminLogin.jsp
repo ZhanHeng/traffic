@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="login">
     <meta name="author" content="user">
+    <link rel="shortcut icon" href="icon/favicon.ico" />
     <style type="text/css">
         body {
             padding-top: 40px;

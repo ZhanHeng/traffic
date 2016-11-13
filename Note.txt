@@ -1,0 +1,35 @@
+基于注解的Struts2 向前台传json数据，注意事项以及步骤：
+1.  <package name="all" extends="struts-default,json-default"> 配置的包中加入json-default
+    然后注解中用 @ParentPackage("all") ，这样顺利把json引入了
+
+2.  在对应的Action上加上 @Results( { @Result(name = "test", type = "json") 这句话声明: 返回test的那个方法是传json数据，不能缺少
+
+3.  在具体的方法上加上注解 ，例如:
+    @Action(value="getUserByName", results={@Result(type="json", params={"root","userList"})})
+    public String getUsers(){
+        userList = userSerivce.getUsers();  //将传的值加上getter/sertter方法保险起见
+        return "test";  //此处的test与第二步中的test对应
+    }
+......................................完成以上三步即可.......................................
+完整的示例代码:
+
+@Namespace("/")
+@Results( { @Result(name = ActionSupport.SUCCESS, type = "json"),
+public class UserAction extends ActionSupport{
+    @Autowired
+    private UserService userSerivce;
+    private List<UserBean> userList;
+    @Action(value="getUserByName", results={@Result(type="json", params={"root","userList"})})
+    public String getUsers(){
+        userList = userSerivce.getUsers();
+        return ActionSupport.SUCCESS;
+    }
+    public List<UserBean> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<UserBean> userList) {
+        this.userList = userList;
+    }
+}
+

@@ -14,7 +14,7 @@ public interface TagDao {
      * @param id
      * @return
      */
-    Tag findById(String id );
+    Tag findById(long id );
 
     /**
      * 返回所有
@@ -51,4 +51,17 @@ public interface TagDao {
      * 根据名称查询
      */
     List<Tag> findByName(String name);
+
+    /**
+     * 根据实体属性多条件查询
+     * @param tag
+     * @return
+     */
+    public List<Tag> findByTagProperty(Tag tag);
+
+    /**
+     * 批量删除
+     * @param newsList
+     */
+    public void bacthDeleteTag(List<String> newsList);
 }

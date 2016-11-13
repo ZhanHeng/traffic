@@ -20,7 +20,7 @@ public class TagServiceImplTest {
     private TagService tagService;
     @Test
     public void add() throws Exception {
-        String name = "政策法规";
+        String name = "组织机构";
         int level = 1 ;
         int pass = 1;
         Tag tag = new Tag(name,level,pass);

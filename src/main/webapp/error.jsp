@@ -22,7 +22,7 @@
                     <h1>Oopssss<span>!</span></h1>
                     <h2 class="error-code">404  ERROR_PAGE_NOT_FOUND</h2>
                     <p>The page you are looking for was moved, removed,<br/>renamed or might never existed.</p>
-                    <a class="btn btn-border btn-lg" href="login" title="HOME">返 回</a>
+                    <a class="btn btn-border btn-lg" href="logout" title="HOME" target="_top">返 回</a>
                 </div>
             </div>
         </div>

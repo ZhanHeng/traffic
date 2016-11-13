@@ -28,7 +28,7 @@ public class TagDaoImpl extends HibernateDaoSupport implements TagDao {
     private Session getCurrentSession() {
         return this.sessionFactory.getCurrentSession();
     }
-    public Tag findById(String id) {
+    public Tag findById(long id) {
         return (Tag)getCurrentSession().get(Tag.class,id);
     }
 
@@ -60,5 +60,36 @@ public class TagDaoImpl extends HibernateDaoSupport implements TagDao {
         Query query = getCurrentSession().createQuery(hql) ;
         query.setString(0,name);
         return query.list();
+    }
+    public List<Tag> findByTagProperty(Tag tag){
+        StringBuffer hql = new StringBuffer("from Tag  where 1=1 ");
+        if(tag!=null && !"".equals(tag.getTagName().trim())){
+            hql.append("and tagName Like '%"+tag.getTagName().trim()+"%'") ;
+        }
+        if( tag!=null && tag.getTagLevel()!=-1){
+            hql.append(" and tagLevel = '"+tag.getTagLevel()+"'");
+        }
+        if( tag!=null && tag.getPassFlag()!=-1){
+            hql.append(" and passFlag = '"+tag.getPassFlag()+"'");
+        }
+        return getCurrentSession().createQuery(hql.toString()).list() ;
+    }
+
+    //批量删除
+    public void bacthDeleteTag(List<String> newsList){
+        if(newsList!=null){
+            // 封装参数
+            Object[] paramlist = new Object[newsList.size()];
+            for (int i = 0; i < newsList.size(); i++) {
+                paramlist[i] =Long.parseLong(newsList.get(i));
+            }
+            // 拼装sql语句
+            String sql = "delete from Tag as n where n.tagId IN (:taglist)";
+            // 执行sql语句
+            Query query = getCurrentSession().createQuery(sql);
+            //设置参数
+            query.setParameterList("taglist",paramlist);
+            query.executeUpdate();
+        }
     }
 }

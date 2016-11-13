@@ -15,7 +15,7 @@ public interface TagService {
      * 根据主键查
      * @return
      */
-    Tag findById(String id);
+    Tag findById(long id);
     /**
      * 查询
      * @return
@@ -47,5 +47,20 @@ public interface TagService {
      * @return
      */
     public List<Tag> findByLevel(int level);
+
+    /**
+     * 根据实体属性多条件查询
+     * @param tag
+     * @return
+     */
+    public List<Tag> findByTagProperty(Tag tag);
+
+
+    /**
+     * 批量删除
+     * @param newsList
+     * @throws DataAccessException
+     */
+    public void bacthDeleteTag(List<String> newsList) throws DataAccessException;
 
 }
