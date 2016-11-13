@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 /**
  * 登录Action
  * Created by lenovo on 2016/11/11.
@@ -31,6 +33,12 @@ public class LoginAction extends ActionSupport {
     private UserService userInfoService;
 
     private UserInfo userInfo;
+
+    private String id ;
+
+    private String tagName;
+
+    private String psw;
     /**
      * 用户注销登录
      * @return
@@ -69,7 +77,7 @@ public class LoginAction extends ActionSupport {
             if (userInfo!=null){
                 Execution execution = userInfoService.validateUser(userInfo);
                 if (execution.getState()>0){
-                    ActionContext.getContext().getSession().put("userInfo",	userInfo);
+                    ActionContext.getContext().getSession().put("sessionUser",	execution.getUserInfo());
                     ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
                     return SUCCESS;
                 }else{
@@ -96,7 +104,7 @@ public class LoginAction extends ActionSupport {
             value="addUser",  //表示action的请求名称
             results={  //表示结果跳转
                     @Result(name="success",location="/adminMainPage.jsp"),
-                    @Result(name="input",location="/adminLogin.jsp"),
+                    @Result(name="input",location="/adminMainPage.jsp"),
                     @Result(name="error",location="/error.jsp")
             },
             interceptorRefs={   //表示拦截器引用
@@ -118,11 +126,138 @@ public class LoginAction extends ActionSupport {
             return INPUT;
         }
     }
+    @Action(
+            value="userList",
+            results={
+                    @Result(name="success",location="/user/list.jsp")
+            },
+            interceptorRefs={
+                    @InterceptorRef("defaultStack")
+            },
+            exceptionMappings={
+                    @ExceptionMapping(exception="java.lang.Exception",result="error")
+            }
+    )
+    public String listAll(){
+        try {
+            List<UserInfo> list = userInfoService.findAll();
+            ActionContext.getContext().put("list",list);
+            return SUCCESS;
+        } catch (Exception e){
+            logger.error(e.getMessage() , e );
+            return ERROR;
+        }
+    }
+
+    @Action(
+            value="delUser",
+            results={
+                    @Result(name="success",location="/user/list.jsp")
+            },
+            interceptorRefs={
+                    @InterceptorRef("defaultStack")
+            },
+            exceptionMappings={
+                    @ExceptionMapping(exception="java.lang.Exception",result="error")
+            }
+    )
+    public String deleteUser(){
+        try {
+           UserInfo userInfo = userInfoService.findById(Long.parseLong(id));
+            userInfoService.delete(userInfo);
+            List<UserInfo> list = userInfoService.findAll();
+            ActionContext.getContext().put("list",list);
+            return SUCCESS;
+        } catch (Exception e){
+            logger.error(e.getMessage() , e );
+            return ERROR;
+        }
+    }
+    @Action(
+            value="searchUser",
+            results={
+                    @Result(name="success",location="/user/list.jsp")
+            },
+            interceptorRefs={
+                    @InterceptorRef("defaultStack")
+            },
+            exceptionMappings={
+                    @ExceptionMapping(exception="java.lang.Exception",result="error")
+            }
+    )
+    public String findByName(){
+        try {
+            List<UserInfo> list = userInfoService.findLikeName(tagName);
+            ActionContext.getContext().put("list",list);
+            return SUCCESS;
+        } catch (Exception e){
+            logger.error(e.getMessage() , e );
+            return ERROR;
+        }
+    }
+    @Action(
+            value="alter",
+            results={
+                    @Result(name="success",location="/adminMainPage.jsp"),
+                    @Result(name="input",location="/adminMainPage.jsp"),
+                    @Result(name="error",location="/error.jsp")
+            },
+            interceptorRefs={
+                    @InterceptorRef("defaultStack")
+            },
+            exceptionMappings={
+                    @ExceptionMapping(exception="java.lang.Exception",result="error")
+            }
+    )
+    public String alterPassWord(){
+        try {
+            UserInfo user = userInfoService.findById(Long.parseLong(id));
+            if (user!=null){
+                user.setPassWord(psw);
+                Execution execution=userInfoService.update(user);
+                ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
+                return SUCCESS;
+            }else{
+                Execution execution = new Execution(LoginEnum.INNER_ERROR);
+                ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
+                return INPUT;
+            }
+        } catch (Exception e){
+            logger.error(e.getMessage() , e );
+            Execution execution = new Execution(LoginEnum.INNER_ERROR);
+            ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
+            return INPUT;
+        }
+    }
     public UserInfo getUserInfo() {
         return userInfo;
     }
 
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTagName() {
+        return tagName;
+    }
+
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
+
+    public String getPsw() {
+        return psw;
+    }
+
+    public void setPsw(String psw) {
+        this.psw = psw;
     }
 }

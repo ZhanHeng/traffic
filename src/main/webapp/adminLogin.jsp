@@ -72,7 +72,7 @@
 <div class="container">
 
     <form action="login" class="form-signin" role="form" method="post">
-        <h2 class="form-signin-heading text-center">管理登录</h2>
+        <h2 class="form-signin-heading text-center">后台管理</h2>
         <input type="text" name="userInfo.userName" class="form-control" placeholder="用户名" required autofocus>
         <input type="password" name="userInfo.passWord" class="form-control" placeholder="密码" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>

@@ -18,7 +18,7 @@ public class LoginInterceptor implements Interceptor {
     public void init() {}
 
     public String intercept(ActionInvocation invocation) throws Exception {
-        UserInfo admin= (UserInfo) ActionContext.getContext().getSession().get("userInfo");
+        UserInfo admin= (UserInfo) ActionContext.getContext().getSession().get("sessionUser");
         if(admin==null){
             logger.warn("没有登陆，返回到登陆页面");
             return "expire";

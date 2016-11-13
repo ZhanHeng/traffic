@@ -8,45 +8,55 @@
     <%@include file="../common/head.jsp"%>
 </head>
 <body>
-<div class="container">
-    <div class="panel panel-default">
-        <div class="panel-heading text-center">
-            <h2>秒杀列表</h2>
+<div class="container col-xs-12 col-sm-12">
+    <form name="userForm" action="searchUser" method="post">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>标签列表</h3>
+                <div class="form-inline" role="banner">
+                    <div class="form-group">
+                        <label class="sr-only " for="name">名称</label>
+                        <input type="text" name="tagName" class="form-control " value="${tagName}" id="name" placeholder="请输入名称">
+                    </div>
+                    <button type="submit" class="btn btn-info ">
+                        <span class="glyphicon glyphicon-search"></span> 查询
+                    </button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover table-striped">
+                    <thead>
+                    <th>序号</th>
+                    <th>名称</th>
+                    <th align="center">操作</th>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${list}" var="user" varStatus="status">
+                        <tr>
+                            <td><input type="checkbox"  name="tagList" value="${user.userId}" /></td>
+                            <td>${status.count}</td>
+                            <td>${user.userName}</td>
+                            <td>
+                                <a  class="btn btn-xs btn-danger" href="javascript:void(0)" onclick="del('${user.userId}')">删除</a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="panel-body">
-            <table class="table table-hover table-bordered">
-                <thead>
-                <th>名称</th>
-                <th>库存</th>
-                <th>开始时间</th>
-                <th>结束时间</th>
-                <th>创建时间</th>
-                <th>详情页</th>
-                </thead>
-                <tbody>
-                <c:forEach items="${list}" var="sk" >
-                    <tr>
-                        <td>${sk.name}</td>
-                        <td>${sk.number}</td>
-                        <td>
-                            <fmt:formatDate value="${sk.startTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
-                        </td>
-                        <td>
-                            <fmt:formatDate value="${sk.endTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
-                        </td>
-                        <td>
-                            <fmt:formatDate value="${sk.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
-                        </td>
-                        <td><a  class="btn btn-info" href="/seckill/${sk.seckillId}/detail" target="_blank">link</a></td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </div>
-    </div>
+    </form>
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        function del(id) {
+            if(confirm("确认删除吗?")){
+                window.location.href="delUser?id="+id;
+            }
+        }
+    </script>
 </div>
 </body>
 
-<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </html>

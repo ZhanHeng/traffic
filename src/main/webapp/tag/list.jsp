@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="panel-body">
-            <table class="table table-hover table-striped">
+            <table class="table table-hover table-striped ">
                 <thead>
                 <th><input type="checkbox" id="SelectAll"  value="全选" onclick="selectAll(this);"/></th>
                 <th>序号</th>

@@ -31,6 +31,10 @@ public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
         return this.sessionFactory.getCurrentSession();
     }
 
+    public UserInfo findById(long id) {
+        return (UserInfo)getCurrentSession().get(UserInfo.class,id);
+    }
+
     public List<UserInfo> findAll() {
         return getCurrentSession().createQuery("from UserInfo").list();
     }
@@ -44,7 +48,7 @@ public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
     }
 
     public void update(UserInfo userInfo) {
-        getCurrentSession().saveOrUpdate(userInfo);
+        getCurrentSession().update(userInfo);
     }
 
     public List<UserInfo> findByNameAndPassword(String name, String md5) {
@@ -59,5 +63,10 @@ public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
         Query query = getCurrentSession().createQuery(hql) ;
         query.setString(0,name);
         return query.list();
+    }
+
+    public List<UserInfo> findLikeName(String name) {
+        String hql = "from UserInfo where userName LIKE '%"+name+"%' ";
+        return getCurrentSession().createQuery(hql).list();
     }
 }

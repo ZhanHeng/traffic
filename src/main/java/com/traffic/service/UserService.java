@@ -12,6 +12,12 @@ import java.util.List;
  */
 public interface UserService {
 
+    /**
+     * 根据主键查用户
+     * @param id
+     * @return
+     */
+    UserInfo findById(long id );
 
     /**
      * 根据用户名 查用户
@@ -41,7 +47,7 @@ public interface UserService {
      * 更新用户信息
      * @param userInfo
      */
-    void update(UserInfo userInfo) throws DataAccessException;
+    Execution update(UserInfo userInfo) throws DataAccessException;
 
     /**
      * 登录验证
@@ -50,4 +56,11 @@ public interface UserService {
      * @throws DataAccessException
      */
     Execution validateUser(UserInfo userInfo) throws DataAccessException;
+
+    /**
+     * 根据名字模糊匹配查询
+     * @param name
+     * @return
+     */
+    public List<UserInfo> findLikeName(String name);
 }

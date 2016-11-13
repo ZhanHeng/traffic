@@ -11,6 +11,13 @@ import java.util.List;
 public interface UserDao {
 
     /**
+     * 根据主键查用户
+     * @param id
+     * @return
+     */
+    UserInfo findById(long id );
+
+    /**
      * 查询所有用户
      * @return
      */
@@ -49,6 +56,14 @@ public interface UserDao {
      * @return
      */
     public List<UserInfo> findByName(String name);
+
+
+    /**
+     * 根据用户名模糊匹配查询
+     * @param name
+     * @return
+     */
+    List<UserInfo> findLikeName(String name);
 
 
 }

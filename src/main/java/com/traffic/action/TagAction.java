@@ -71,15 +71,15 @@ public class TagAction extends ActionSupport {
             return INPUT;
         }
     }
-    @Action( //表示请求的Action及处理方法
-            value="tagList",  //表示action的请求名称
-            results={  //表示结果跳转
+    @Action(
+            value="tagList",
+            results={
                     @Result(name="success",location="/tag/list.jsp")
             },
-            interceptorRefs={   //表示拦截器引用
+            interceptorRefs={
                     @InterceptorRef("myStack")
             },
-            exceptionMappings={  //映射映射声明
+            exceptionMappings={
                     @ExceptionMapping(exception="java.lang.Exception",result="error")
             }
     )
@@ -95,15 +95,15 @@ public class TagAction extends ActionSupport {
           }
     }
 
-    @Action( //表示请求的Action及处理方法
-            value="searchTag",  //表示action的请求名称
-            results={  //表示结果跳转
+    @Action(
+            value="searchTag",
+            results={
                     @Result(name="success",location="/tag/list.jsp")
             },
-            interceptorRefs={   //表示拦截器引用
+            interceptorRefs={
                     @InterceptorRef("myStack")
             },
-            exceptionMappings={  //映射映射声明
+            exceptionMappings={
                     @ExceptionMapping(exception="java.lang.Exception",result="error")
             }
     )
@@ -118,15 +118,15 @@ public class TagAction extends ActionSupport {
           }
     }
 
-    @Action( //表示请求的Action及处理方法
-            value="batchDel",  //表示action的请求名称
-            results={  //表示结果跳转
+    @Action(
+            value="batchDel",
+            results={
                     @Result(name="success",location="/tag/list.jsp")
             },
-            interceptorRefs={   //表示拦截器引用
+            interceptorRefs={
                     @InterceptorRef("myStack")
             },
-            exceptionMappings={  //映射映射声明
+            exceptionMappings={
                     @ExceptionMapping(exception="java.lang.Exception",result="error")
             }
     )
@@ -142,15 +142,15 @@ public class TagAction extends ActionSupport {
         }
     }
 
-    @Action( //表示请求的Action及处理方法
-            value="del",  //表示action的请求名称
-            results={  //表示结果跳转
+    @Action(
+            value="del",
+            results={
                     @Result(name="success",location="/tag/list.jsp")
             },
-            interceptorRefs={   //表示拦截器引用
+            interceptorRefs={
                     @InterceptorRef("myStack")
             },
-            exceptionMappings={  //映射映射声明
+            exceptionMappings={
                     @ExceptionMapping(exception="java.lang.Exception",result="error")
             }
     )
@@ -167,15 +167,15 @@ public class TagAction extends ActionSupport {
           }
     }
 
-    @Action( //表示请求的Action及处理方法
-            value="update",  //表示action的请求名称
-            results={  //表示结果跳转
+    @Action(
+            value="update",
+            results={
                     @Result(name="success",location="/tag/list.jsp")
             },
-            interceptorRefs={   //表示拦截器引用
+            interceptorRefs={
                     @InterceptorRef("myStack")
             },
-            exceptionMappings={  //映射映射声明
+            exceptionMappings={
                     @ExceptionMapping(exception="java.lang.Exception",result="error")
             }
     )

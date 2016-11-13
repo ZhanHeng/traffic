@@ -91,15 +91,6 @@
             border-radius: 50%;
         }
     </style>
-    <script type="text/javascript">
-        var frameSrc = "/addNews.jsp";
-        $('#openBtn').click(function(){
-            $('#myModal').on('show', function () {
-                $('iframe').attr("src",frameSrc);
-            });
-            $('#myModal').modal({show:true})
-        });
-    </script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
@@ -112,31 +103,23 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="javascript:void(0)" style="cursor:pointer">抚顺交通局后台管理</a>
+
+            <a class="active navbar-brand" href="javascript:void(0)" >抚顺交通局后台管理</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav col-sm-offset-1">
+            <ul class="nav navbar-nav navbar-right col-sm-offset-1">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">个人中心 <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> ${sessionUser.userName} <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li class="dropdown-header">账户设置</li>
-                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> 账户信息</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-edit"></span> 修改密码</a></li>
+                        <%--<li><a href="#"><span class="glyphicon glyphicon-user"></span> 账户信息</a></li>--%>
+                        <li><a href="javascript:void (0)" id="alterId"><span class="glyphicon glyphicon-edit"></span> 修改密码</a></li>
                         <li class="divider"></li>
                         <li class="dropdown-header">系统设置</li>
-                        <li><a href="logout"><span class="glyphicon glyphicon-off"></span> 注销登录</a></li>
+                        <li><a href="javascript:void (0)" id="logoutId"><span class="glyphicon glyphicon-off"></span> 注销登录</a></li>
                     </ul>
                 </li>
             </ul>
-          <%--  <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Search...">
-            </form>--%>
         </div>
     </div>
 </nav>
@@ -146,20 +129,30 @@
         <div class="col-sm-2 col-md-2 sidebar">
 
             <ul class="nav nav-sidebar">
-                <li ><a href="javascript:void(0)"><span class="glyphicon glyphicon-user"></span>&nbsp;用户模块</a></li>
-                <li><a href="javascript:void(0)" id="userBtn">添加用户</a></li>
-                <li><a href="userList">用户管理</a></li>
+                <a href="#" class="list-group-item active">
+                    <span class="glyphicon glyphicon-user"></span>&nbsp;用户模块
+                </a>
+                <a href="javascript:void(0)" id="userBtn" class="list-group-item">添加用户</a>
+                <a href="userList" class="list-group-item" target="main">用户管理</a>
+<%--                <a href="#" class="list-group-item">图像的数量</a>
+                <a href="#" class="list-group-item">每年更新成本</a>--%>
             </ul>
             <ul class="nav nav-sidebar">
-                <li ><a href="javascript:void(0)"><span class="glyphicon glyphicon-tag"></span>&nbsp;标签模块</a></li>
-                <li><a href="javascript:void(0)" id="openBtn">添加标签</a></li>
-                <li><a href="tagList" target="main">标签管理</a></li>
+                <a href="#" class="list-group-item active">
+                    <span class="glyphicon glyphicon-tag"></span>&nbsp;标签模块
+                </a>
+                <a href="javascript:void(0)" id="openBtn" class="list-group-item">添加标签</a>
+                <a href="tagList" class="list-group-item" target="main">标签管理</a>
             </ul>
             <ul class="nav nav-sidebar">
-                <li><a href="javascript:void(0)"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;新闻模块</a></li>
-                <li><a href="javascript:void(0)">发布新闻</a></li>
-                <li><a href="#">新闻管理</a></li>
+                <a href="#" class="list-group-item active">
+                    <span class="glyphicon glyphicon-list-alt"></span>&nbsp;新闻模块
+                </a>
+                <a href="javascript:void(0)" id="newsBtn" class="list-group-item">发布新闻</a>
+                <a href="newsList" class="list-group-item" target="main">新闻管理</a>
             </ul>
+
+
         </div>
         <div id="killPhoneModal" class="modal fade">
             <div class="modal-dialog">
@@ -226,7 +219,7 @@
                             <div class="form-group">
                                 <label for="psw2" class="col-sm-2 control-label">确认密码</label>
                                 <div class="col-sm-8">
-                                    <input type="password"  class="form-control" id="psw2" placeholder="请再次输入密码" required >
+                                    <input type="password"  class="form-control" id="psw2" placeholder="再次确认密码" required >
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -239,6 +232,45 @@
             </div>
         </div>
 
+        <div id="alterpsw" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title text-center">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <span class="glyphicon glyphicon-user "></span> 添加用户
+                        </h3>
+                    </div>
+                    <div class="modal-body">
+                        <form action="alter" id="alterForm" class="form-horizontal" role="form" method="post">
+                            <div class="form-group">
+                                <input type="hidden" name="id" value="${sessionUser.userId}">
+                                <label for="uname" class="col-sm-2 control-label">原始密码</label>
+                                <div class="col-sm-8">
+                                    <input type="text"  class="form-control" value="${userInfo.passWord}" disabled required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="psw" class="col-sm-2 control-label">新密码</label>
+                                <div class="col-sm-8">
+                                    <input type="password" name="psw" class="form-control" id="confirmpsw" placeholder="请输入密码" required >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="psw2" class="col-sm-2 control-label">确认密码</label>
+                                <div class="col-sm-8">
+                                    <input type="password"  class="form-control" id="confirm2" placeholder="再次确认密码" required >
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-default" data-dismiss="modal" value="关闭">
+                                <input type="submit" id="alterbtn" class="btn btn-primary" value="提交">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 main">
             <div id="repeat" class="alert alert-success">
                 <a href="#" class="close" data-dismiss="alert">
@@ -276,11 +308,19 @@
         });
         $('#userBtn').click(function () {
             $('#adddUser').modal({
-                show : true ,           //显示弹出层
-                backdrop : 'static' ,  //禁止位置关闭
-                keyboard : false        //关闭键盘事件
+                show : true ,
+                backdrop : 'static' ,
+                keyboard : false
             });
         });
+        $('#alterId').click(function () {
+            $('#alterpsw').modal({
+                show : true ,
+                backdrop : 'static' ,
+                keyboard : false
+            });
+        });
+
         $('#addUserbtn').click(function () {
             if($("#psw").val()!=$("#psw2").val()){
                 alert("两次输入的密码不一致");
@@ -288,6 +328,19 @@
             }else{
                 return true;
             }
+        });
+        $('#alterbtn').click(function () {
+            if($("#confirmpsw").val()!=$("#confirm2").val()){
+                alert("两次输入的密码不一致");
+                return false;
+            }else{
+                return true;
+            }
+        });
+        $('#logoutId').click(function () {
+           if(confirm("确认注销当前登录用户吗?")){
+               window.location.href="logout";
+           }
         });
     });
     function setIframeHeight(iframe) {

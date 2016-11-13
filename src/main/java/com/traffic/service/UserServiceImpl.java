@@ -37,6 +37,18 @@ public class UserServiceImpl implements UserService {
         String md5 = DigestUtils.md5DigestAsHex(base.getBytes());
         return md5;
     }
+
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public UserInfo findById(long id) throws DataAccessException {
+        try {
+            UserInfo user =  userDao.findById(id);
+            return user ;
+        } catch (Exception e){
+            logger.error(e.getMessage() , e );
+            throw new DataAccessException(e.getMessage());
+        }
+    }
+
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public List<UserInfo> findByName(String name) throws DataAccessException  {
          try {
@@ -76,11 +88,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public void update(UserInfo userInfo) throws DataAccessException {
+    public Execution update(UserInfo userInfo) throws DataAccessException {
         try {
             if (userInfo != null) {
-                UserInfo user = new UserInfo(userInfo.getUserName(),getMD5(userInfo.getPassWord()).toString());
-                userDao.update(user);
+                userInfo.setPassWord(getMD5(userInfo.getPassWord()).toString());
+                userDao.update(userInfo);
+                return new Execution(LoginEnum.UPDATE_SUCCESS);
             } else {
                 throw new DataAccessException(DataEnum.DATA_ERROR.getStateInfo());
             }
@@ -112,7 +125,7 @@ public class UserServiceImpl implements UserService {
                 List<UserInfo> list = userDao.findByNameAndPassword(userInfo.getUserName(),md5);
                 if(list!=null&&list.size()>0){ //验证成功
                      UserInfo user = list.get(0);
-                     return new Execution(LoginEnum.SUCCESS,user);
+                     return new Execution(LoginEnum.LOGIN_SUCCESS,user);
                 }else{//验证失败
                      return new Execution(LoginEnum.LOGIN_ERROR);
                 }
@@ -123,5 +136,10 @@ public class UserServiceImpl implements UserService {
         }catch (Exception e){
             throw new DataAccessException(e.getMessage());
         }
+    }
+
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public List<UserInfo> findLikeName(String name) {
+        return userDao.findAll();
     }
 }

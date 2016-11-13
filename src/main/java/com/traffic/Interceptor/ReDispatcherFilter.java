@@ -26,7 +26,6 @@ public class ReDispatcherFilter implements Filter {
         String target = request.getRequestURI();
         target = target.lastIndexOf("?") > 0 ? target.substring(target.lastIndexOf("/") + 1,
                 target.lastIndexOf("?") - target.lastIndexOf("/")) : target.substring(target.lastIndexOf("/") + 1);
-        //System.out.println(target);
         if (this.includes.contains(target)) {
             RequestDispatcher rdsp = request.getRequestDispatcher(target);
             logger.info("go >>"+rdsp);

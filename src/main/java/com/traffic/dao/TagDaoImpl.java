@@ -33,7 +33,7 @@ public class TagDaoImpl extends HibernateDaoSupport implements TagDao {
     }
 
     public List<Tag> findAll() {
-        return getCurrentSession().createQuery("from Tag").list();
+        return getCurrentSession().createQuery("from Tag order by tagLevel asc").list();
     }
 
     public void save(Tag tag) {

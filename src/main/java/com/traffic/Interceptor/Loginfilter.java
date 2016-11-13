@@ -27,7 +27,7 @@ public class Loginfilter extends HttpServlet implements Filter {
         HttpSession session = req.getSession(true);
 
         String url = req.getRequestURI();
-        UserInfo admin= (UserInfo)session.getAttribute("userInfo");
+        UserInfo admin= (UserInfo)session.getAttribute("sessionUser");
         if (admin == null&&url.startsWith("/adminMainPage")) {
             //request.getRequestDispatcher("adminLogin.jsp").forward(request, response);
             HttpServletResponse resp = (HttpServletResponse)response;
