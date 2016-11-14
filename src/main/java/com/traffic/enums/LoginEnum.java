@@ -11,7 +11,8 @@ public enum LoginEnum {
     DELETE_SUCCESS(3,"删除成功"),
     LOGIN_ERROR(-1,"用户名/密码错误"),
     INNER_ERROR(-2,"系统异常"),
-    REPEAT_NAME(-3,"该名称已被占用");
+    REPEAT_NAME(-3,"该名称已被占用"),
+    REPEAT_TAG(-4,"该标签已存在");
     private int state ;
     private String stateInfo ;
 

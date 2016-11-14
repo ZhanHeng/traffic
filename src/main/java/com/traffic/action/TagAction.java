@@ -26,7 +26,7 @@ import java.util.List;
  */
 
 @Namespace(value="/")             //表示当前Action所在命名空间
-@Results({@Result(name ="tagjson",type ="json")}) //向前台传json数据必须要这句
+@Results({@Result(name ="tagjson",type ="json"),@Result(name ="parentTagtagjson",type ="json")}) //向前台传json数据必须要这句
 @Scope("session")                  //支持多例
 @ParentPackage("all")              //表示继承的父包
 public class TagAction extends ActionSupport {
@@ -37,6 +37,8 @@ public class TagAction extends ActionSupport {
     private String id;
     private List<String> tagList;
     private Tag editTag;
+    private String levelId;
+    private List<Tag> belongTagList;
 
     private  void INITAL(){
         this.setTag(null);
@@ -181,7 +183,8 @@ public class TagAction extends ActionSupport {
     )
     public String update(){
         try {
-            tagService.update(tag);
+            editTag.setParentTag(tagService.findById(editTag.getParentTag().getTagId()));//把实体先SET进去再更新
+            tagService.update(editTag);
             List<Tag> list = tagService.findAll();
             ActionContext.getContext().put("list",list);
             this.setTag(null);
@@ -197,6 +200,12 @@ public class TagAction extends ActionSupport {
     public String get() {
         editTag = tagService.findById(Long.parseLong(id));
         return "tagjson";
+    }
+
+    @Action(value="loadParentTag", results={@Result(type="json", params={"root","belongTagList"})})
+    public String loadParentTag(){
+        belongTagList = tagService.findByLevel(Integer.parseInt(levelId)-1);
+        return "parentTagtagjson";
     }
     public Tag getTag() {
         return tag;
@@ -228,5 +237,21 @@ public class TagAction extends ActionSupport {
 
     public void setEditTag(Tag editTag) {
         this.editTag = editTag;
+    }
+
+    public String getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(String levelId) {
+        this.levelId = levelId;
+    }
+
+    public List<Tag> getBelongTagList() {
+        return belongTagList;
+    }
+
+    public void setBelongTagList(List<Tag> belongTagList) {
+        this.belongTagList = belongTagList;
     }
 }

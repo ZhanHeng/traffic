@@ -17,6 +17,12 @@ public class Tag {
      * 标签等级
      */
     private int tagLevel;
+
+    /**
+     * 父亲标签 (用来表示 标签之间的关联关系)
+     */
+    private Tag parentTag;
+
     /**
      * 标签是否可用，0:不可用 , 1:可用
      */
@@ -64,5 +70,13 @@ public class Tag {
 
     public void setPassFlag(int passFlag) {
         this.passFlag = passFlag;
+    }
+
+    public Tag getParentTag() {
+        return parentTag;
+    }
+
+    public void setParentTag(Tag parentTag) {
+        this.parentTag = parentTag;
     }
 }

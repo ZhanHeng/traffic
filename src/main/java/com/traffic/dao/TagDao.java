@@ -64,4 +64,12 @@ public interface TagDao {
      * @param newsList
      */
     public void bacthDeleteTag(List<String> newsList);
+
+    /**
+     * 根据父标签查询子标签
+     * @param level
+     * @param parentId
+     * @return
+     */
+    public List<Tag> findChildTagByparentIdAndLevel(int level , long parentId);
 }

@@ -63,4 +63,12 @@ public interface TagService {
      */
     public void bacthDeleteTag(List<String> newsList) throws DataAccessException;
 
+    /**
+     * 根据父标签查询子标签
+     * @param level
+     * @param parentId
+     * @return
+     */
+    public List<Tag> findChildTagByparentIdAndLevel(int level , long parentId) throws DataAccessException;
+
 }

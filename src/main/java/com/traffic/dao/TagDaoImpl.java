@@ -33,7 +33,7 @@ public class TagDaoImpl extends HibernateDaoSupport implements TagDao {
     }
 
     public List<Tag> findAll() {
-        return getCurrentSession().createQuery("from Tag order by tagLevel asc").list();
+        return getCurrentSession().createQuery("from Tag as t order by t.tagLevel,t.parentTag.tagId").list();
     }
 
     public void save(Tag tag) {
@@ -62,15 +62,18 @@ public class TagDaoImpl extends HibernateDaoSupport implements TagDao {
         return query.list();
     }
     public List<Tag> findByTagProperty(Tag tag){
-        StringBuffer hql = new StringBuffer("from Tag  where 1=1 ");
+        StringBuffer hql = new StringBuffer("from Tag as t where 1=1 ");
         if(tag!=null && !"".equals(tag.getTagName().trim())){
-            hql.append("and tagName Like '%"+tag.getTagName().trim()+"%'") ;
+            hql.append("and t.tagName Like '%"+tag.getTagName().trim()+"%'") ;
         }
         if( tag!=null && tag.getTagLevel()!=-1){
-            hql.append(" and tagLevel = '"+tag.getTagLevel()+"'");
+            hql.append(" and t.tagLevel = '"+tag.getTagLevel()+"'");
         }
         if( tag!=null && tag.getPassFlag()!=-1){
-            hql.append(" and passFlag = '"+tag.getPassFlag()+"'");
+            hql.append(" and t.passFlag = '"+tag.getPassFlag()+"'");
+        }
+        if( tag!=null && tag.getParentTag()!=null && tag.getParentTag().getTagId()!=-1){
+            hql.append(" and t.parentTag.tagId = '"+tag.getParentTag().getTagId()+"'");
         }
         return getCurrentSession().createQuery(hql.toString()).list() ;
     }
@@ -91,5 +94,13 @@ public class TagDaoImpl extends HibernateDaoSupport implements TagDao {
             query.setParameterList("taglist",paramlist);
             query.executeUpdate();
         }
+    }
+
+    public List<Tag> findChildTagByparentIdAndLevel(int level, long parentId) {
+        String hql = "from Tag as t where t.passFlag = 1 and  t.tagLevel = ?  and t.parentTag.tagId = ? ";
+        Query query = getCurrentSession().createQuery(hql) ;
+        query.setInteger(0,level);
+        query.setLong(1,parentId);
+        return query.list();
     }
 }

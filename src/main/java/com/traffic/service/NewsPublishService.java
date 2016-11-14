@@ -1,22 +1,17 @@
-package com.traffic.dao;
+package com.traffic.service;
 
-import com.traffic.model.NewsAndNotice;
 import com.traffic.model.NewsPublish;
 
-import java.util.List;
-
 /**
- * 新闻结果表
- * Created by ZhanHeng on 2016/11/12.
+ * Created by lenovo on 2016/11/14.
  */
-public interface NewsPublishDao {
-
+public interface NewsPublishService {
     /**
      * 根据主键查询
-     * @param newsPublishId
+     * @param id
      * @return
      */
-    NewsPublish findById(String newsPublishId);
+    NewsPublish findById(String id);
 
     /**
      * 添加保存

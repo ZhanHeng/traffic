@@ -37,9 +37,9 @@ public class TagServiceImpl implements TagService {
     public Execution add(Tag tag) throws DataAccessException {
         try {
             if (tag!=null){
-                List<Tag> list =  tagDao.findByName(tag.getTagName());
-                if(list!=null&&!list.isEmpty()){ //此名称已存在
-                    return new Execution(LoginEnum.REPEAT_NAME);
+                List<Tag> list =  tagDao.findByTagProperty(tag);
+                if(list!=null&&!list.isEmpty()){ //此标签已存在
+                    return new Execution(LoginEnum.REPEAT_TAG);
                 }else{
                     tagDao.save(tag);   //添加到数据库
                     return new Execution(LoginEnum.INSERT_SUCCESS);
@@ -114,6 +114,16 @@ public class TagServiceImpl implements TagService {
               logger.error(e.getMessage(),e);
               throw new DataAccessException(e.getMessage());
           }
+    }
 
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public List<Tag> findChildTagByparentIdAndLevel(int level, long parentId) throws DataAccessException {
+        try {
+            List<Tag> list = tagDao.findChildTagByparentIdAndLevel(level,parentId);
+            return list ;
+        } catch (Exception e){
+            logger.error(e.getMessage() , e );
+            throw new DataAccessException(e.getMessage());
+        }
     }
 }

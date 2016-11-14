@@ -46,7 +46,6 @@
                 overflow-y: auto;
                 background-color: #f5f5f5;
                 border-right: 1px solid #eee;
-                width: 14%;
             }
         }
         .nav-sidebar {
@@ -65,12 +64,12 @@
             background-color: #428bca;
         }
         .main {
-            padding: 20px;
+            padding: 5px;
         }
         @media (min-width: 768px) {
             .main {
-                padding-right: 40px;
-                padding-left: 40px;
+                padding-right: 5px;
+                padding-left: 5px;
             }
         }
         .main .page-header {
@@ -171,16 +170,24 @@
                                         <input type="text" name="tag.tagName" class="form-control" id="firstname" placeholder="请输入标签名称" required autofocus>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                </div>
+                                <div class="form-group"></div>
                                 <div class = "form-group">
-                                    <label class="col-sm-2 control-label offset2" for = "level">选择级别</label>
+                                    <label class="col-sm-2 control-label offset2" for = "level">标签级别</label>
                                     <div class="col-sm-8">
                                         <select id = "level" name="tag.tagLevel" class = "form-control">
                                             <option value=1>一级标签</option>
                                             <option value=2>二级标签</option>
                                             <option value=3>三级标签</option>
                                             <option value=4>四级标签</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group"></div>
+                                <div class = "form-group">
+                                    <label class="col-sm-2 control-label offset2" for = "parentlevel">父级标签</label>
+                                    <div class="col-sm-8">
+                                        <select id = "parentlevel" name="tag.parentTag.tagId" class = "form-control">
+                                            <option value=-1>无</option>
                                         </select>
                                     </div>
                                 </div>
@@ -306,6 +313,22 @@
                 keyboard : false        //关闭键盘事件
             });
         });
+        //等级改变，加载父级标签
+        $("#level").change(function() {
+            $("#parentlevel option[value!='-1']").remove();
+            $.get("loadParentTag", {
+                levelId : $("#level").val()
+            }, function(result) {
+                var jsonObj = result["belongTagList"];
+                for ( var i = 0; i < jsonObj.length; i++) {
+                    var $option = $("<option></option>");
+                    $option.attr("value", jsonObj[i]["tagId"]);
+                    $option.text(jsonObj[i]["tagName"]);
+                    $("#parentlevel").append($option);
+                }
+            });
+        });
+
         $('#userBtn').click(function () {
             $('#adddUser').modal({
                 show : true ,

@@ -8,11 +8,11 @@
     <%@include file="../common/head.jsp"%>
 </head>
 <body>
-<div class="container col-xs-12 col-sm-12">
+<div class="container col-xs-12 col-sm-12" style="padding: 10px;">
     <form name="userForm" action="searchUser" method="post">
         <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3>标签列表</h3>
+            <div class="panel-heading" style="padding: 5px 15px 5px 15px;">
+                <h3 style="margin-top:5px">用户管理</h3>
                 <div class="form-inline" role="banner">
                     <div class="form-group">
                         <label class="sr-only " for="name">名称</label>
