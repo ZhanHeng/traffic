@@ -16,7 +16,7 @@
     <!-- 配置数据源 使用的是Druid数据源 -->
     <bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
           init-method="init" destroy-method="close">
-        <property name="url" value=" jdbc:mysql://219.216.77.61:3306/traffic?useUnicode=true&amp;characterEncoding=utf-8" />
+        <property name="url" value=" jdbc:mysql://localhost:3306/traffic?useUnicode=true&amp;characterEncoding=utf-8" />
         <property name="username" value="root" />
         <property name="password" value="sa" />
 

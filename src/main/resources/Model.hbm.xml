@@ -27,7 +27,9 @@
         <property name="author" type="java.lang.String">
             <column name="news_author" />
         </property>
-
+        <property name="tagPath" type="java.lang.String">
+            <column name="tag_path" />
+        </property>
         <property name="path" type="java.lang.String">
             <column name="news_path" />
         </property>

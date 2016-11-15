@@ -20,6 +20,7 @@
     <link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
     <style type="text/css">
+        html, body{ margin:0; height:100%; }
         body {
             padding-top: 50px;
         }
@@ -44,7 +45,7 @@
                 padding: 18px;
                 overflow-x: hidden;
                 overflow-y: auto;
-                background-color: #f5f5f5;
+                background-color: #E7F1FA;
                 border-right: 1px solid #eee;
             }
         }
@@ -89,6 +90,14 @@
             display: inline-block;
             border-radius: 50%;
         }
+        .nav-sidebar {
+            margin-right: 0px;
+            margin-bottom: 20px;
+            margin-left: 0px;
+        }
+        a.list-group-item, button.list-group-item {
+            color: #333;
+        }
     </style>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -102,8 +111,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-
-            <a class="active navbar-brand" href="javascript:void(0)" >抚顺交通局后台管理</a>
+            <a class="active navbar-brand" href="javascript:void(0)" style="color: #FFFFFF;font-size: 20px" >抚顺交通局后台管理</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right col-sm-offset-1">
@@ -124,9 +132,7 @@
 </nav>
 
 <div class="container-fluid">
-    <div class="row">
         <div class="col-sm-2 col-md-2 sidebar">
-
             <ul class="nav nav-sidebar">
                 <a href="#" class="list-group-item active">
                     <span class="glyphicon glyphicon-user"></span>&nbsp;用户模块
@@ -147,7 +153,8 @@
                 <a href="#" class="list-group-item active">
                     <span class="glyphicon glyphicon-list-alt"></span>&nbsp;新闻模块
                 </a>
-                <a href="javascript:void(0)" id="newsBtn" class="list-group-item">发布新闻</a>
+                <%--<a href="javascript:void(0)" id="newsBtn" class="list-group-item">发布新闻</a>--%>
+                <a href="addNews.jsp" id="newsBtn" class="list-group-item" target="main">发布新闻</a>
                 <a href="newsList" class="list-group-item" target="main">新闻管理</a>
             </ul>
 
@@ -279,18 +286,17 @@
             </div>
         </div>
         <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 main">
+
             <div id="repeat" class="alert alert-success">
                 <a href="#" class="close" data-dismiss="alert">
                     &times;
                 </a>
                 <strong>${loginResult.data.stateInfo}!</strong>
             </div>
-            <iframe name="main" id="mainFrame" frameborder="0" scrolling="no" src="" style="width: 100%"  onload="setIframeHeight(this)">
+            <iframe name="main" id="mainFrame" width="100%" height="950px"  frameborder="0" scrolling="auto" src="addNews.jsp"   onload="">
 
             </iframe>
         </div>
-
-    </div>
 </div>
 
 <!-- Bootstrap core JavaScript
@@ -365,19 +371,11 @@
                window.location.href="logout";
            }
         });
+        $("#mainFrame").load(function () {
+            var mainheight = $(this).contents().find("body").height() + 30;
+            $(this).height(mainheight);
+        });
     });
-    function setIframeHeight(iframe) {
-        if (iframe) {
-            var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
-            if (iframeWin.document.body) {
-                iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
-            }
-        }
-    };
-
-    window.onload = function () {
-        setIframeHeight(document.getElementById('mainFrame'));
-    };
 </script>
 <%--<script src="../../assets/js/docs.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

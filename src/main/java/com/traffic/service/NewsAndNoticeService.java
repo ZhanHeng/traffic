@@ -41,4 +41,23 @@ public interface NewsAndNoticeService {
      */
     void delete(NewsAndNotice newsAndNotice) throws DataAccessException;
 
+    /**
+     * 查出所有焦点图新闻
+     * @return
+     */
+    List<NewsAndNotice> showFocusPicture();
+
+
+    /**
+     * 获取焦点图的数量
+     * @return
+     */
+    int getCountNumber();
+
+    /**
+     * 批量删除新闻
+     * @param newsList
+     */
+    void bacthDeleteNewsAndNotice(List<String> newsList) throws DataAccessException ;
+
 }

@@ -24,9 +24,12 @@ import java.util.List;
  * 标签的Action
  * Created by ZhanHeng on 2016/11/12.
  */
-
+@Controller
 @Namespace(value="/")             //表示当前Action所在命名空间
-@Results({@Result(name ="tagjson",type ="json"),@Result(name ="parentTagtagjson",type ="json")}) //向前台传json数据必须要这句
+@Results({@Result(name ="tagjson",type ="json"),
+        @Result(name ="parentTagtagjson",type ="json"),
+        @Result(name ="levelTagjson",type ="json"),
+        @Result(name ="childTagjson",type ="json")}) //向前台传json数据必须要这句
 @Scope("session")                  //支持多例
 @ParentPackage("all")              //表示继承的父包
 public class TagAction extends ActionSupport {
@@ -39,6 +42,10 @@ public class TagAction extends ActionSupport {
     private Tag editTag;
     private String levelId;
     private List<Tag> belongTagList;
+    private List<Tag> levelTagList;
+    private List<Tag> childTagList;
+    private String currentId ;
+    private String parentId ;
 
     private  void INITAL(){
         this.setTag(null);
@@ -207,6 +214,17 @@ public class TagAction extends ActionSupport {
         belongTagList = tagService.findByLevel(Integer.parseInt(levelId)-1);
         return "parentTagtagjson";
     }
+    @Action(value="loadLevelTag", results={@Result(type="json", params={"root","levelTagList"})})
+    public String findTagByLevel(){
+        levelTagList = tagService.findByLevel(Integer.parseInt(levelId));
+        return "levelTagjson";
+    }
+
+    @Action(value="loadChildTag", results={@Result(type="json", params={"root","childTagList"})})
+    public String findChildTagList(){
+        childTagList = tagService.findChildTagByparentIdAndLevel(Integer.parseInt(currentId),Long.parseLong(parentId));
+        return  "childTagjson";
+    }
     public Tag getTag() {
         return tag;
     }
@@ -253,5 +271,37 @@ public class TagAction extends ActionSupport {
 
     public void setBelongTagList(List<Tag> belongTagList) {
         this.belongTagList = belongTagList;
+    }
+
+    public List<Tag> getLevelTagList() {
+        return levelTagList;
+    }
+
+    public void setLevelTagList(List<Tag> levelTagList) {
+        this.levelTagList = levelTagList;
+    }
+
+    public List<Tag> getChildTagList() {
+        return childTagList;
+    }
+
+    public void setChildTagList(List<Tag> childTagList) {
+        this.childTagList = childTagList;
+    }
+
+    public String getCurrentId() {
+        return currentId;
+    }
+
+    public void setCurrentId(String currentId) {
+        this.currentId = currentId;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 }

@@ -32,6 +32,24 @@ public class NewsAndNoticeServiceImpl implements NewsAndNoticeService{
     public List<NewsAndNotice> findAll() {
         return newsAndNoticeDao.findAll();
     }
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public List<NewsAndNotice> showFocusPicture() {
+        return newsAndNoticeDao.showFocusPicture();
+    }
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public int getCountNumber() {
+        return newsAndNoticeDao.getCountNumber();
+    }
+
+    public void bacthDeleteNewsAndNotice(List<String> newsList) throws DataAccessException {
+         try {
+             newsAndNoticeDao.bacthDeleteNewsAndNotice(newsList);
+          }catch (Exception e){
+              logger.error(e.getMessage(),e);
+             throw new DataAccessException(e.getMessage());
+          }
+
+    }
 
     public void save(NewsAndNotice newsAndNotice) throws DataAccessException{
          try {

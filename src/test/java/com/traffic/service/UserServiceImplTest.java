@@ -25,10 +25,6 @@ public class UserServiceImplTest {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private UserService userService;
-    @Test
-    public void findAll() throws Exception {
-
-    }
 
     @Test
     public void add() throws Exception {
