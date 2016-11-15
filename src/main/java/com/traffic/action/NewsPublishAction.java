@@ -31,7 +31,7 @@ import java.util.List;
 @Scope("session")                  //支持多例
 @ParentPackage("all")              //表示继承的父包
 @Namespace(value="/")             //表示当前Action所在命名空间
-public class NewsPublicAction extends ActionSupport{
+public class NewsPublishAction extends ActionSupport{
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     public final String UPLOAD_PATH = ServletActionContext.getServletContext().getRealPath("/uploadNewsFies/focusPic");
     @Autowired
@@ -54,6 +54,7 @@ public class NewsPublicAction extends ActionSupport{
             }
     )
     public String saveNewsAndNotice() throws IOException {
+
         if("YES".equals(this.newsAndNotice.getFocusFlag())){
             int sum=this.newsAndNoticeService.getCountNumber();
             if(sum<7){
@@ -61,6 +62,7 @@ public class NewsPublicAction extends ActionSupport{
                 File toFile = new File(UPLOAD_PATH + "\\" + getMyfileFileName());
                 this.newsAndNotice.setOrderTime(formatNowTime());
                 this.newsAndNotice.setPath(getPicRelativePath(toFile));
+                this.newsAndNotice.setTagPath(getTagPath(tagLevelList));
                 this.newsAndNoticeService.save(this.newsAndNotice);
                 Execution execution = new Execution(LoginEnum.INSERT_SUCCESS);
                 ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
@@ -76,6 +78,7 @@ public class NewsPublicAction extends ActionSupport{
         }else{
             this.newsAndNotice.setPath("");
             this.newsAndNotice.setOrderTime(formatNowTime());
+            this.newsAndNotice.setTagPath(getTagPath(tagLevelList));
             this.newsAndNoticeService.save(this.newsAndNotice);
             Execution execution = new Execution(LoginEnum.INSERT_SUCCESS);
             ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
@@ -122,6 +125,28 @@ public class NewsPublicAction extends ActionSupport{
     //获取图片的相对路径公共方法
     private String getPicRelativePath(File file){
         String path = file.getPath().substring(file.getPath().indexOf("uploadNewsFies\\"));
+        return path;
+    }
+    //获取标签路径的公共方法
+    private String getTagPath(List<String> tagLevelList){
+        String path = "";
+        if(tagLevelList!=null){
+            StringBuffer buffer = new StringBuffer("");
+            for (int i = 0; i < tagLevelList.size(); i++) {
+                int tagId = Integer.parseInt(tagLevelList.get(i));
+                if(tagId!=-1){
+                    if(i==0){
+                        buffer.append(tagLevelList.get(i));
+                    }else{
+                        buffer.append("/"+tagLevelList.get(i));
+                    }
+                }else{
+                    break;
+                }
+            }
+            path = buffer.toString();
+            System.out.println("path = " + path);
+        }
         return path;
     }
     public NewsAndNotice getNewsAndNotice() {

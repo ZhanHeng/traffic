@@ -19,7 +19,7 @@
             <column name="news_title" />
         </property>
         <property name="content">
-            <column name="news_content" />
+            <column name="content" />
         </property>
         <property name="time" type="java.lang.String">
             <column name="news_time" />
@@ -31,7 +31,7 @@
             <column name="tag_path" />
         </property>
         <property name="path" type="java.lang.String">
-            <column name="news_path" />
+            <column name="picture_path" />
         </property>
         <property name="focusFlag" type="java.lang.String">
             <column name="focusFlag" />
@@ -58,7 +58,7 @@
         <property name="passFlag" column="passFlag" type="java.lang.Integer"/>
     </class>
 
-    <class name="NewsPublish" table="news_publish">
+<!--    <class name="NewsPublish" table="news_publish">
         <id name="newsId" column="news_id" type="java.lang.String">
             <generator class="uuid" />
         </id>
@@ -73,5 +73,5 @@
             <column name="newsAndNoticeId" />
         </many-to-one>
         <property name="createTime" column="create_time" type="timestamp"></property>
-    </class>
+    </class>-->
 </hibernate-mapping>

@@ -1,5 +1,6 @@
 package com.traffic.model;
 
+import java.sql.Blob;
 import java.util.Arrays;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Arrays;
 public class NewsAndNotice {
     private String id;						// 主键
     private String title;					// 标题
-    private byte[] content; 			    // 内容
+    private byte[] content; 			    // 内容,在数据库中以blob的格式存储
     private String time;					// 发布时间
     private String author;					// 作者
     private String path;					// 焦点图的图片存储路径
@@ -18,6 +19,21 @@ public class NewsAndNotice {
     private String htmlPath;				// 静态Html页的存储地址
     private String orderTime;				// 系统排序时间
 
+    public NewsAndNotice() {
+    }
+
+    public NewsAndNotice(String id, String title, byte[] content, Blob blob, String time, String author, String path, String tagPath, String focusFlag, String htmlPath, String orderTime) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.time = time;
+        this.author = author;
+        this.path = path;
+        this.tagPath = tagPath;
+        this.focusFlag = focusFlag;
+        this.htmlPath = htmlPath;
+        this.orderTime = orderTime;
+    }
 
     public String getId() {
         return id;

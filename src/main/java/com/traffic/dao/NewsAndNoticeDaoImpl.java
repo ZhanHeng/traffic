@@ -1,12 +1,14 @@
 package com.traffic.dao;
 
 import com.traffic.model.NewsAndNotice;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -27,7 +29,7 @@ public class NewsAndNoticeDaoImpl extends HibernateDaoSupport implements NewsAnd
     }
 
     private Session getCurrentSession() {
-        return this.sessionFactory.openSession();
+        return this.sessionFactory.getCurrentSession();
     }
     //查单个新闻
     public NewsAndNotice findById(String id) {
@@ -40,6 +42,7 @@ public class NewsAndNoticeDaoImpl extends HibernateDaoSupport implements NewsAnd
     }
 
     public void save(NewsAndNotice newsAndNotice) {
+//        newsAndNotice.setBlob(Hibernate.getLobCreator(getCurrentSession()).createBlob(newsAndNotice.getContent()));
         getCurrentSession().save(newsAndNotice);
     }
 

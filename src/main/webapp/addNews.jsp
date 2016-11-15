@@ -41,7 +41,7 @@
             <h3 style="margin-top:5px">发布新闻</h3>
         </div>
         <div class="panel-body">
-            <form role = "form" class="form-horizontal">
+            <form action="addNews" role = "form" class="form-horizontal" method="post">
                 <div class = "form-group">
                     <label class="col-sm-1 control-label" for = "title">文章标题</label>
                     <div class="col-sm-10">
@@ -55,7 +55,7 @@
                     </div>
                     <label class="col-sm-2 control-label" for = "addTimeId">提交日期</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" id = "addTimeId"   placeholder = "请输入提交日期" onclick="WdatePicker({isShowClear:true,readOnly:true })" required >
+                        <input type="text" class="form-control" name="newsAndNotice.time" id = "addTimeId"   placeholder = "请输入提交日期" onclick="WdatePicker({isShowClear:true,readOnly:true })" required >
                     </div>
                 </div>
                 <div class = "form-group">
@@ -175,8 +175,6 @@ $(function(){
             }
         });
     });
-
-
     $("input[type='radio']").each(function() {
         $(this).click(function(){
             var selectedvalue = $(this).val();

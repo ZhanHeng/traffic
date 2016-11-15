@@ -33,3 +33,51 @@ public class UserAction extends ActionSupport{
     }
 }
 
+====================================================
+DAO层测试的时候注意事项：
+1、加上单元测试和Spring配置文件注解
+2、由于Hibernate中(插入、更新、删除)要进行事务管理Commit之后才能持久化到数据库;
+   所以测试的时候务必在DaoImpl上加上@Transactional注解
+3、用getCurrentSession进行操作，否则会报错
+
+Service层，由于开发的时候已经进行了事务的注解声明，所以测试的时候没有报错
+
+=====================================================
+配置和使用Ckeditor,把握好一下几点：
+1、将下载好的Ckeditor相关的文件目录，拷贝到项目的根目录
+2、可以删除一些无用的文件，精简瘦身，比如语言包中的文件
+3、ckeditor/config.js 该文件为主配置文件，可以设置上传图片或文件的请求url，例如：
+    config.filebrowserUploadUrl =  '/upload' ;      //文件上传路径
+    config.filebrowserImageUploadUrl =  '/upload' ; //图片上传路径
+    config.filebrowserFlashUploadUrl =  '/upload' ; //flash上传路径
+    config.language =  "zh-cn" ;                    //配置语言属性
+    config.image_previewText = " ";                 //预览区域显示内容
+    config.height = 350;                            //默认显示高度
+    config.toolbar =  {...}                         //自定义工具栏
+4、替换jsp中的TextArea元素，然后紧接着后边加入：
+        <script type="text/javascript">
+             CKEDITOR.replace( 'content1' );
+        </script>
+   来进行替换文本输入区域;
+5、最后一步也是最重要的一步：编写上传的Java类，也就是实现上面第三步配置文件中的请求url，例如/upload
+   tips: 本项目中upload是一个上传文件的Action
+
+完成以上几步的配置之后，就可以随便玩Ckeditor了，由于ckfinder(它是一款可以配合Ckeditor使用的文件服务器)要收费，所以没有进行整合
+===========================================================================================
+往数据库存byte[]数组时,数据库中对应的那个字段自动变成blob类型，下面讲下Mysql中四种bolb类型：
+
+　　类型          大小
+　　TinyBlob     最大 255字节
+　　Blob         最大  65K
+　　MediumBlob   最大 16M
+　　LongBlob     最大 4G
+
+一般情况下MediumBlob就够用了
+=============================================================================================
+Error: java.lang.IllegalStateException: PWC4662: Request header is too large
+
+解决方案：去server.xml配置文件中的connector节点中添加属性，maxHttpHeaderSize和maxPostSize ,例如：
+<Connector port="8080" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" maxHttpHeaderSize="65536" maxPostSize="4194304"
+               URIEncoding="UTF-8"/>
