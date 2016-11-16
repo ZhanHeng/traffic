@@ -42,6 +42,7 @@ public class NewsPublishAction extends ActionSupport {
     private String myfileFileName;          //图片名字
     private String myfileContentType;;      //图片文件类型
     private List<String> tagLevelList;      //记录文件的标签路径
+    private List<String> newsList;          //批量删除
     private NewsAndNotice searchNewsNotice;
     private NewsAndNotice editNewsNotice;
     private Page page;
@@ -187,7 +188,122 @@ public class NewsPublishAction extends ActionSupport {
     }
     @Action(value="beforeUpdate",results={@Result(name="success",location="/editNews.jsp")})
     public  String beforeUpdateNews(){
-        editNewsNotice = newsAndNoticeService.findById(newId);
+        this.setEditNewsNotice(newsAndNoticeService.findById(newId));
+        ActionContext.getContext().put("editNewsNotice",editNewsNotice);
+        return SUCCESS;
+    }
+    @Action(value="updateNews",results={@Result(name="success",location="/manageNews.jsp")})
+    public  String updateNews() throws IOException{
+        if("".equals(this.editNewsNotice.getPath())){
+            if("YES".equals(this.editNewsNotice.getFocusFlag())){
+                int sum=this.newsAndNoticeService.getCountNumber();
+                if(sum<7){
+                    uploadFile(getMyfile(),UPLOAD_PATH);
+                    File toFile = new File(UPLOAD_PATH + "\\" + getMyfileFileName());
+                    this.editNewsNotice.setPath(getPicRelativePath(toFile));
+                    this.editNewsNotice.setTagPath(getTagPath(tagLevelList));
+                    this.newsAndNoticeService.update(editNewsNotice);
+                    searchNews();
+                    //生成静态页，并更新首页
+                    //buildHTML(updateNewsAndNotice);
+                    //refreshHomePage();
+                    return SUCCESS;
+                }else{
+                    ActionContext.getContext().put("maxNumber","YES");
+                    return SUCCESS;
+                }
+            }else{
+                this.editNewsNotice.setPath("");
+                this.editNewsNotice.setTagPath(getTagPath(tagLevelList));
+                this.newsAndNoticeService.update(this.editNewsNotice);
+                searchNews();
+                //生成静态页，并更新首页
+                //buildHTML(updateNewsAndNotice);
+                //refreshHomePage();
+                return SUCCESS;
+            }
+        }else{
+            String tpath=ServletActionContext.getServletContext().getRealPath("/")+this.editNewsNotice.getPath();
+            File tempFlie=new File(tpath);
+            if(tempFlie.exists()){
+                tempFlie.delete();
+            }
+            if("YES".equals(this.editNewsNotice.getFocusFlag())){
+                int sum=this.newsAndNoticeService.getCountNumber();
+                if(sum<7){
+                    uploadFile(getMyfile(),UPLOAD_PATH);
+                    File toFile = new File(UPLOAD_PATH + "\\" + getMyfileFileName());
+                    this.editNewsNotice.setPath(getPicRelativePath(toFile));
+                    this.editNewsNotice.setTagPath(getTagPath(tagLevelList));
+                    this.newsAndNoticeService.update(this.editNewsNotice);
+                    searchNews();
+                    //生成静态页，并更新首页
+                    //buildHTML(updateNewsAndNotice);
+                    //refreshHomePage();
+                    return SUCCESS;
+                }else{
+                    ActionContext.getContext().put("maxNumber","YES");
+                    return SUCCESS;
+                }
+            }else{
+                this.editNewsNotice.setPath("");
+                this.editNewsNotice.setTagPath(getTagPath(tagLevelList));
+                this.newsAndNoticeService.update(this.editNewsNotice);
+                ActionContext.getContext().put("updateSuccess", "YES");
+                searchNews();
+                //生成静态页，并更新首页
+                //buildHTML(updateNewsAndNotice);
+                //refreshHomePage();
+                return SUCCESS;
+            }
+        }
+    }
+    @Action(value="deleteNews",results={@Result(name="success",location="/manageNews.jsp")})
+    public  String deleteNews(){
+        NewsAndNotice newsAndNoticeTemp = this.newsAndNoticeService.findById(newId);
+        //删除对应的静态页，并更新首页
+        String staticPath=ServletActionContext.getServletContext().getRealPath("/")+newsAndNoticeTemp.getHtmlPath();
+        File staticFlie=new File(staticPath);
+        if(staticFlie.exists()){
+            staticFlie.delete();
+        }
+        //如果是焦点图，删除焦点图片
+        if("YES".equals(newsAndNoticeTemp.getFocusFlag())){
+            String tpath=ServletActionContext.getServletContext().getRealPath("/")+newsAndNoticeTemp.getPath();
+            File tempFlie=new File(tpath);
+            if(tempFlie.exists()){
+                tempFlie.delete();
+            }
+        }
+        this.newsAndNoticeService.delete(newsAndNoticeTemp);
+        searchNews();
+        //refreshHomePage();//更新首页
+        return SUCCESS;
+    }
+    @Action(value="bacthDelete",results={@Result(name="success",location="/manageNews.jsp")})
+    public String  bacthDelete(){
+        for (int i = 0; i < newsList.size(); i++) {
+            String tempId = newsList.get(i);
+            NewsAndNotice newsAndNoticeTemp = this.newsAndNoticeService.findById(tempId);
+            //删除对应的静态页，并更新首页
+            String staticPath=ServletActionContext.getServletContext().getRealPath("/")+newsAndNoticeTemp.getHtmlPath();
+            File staticFlie=new File(staticPath);
+            if(staticFlie.exists()){
+                staticFlie.delete();
+            }
+            if ("YES".equals(newsAndNoticeTemp.getFocusFlag())) {
+                String tpath = ServletActionContext.getServletContext().getRealPath("/") + newsAndNoticeTemp.getPath();
+                File tempFlie = new File(tpath);
+                if (tempFlie.exists()) {
+                    tempFlie.delete();
+                }
+                this.newsAndNoticeService.delete(newsAndNoticeTemp);
+            } else {
+                this.newsAndNoticeService.delete(newsAndNoticeTemp);
+            }
+        }
+        //refreshHomePage();
+        searchNews();
         return SUCCESS;
     }
     public NewsAndNotice getNewsAndNotice() {
@@ -260,5 +376,13 @@ public class NewsPublishAction extends ActionSupport {
 
     public void setNewId(String newId) {
         this.newId = newId;
+    }
+
+    public List<String> getNewsList() {
+        return newsList;
+    }
+
+    public void setNewsList(List<String> newsList) {
+        this.newsList = newsList;
     }
 }

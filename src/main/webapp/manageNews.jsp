@@ -55,7 +55,7 @@
                     </button>
                     </div>
                     <div class="form-group">
-                    <button type="button" id="delbtn" class="btn btn-warning">
+                    <button type="button" id="bacthDelete" class="btn btn-warning">
                         <span class="glyphicon glyphicon-trash"></span> 批量删除
                     </button>
                     </div>
@@ -77,7 +77,7 @@
                     <tbody>
                     <c:forEach items="${list}" var="news" varStatus="status">
                         <tr>
-                            <td><input type="checkbox"  name="tagList" value="${news.id}" /></td>
+                            <td><input type="checkbox" class="newsList"  name="newsList" value="${news.id}" /></td>
                             <td>${status.count}</td>
                             <td>${news.title}</td>
                             <td>${news.author}</td>
@@ -90,7 +90,7 @@
                                     <span class="label label-info">焦点图</span>
                                 </c:if>
                                 <c:if test="${news.focusFlag=='NO'}">
-                                    <span class="label label-info">N</span>
+                                    &nbsp;
                                 </c:if>
                             </td>
                             <td>
@@ -142,6 +142,11 @@
     function forward(curpage) {
         $("#curpage").val(curpage);
         newsForm.submit();
+    }
+    function del(id) {
+        if(confirm("确认删除吗?")){
+            window.location.href="deleteNews?newId="+id;
+        }
     }
         $(function(){
             // 获取父类
@@ -198,17 +203,6 @@
                     }
                 });
             });
-        $("#delbtn").click(function () {
-            if($("input[name ='tagList' ]:checked").length<=0){
-                alert("请选择条目");
-                return false;
-            }else{
-                if(confirm("确认删除吗?")){
-                    tagForm.action="batchDel";
-                    tagForm.submit();
-                }
-            }
-        });
         //等级改变，加载父级标签
         $("#tlevel").change(function() {
             $("#parentlevel option[value!='-1']").remove();
@@ -255,43 +249,24 @@
                 }
             }
         });
+            $("#bacthDelete").click(function () {
+                if($("input[name ='newsList' ]:checked").length<=0){
+                    alert("请选择条目");
+                    return false;
+                }else{
+                    if(confirm("确认删除吗?")){
+                        newsForm.action="bacthDelete";
+                        newsForm.submit();
+                    }
+                }
+            });
     });
     function edit(id) {
             window.location.href="beforeUpdate?newId="+id;
-  /*      $.get("getTag",{id:id},function(result){
-            var obj = result["editTag"] ;
-            $("#tname").val(obj["tagName"]);
-            $("#tlevel").val(obj["tagLevel"]+"级标题");
-            $("#reallevel").val(obj["tagLevel"]);
-            $("#tflag").val(obj["passFlag"]);
-            $("#tid").val(obj["tagId"]);
-            var p = obj["parentTag"];
-            $("#parentlevel").val(p["tagName"]);
-            $("#parentTagId").val(p["tagId"]);
-
-
-        });
-        $.get("loadParentTag", {
-            levelId : $("#tlevel").val()
-        }, function(data) {
-            var jsonObj = data["belongTagList"];
-            for ( var i = 0; i < jsonObj.length; i++) {
-                var $option = $("<option></option>");
-                $option.attr("value", jsonObj[i]["tagId"]);
-                $option.text(jsonObj[i]["tagName"]);
-                $("#parentlevel").append($option);
-            }
-            for (var i = 0; i < jsonObj.length; i++) {
-                if(jsonObj[i]["tagId"]==id){
-                    $("#parentlevel").get(0).options[i+1].selected = true;
-                    break;
-                }
-            }
-        });*/
     }
     function del(id) {
         if(confirm("确认删除吗?")){
-            window.location.href="del?id="+id;
+            window.location.href="deleteNews?newId="+id;
         }
     }
     function selectAll(checkbox) {

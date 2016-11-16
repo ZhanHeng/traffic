@@ -86,3 +86,24 @@ Error: java.lang.IllegalStateException: PWC4662: Request header is too large
 ==============================================================================================
 Struts类型转换操作，后台ckeditor的内容自动转成了byte[]数组，然后存入数据库为blob类型
 另外添加新闻的form表单必须设置成 enctype="multipart/form-data" 才能上传文件
+==============================================================================================
+单独js文件如何使用EL表达式的值呢？
+解决方案：可以在JSP页面中添加一个隐藏域并给它赋值,在单独的js文件中，通过获取隐藏域的值就间接的获取到了EL表达式的值。例如：
+
+jsp页面（引用jquery文件和register.js   添加两个隐藏域）
+
+<script type="text/javascript"  src="js/jquery-1.4.3.js">  </script>
+<script type="text/javascript"  src="js/register.js">  </script>
+<input id="okPic" type="hidden" value="${pageContext.request.contextPath}/images/jsPic/ok.png"/>
+<input id="errorPic" type="hidden" value="${pageContext.request.contextPath}/images/jsPic/error.png"/>
+
+register.js文件
+（设置全局变量ok,error $(function(){   });当引用这个js文件的页面加载完毕就执行这个函数.
+相当于window.onload(),然后在其他函数中就可以直接引用ok,error全局变量.）
+
+var ok ="";
+var error = "";
+$(function(){
+    ok = $("#okPic").val();
+    error = $("#errorPic").val();
+});

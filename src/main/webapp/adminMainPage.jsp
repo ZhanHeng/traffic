@@ -138,7 +138,7 @@
                     <span class="glyphicon glyphicon-user"></span>&nbsp;用户模块
                 </a>
                 <a href="javascript:void(0)" id="userBtn" class="list-group-item">添加用户</a>
-                <a href="userList" class="list-group-item" target="main">用户管理</a>
+                <a href="userList" class="list-group-item" target="main" onclick="$(window).scrollTop(0);">用户管理</a>
 <%--                <a href="#" class="list-group-item">图像的数量</a>
                 <a href="#" class="list-group-item">每年更新成本</a>--%>
             </ul>
@@ -147,15 +147,15 @@
                     <span class="glyphicon glyphicon-tag"></span>&nbsp;标签模块
                 </a>
                 <a href="javascript:void(0)" id="openBtn" class="list-group-item">添加标签</a>
-                <a href="tagList" class="list-group-item" target="main">标签管理</a>
+                <a href="tagList" class="list-group-item" target="main" onclick="$(window).scrollTop(0);">标签管理</a>
             </ul>
             <ul class="nav nav-sidebar">
                 <a href="#" class="list-group-item active">
                     <span class="glyphicon glyphicon-list-alt"></span>&nbsp;新闻模块
                 </a>
                 <%--<a href="javascript:void(0)" id="newsBtn" class="list-group-item">发布新闻</a>--%>
-                <a href="addNews.jsp" id="newsBtn" class="list-group-item" target="main">发布新闻</a>
-                <a href="searchNews" class="list-group-item" target="main">新闻管理</a>
+                <a href="addNews.jsp" id="newsBtn" class="list-group-item" target="main" onclick="$(window).scrollTop(0);">发布新闻</a>
+                <a href="searchNews" class="list-group-item" target="main" onclick="$(window).scrollTop(0);">新闻管理</a>
             </ul>
 
 

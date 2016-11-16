@@ -2,12 +2,20 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://ckeditor.com" prefix="ck"%>
-<%@page import="com.ckeditor.CKEditorConfig"%>
+<%@ page import="com.traffic.model.NewsAndNotice" %>
+<%@ page import="com.opensymphony.xwork2.ActionContext" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://"
             + request.getServerName() + ":" + request.getServerPort()
             + path + "/";
+    NewsAndNotice temp=(NewsAndNotice)ActionContext.getContext().get("editNewsNotice");
+    String data = "";
+    if(temp!=null){
+        if(temp.getContent()!=null){
+            data=temp.getContentStr();
+        }
+    }
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -37,8 +45,9 @@
             <h3 style="margin-top:5px">编辑新闻</h3>
         </div>
         <div class="panel-body">
-            <form action="updateNews" role = "form" class="form-horizontal" method="post" enctype="multipart/form-data">
+            <form action="updateNews" role = "form" id="updateForm" class="form-horizontal" method="post" enctype="multipart/form-data">
                 <div class = "form-group">
+                    <input type="hidden" name="editNewsNotice.id" value="${editNewsNotice.id}">
                     <label class="col-sm-1 control-label" for = "title">文章标题</label>
                     <div class="col-sm-10">
                         <input type = "text" name="editNewsNotice.title" class = "form-control" id = "title" value="${editNewsNotice.title}"  required>
@@ -72,15 +81,15 @@
                     </div>
                 </div>
                 <div class = "form-group">
-                    <label class="col-sm-1 control-label" >设为焦点图</label>
+                    <label class="col-sm-1 control-label" >焦点图</label>
                     <div class="col-sm-2">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="editNewsNotice.focusFlag"  value="YES" >是
+                                <input type="radio" id="r1" name="editNewsNotice.focusFlag"  value="YES" >是
                             </label>
                             &nbsp;
                             <label>
-                                <input type="radio" name="editNewsNotice.focusFlag"  value="NO" checked>否
+                                <input type="radio" id="r2" name="editNewsNotice.focusFlag"  value="NO" >否
                             </label>
                         </div>
                     </div>
@@ -96,15 +105,20 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-1 col-sm-offset-1">
-                        <button type = "submit" class="btn btn-success ">保存提交</button>
+                        <button type = "button" class="btn btn-success" onclick="update();">保存提交</button>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type = "button" class="btn" onclick="location.href='searchNews';">取 消</button>
                     </div>
                 </div>
                 <div class="form-group">
-                    <textarea name="newsAndNotice.content" id="content1" ></textarea>
+                    <textarea name="editNewsNotice.content" id="content1" ><%=data %></textarea>
                     <script type="text/javascript">
                         CKEDITOR.replace('content1');
                     </script>
                 </div>
+                <input id="pathfield" type="hidden" value="${editNewsNotice.tagPath}"/>
+                <input id="focusfield" type="hidden" value="${editNewsNotice.focusFlag}"/>
             </form>
         </div>
     </div>
@@ -112,79 +126,6 @@
 <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/uploadPreview.js"></script>
 <script type="text/javascript" src="js/WdatePicker.js"></script>
-<script type="text/javascript">
-    window.onload = function () {
-        new uploadPreview({ UpBtn: "fileid", DivShow: "imgdiv", ImgShow: "imgShow" });
-    }
-    for ( instance in CKEDITOR.instances ){     //同步编辑器与Textarea的内容，很重要必须加上
-        CKEDITOR.instances[instance].updateElement();
-    }
-    $(function(){
-        // 获取父类
-        $.get("loadLevelTag",{levelId:'1'}, function (result) {
-            var jsonObj =result["levelTagList"];
-            for (var i = 0; i < jsonObj.length; i++) {
-                var $option = $("<option></option>");
-                $option.attr("value", jsonObj[i]["tagId"]);
-                $option.text(jsonObj[i]["tagName"]);
-                $("#level1").append($option);
-            }
-            $.get("loadChildTag", {parentId:$("#level1").val(),currentId:'2'}, function (result) {
-                var jsonObj = result["childTagList"];
-                for (var i = 0; i < jsonObj.length; i++) {
-                    var $option = $("<option></option>");
-                    $option.attr("value", jsonObj[i]["tagId"]);
-                    $option.text(jsonObj[i]["tagName"]);
-                    $("#level2").append($option);
-                }
-            });
-            $.get("loadChildTag", {parentId:$("#level2").val(),currentId:'3'}, function (result) {
-                var jsonObj = result["childTagList"];
-                for (var i = 0; i < jsonObj.length; i++) {
-                    var $option = $("<option></option>");
-                    $option.attr("value", jsonObj[i]["tagId"]);
-                    $option.text(jsonObj[i]["tagName"]);
-                    $("#level3").append($option);
-                }
-            });
-        });
-        $("#level1").change(function (){
-            // 清空子类
-            $("#level2 option[value!='-1']").remove();
-            $("#level3 option[value!='-1']").remove();
-            $.get("loadChildTag", {parentId:$("#level1").val(),currentId:'2'}, function (result) {
-                var jsonObj = result["childTagList"];
-                for (var i = 0; i < jsonObj.length; i++) {
-                    var $option = $("<option></option>");
-                    $option.attr("value", jsonObj[i]["tagId"]);
-                    $option.text(jsonObj[i]["tagName"]);
-                    $("#level2").append($option);
-                }
-            });
-        });
-        $("#level2").change(function (){
-            $("#level3 option[value!='-1']").remove();
-            $.get("loadChildTag", {parentId:$("#level2").val(),currentId:'3'}, function (result) {
-                var jsonObj = result["childTagList"];
-                for (var i = 0; i < jsonObj.length; i++) {
-                    var $option = $("<option></option>");
-                    $option.attr("value", jsonObj[i]["tagId"]);
-                    $option.text(jsonObj[i]["tagName"]);
-                    $("#level3").append($option);
-                }
-            });
-        });
-        $("input[type='radio']").each(function() {
-            $(this).click(function(){
-                var selectedvalue = $(this).val();
-                if (selectedvalue == "YES") {
-                    $("#upid").show();
-                }else {
-                    $("#upid").hide();
-                }
-            });
-        });
-    });
-</script>
+<script type="text/javascript" src="news/news.js"></script>
 </body>
 </html>

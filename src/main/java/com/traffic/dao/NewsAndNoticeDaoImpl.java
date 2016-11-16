@@ -48,7 +48,7 @@ public class NewsAndNoticeDaoImpl extends HibernateDaoSupport implements NewsAnd
     }
 
     public void update(NewsAndNotice newsAndNotice) {
-        getCurrentSession().saveOrUpdate(newsAndNotice);
+        getCurrentSession().update(newsAndNotice);
     }
 
     public void delete(NewsAndNotice newsAndNotice) {
