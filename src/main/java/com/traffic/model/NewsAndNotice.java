@@ -19,10 +19,11 @@ public class NewsAndNotice {
     private String htmlPath;				// 静态Html页的存储地址
     private String orderTime;				// 系统排序时间
 
+
     public NewsAndNotice() {
     }
 
-    public NewsAndNotice(String id, String title, byte[] content, Blob blob, String time, String author, String path, String tagPath, String focusFlag, String htmlPath, String orderTime) {
+    public NewsAndNotice(String id, String title, byte[] content, String time, String author, String path, String tagPath, String focusFlag, String htmlPath, String orderTime) {
         this.id = id;
         this.title = title;
         this.content = content;

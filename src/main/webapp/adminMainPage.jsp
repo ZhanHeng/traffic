@@ -155,7 +155,7 @@
                 </a>
                 <%--<a href="javascript:void(0)" id="newsBtn" class="list-group-item">发布新闻</a>--%>
                 <a href="addNews.jsp" id="newsBtn" class="list-group-item" target="main">发布新闻</a>
-                <a href="newsList" class="list-group-item" target="main">新闻管理</a>
+                <a href="searchNews" class="list-group-item" target="main">新闻管理</a>
             </ul>
 
 

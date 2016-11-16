@@ -50,7 +50,7 @@ public class LoginAction extends ActionSupport {
      */
     @Action(value = "logout",
             results = { @Result(name="logout",location="/adminLogin.jsp")},
-            interceptorRefs={   //表示拦截器引用
+            interceptorRefs={
                     @InterceptorRef("defaultStack")
             }
     )

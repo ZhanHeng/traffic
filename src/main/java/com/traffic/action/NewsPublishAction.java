@@ -3,18 +3,18 @@ package com.traffic.action;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.traffic.dto.Execution;
-import com.traffic.dto.FileUploadUtil;
 import com.traffic.dto.LoginResult;
+import com.traffic.dto.Page;
 import com.traffic.enums.LoginEnum;
 import com.traffic.model.NewsAndNotice;
 import com.traffic.service.NewsAndNoticeService;
+import com.traffic.service.PageService;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,23 +24,28 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * 新闻类发布后的结果Action
+ * 新闻类发布Action
  * Created by ZhanHeng on 2016/11/12.
  */
-@Controller
 @Scope("session")                  //支持多例
 @ParentPackage("all")              //表示继承的父包
-@Namespace(value="/")             //表示当前Action所在命名空间
-public class NewsPublishAction extends ActionSupport{
+@Namespace(value="/")              //表示当前Action所在命名空间
+public class NewsPublishAction extends ActionSupport {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     public final String UPLOAD_PATH = ServletActionContext.getServletContext().getRealPath("/uploadNewsFies/focusPic");
     @Autowired
     private NewsAndNoticeService newsAndNoticeService;
+    @Autowired
+    private PageService pageService;
     private NewsAndNotice newsAndNotice;
     private File myfile;                    //上传的焦点新闻展示图片
     private String myfileFileName;          //图片名字
     private String myfileContentType;;      //图片文件类型
     private List<String> tagLevelList;      //记录文件的标签路径
+    private NewsAndNotice searchNewsNotice;
+    private NewsAndNotice editNewsNotice;
+    private Page page;
+    private String newId;
     @Action(
             value="addNews",
             results={
@@ -54,7 +59,6 @@ public class NewsPublishAction extends ActionSupport{
             }
     )
     public String saveNewsAndNotice() throws IOException {
-
         if("YES".equals(this.newsAndNotice.getFocusFlag())){
             int sum=this.newsAndNoticeService.getCountNumber();
             if(sum<7){
@@ -89,6 +93,38 @@ public class NewsPublishAction extends ActionSupport{
         }
 
     }
+
+
+
+    @Action(
+            value="searchNews",
+            results={
+                    @Result(name="success",location="/manageNews.jsp")
+            },
+            interceptorRefs={
+                    @InterceptorRef("myStack")
+            },
+            exceptionMappings={
+                    @ExceptionMapping(exception="java.lang.Exception",result="error")
+            }
+    )
+    public String searchNews(){
+         try {
+             List<NewsAndNotice> list = null;
+            if(page==null){
+                 page = new Page();
+                 list = pageService.findNewsList(searchNewsNotice,page);
+             }else{
+                 list = pageService.findNewsList(searchNewsNotice,page);
+             }
+             ActionContext.getContext().put("list",list);
+             return SUCCESS;
+          }catch (Exception e){
+             logger.error(e.getMessage(),e);
+             return ERROR;
+          }
+    }
+
 
     //上传文件的公共方法
     private void uploadFile(File file ,String uploadPath){
@@ -149,6 +185,11 @@ public class NewsPublishAction extends ActionSupport{
         }
         return path;
     }
+    @Action(value="beforeUpdate",results={@Result(name="success",location="/editNews.jsp")})
+    public  String beforeUpdateNews(){
+        editNewsNotice = newsAndNoticeService.findById(newId);
+        return SUCCESS;
+    }
     public NewsAndNotice getNewsAndNotice() {
         return newsAndNotice;
     }
@@ -187,5 +228,37 @@ public class NewsPublishAction extends ActionSupport{
 
     public void setTagLevelList(List<String> tagLevelList) {
         this.tagLevelList = tagLevelList;
+    }
+
+    public NewsAndNotice getSearchNewsNotice() {
+        return searchNewsNotice;
+    }
+
+    public void setSearchNewsNotice(NewsAndNotice searchNewsNotice) {
+        this.searchNewsNotice = searchNewsNotice;
+    }
+
+    public NewsAndNotice getEditNewsNotice() {
+        return editNewsNotice;
+    }
+
+    public void setEditNewsNotice(NewsAndNotice editNewsNotice) {
+        this.editNewsNotice = editNewsNotice;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public String getNewId() {
+        return newId;
+    }
+
+    public void setNewId(String newId) {
+        this.newId = newId;
     }
 }

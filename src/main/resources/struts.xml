@@ -4,7 +4,7 @@
     <!-- 指定由spring负责action对象的创建 -->
     <constant name="struts.objectFactory" value="spring" />
     <!-- 是否启用开发模式 -->
-    <constant name="struts.devMode" value="false" />
+    <constant name="struts.devMode" value="true" />
     <!-- struts配置文件改动后，是aa否重新加载 -->
     <constant name="struts.configuration.xml.reload" value="true" />
     <!-- 设置浏览器是否缓存静态内容 -->
@@ -113,9 +113,4 @@
             <result type="json" />
         </action>
     </package>-->
-
-    <package name="actions" extends="struts-default" namespace="/actions">
-        <action name="ckeditorUpload" class="edu.neu.economic.newsandnotice.action.CkeditorUpload">
-        </action>
-    </package>
 </struts>

@@ -19,7 +19,7 @@
             <column name="news_title" />
         </property>
         <property name="content">
-            <column name="content" />
+            <column name="news_content" sql-type="blob"/>
         </property>
         <property name="time" type="java.lang.String">
             <column name="news_time" />

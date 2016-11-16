@@ -42,6 +42,8 @@ DAO层测试的时候注意事项：
 
 Service层，由于开发的时候已经进行了事务的注解声明，所以测试的时候没有报错
 
+实体类。加上默认构造函数
+
 =====================================================
 配置和使用Ckeditor,把握好一下几点：
 1、将下载好的Ckeditor相关的文件目录，拷贝到项目的根目录
@@ -81,3 +83,6 @@ Error: java.lang.IllegalStateException: PWC4662: Request header is too large
                connectionTimeout="20000"
                redirectPort="8443" maxHttpHeaderSize="65536" maxPostSize="4194304"
                URIEncoding="UTF-8"/>
+==============================================================================================
+Struts类型转换操作，后台ckeditor的内容自动转成了byte[]数组，然后存入数据库为blob类型
+另外添加新闻的form表单必须设置成 enctype="multipart/form-data" 才能上传文件

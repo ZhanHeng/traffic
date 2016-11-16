@@ -14,7 +14,7 @@
 <head>
     <base href="<%=basePath%>">
 
-    <title>添加新闻</title>
+    <title>编辑新闻</title>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
@@ -34,24 +34,24 @@
 <div class="container col-xs-12 col-sm-12" style="padding: 5px;">
     <div class="panel panel-default" >
         <div class="panel-heading" style="padding: 5px 15px 5px 15px;">
-            <h3 style="margin-top:5px">发布新闻</h3>
+            <h3 style="margin-top:5px">编辑新闻</h3>
         </div>
         <div class="panel-body">
-            <form action="addNews" role = "form" class="form-horizontal" method="post" enctype="multipart/form-data">
+            <form action="updateNews" role = "form" class="form-horizontal" method="post" enctype="multipart/form-data">
                 <div class = "form-group">
                     <label class="col-sm-1 control-label" for = "title">文章标题</label>
                     <div class="col-sm-10">
-                        <input type = "text" name="newsAndNotice.title" class = "form-control" id = "title"  placeholder = "请输入文章标题" required>
+                        <input type = "text" name="editNewsNotice.title" class = "form-control" id = "title" value="${editNewsNotice.title}"  required>
                     </div>
                 </div>
                 <div class = "form-group">
                     <label class="col-sm-1 control-label" for = "author">作者来源</label>
                     <div class="col-sm-2">
-                        <input type = "text" name="newsAndNotice.author" class = "form-control" id = "author"  placeholder = "请输入作者来源" required>
+                        <input type = "text" name="editNewsNotice.author" class = "form-control" id = "author" value="${editNewsNotice.author}"  required>
                     </div>
                     <label class="col-sm-2 control-label" for = "addTimeId">提交日期</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" name="newsAndNotice.time" id = "addTimeId"   placeholder = "请输入提交日期" onclick="WdatePicker({isShowClear:true,readOnly:true })" required >
+                        <input type="text" class="form-control" name="editNewsNotice.time" id = "addTimeId"   value="${editNewsNotice.time}" onclick="WdatePicker({isShowClear:true,readOnly:true })" required >
                     </div>
                 </div>
                 <div class = "form-group">
@@ -76,11 +76,11 @@
                     <div class="col-sm-2">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="newsAndNotice.focusFlag"  value="YES" >是
+                                <input type="radio" name="editNewsNotice.focusFlag"  value="YES" >是
                             </label>
                             &nbsp;
                             <label>
-                                <input type="radio" name="newsAndNotice.focusFlag"  value="NO" checked>否
+                                <input type="radio" name="editNewsNotice.focusFlag"  value="NO" checked>否
                             </label>
                         </div>
                     </div>
@@ -113,78 +113,78 @@
 <script type="text/javascript" src="js/uploadPreview.js"></script>
 <script type="text/javascript" src="js/WdatePicker.js"></script>
 <script type="text/javascript">
-window.onload = function () {
-    new uploadPreview({ UpBtn: "fileid", DivShow: "imgdiv", ImgShow: "imgShow" });
-}
-for ( instance in CKEDITOR.instances ){     //同步编辑器与Textarea的内容，很重要必须加上
-    CKEDITOR.instances[instance].updateElement();
-}
-$(function(){
-    // 获取父类
-    $.get("loadLevelTag",{levelId:'1'}, function (result) {
-        var jsonObj =result["levelTagList"];
-        for (var i = 0; i < jsonObj.length; i++) {
-            var $option = $("<option></option>");
-            $option.attr("value", jsonObj[i]["tagId"]);
-            $option.text(jsonObj[i]["tagName"]);
-            $("#level1").append($option);
-        }
-        $.get("loadChildTag", {parentId:$("#level1").val(),currentId:'2'}, function (result) {
-            var jsonObj = result["childTagList"];
+    window.onload = function () {
+        new uploadPreview({ UpBtn: "fileid", DivShow: "imgdiv", ImgShow: "imgShow" });
+    }
+    for ( instance in CKEDITOR.instances ){     //同步编辑器与Textarea的内容，很重要必须加上
+        CKEDITOR.instances[instance].updateElement();
+    }
+    $(function(){
+        // 获取父类
+        $.get("loadLevelTag",{levelId:'1'}, function (result) {
+            var jsonObj =result["levelTagList"];
             for (var i = 0; i < jsonObj.length; i++) {
                 var $option = $("<option></option>");
                 $option.attr("value", jsonObj[i]["tagId"]);
                 $option.text(jsonObj[i]["tagName"]);
-                $("#level2").append($option);
+                $("#level1").append($option);
             }
+            $.get("loadChildTag", {parentId:$("#level1").val(),currentId:'2'}, function (result) {
+                var jsonObj = result["childTagList"];
+                for (var i = 0; i < jsonObj.length; i++) {
+                    var $option = $("<option></option>");
+                    $option.attr("value", jsonObj[i]["tagId"]);
+                    $option.text(jsonObj[i]["tagName"]);
+                    $("#level2").append($option);
+                }
+            });
+            $.get("loadChildTag", {parentId:$("#level2").val(),currentId:'3'}, function (result) {
+                var jsonObj = result["childTagList"];
+                for (var i = 0; i < jsonObj.length; i++) {
+                    var $option = $("<option></option>");
+                    $option.attr("value", jsonObj[i]["tagId"]);
+                    $option.text(jsonObj[i]["tagName"]);
+                    $("#level3").append($option);
+                }
+            });
         });
-        $.get("loadChildTag", {parentId:$("#level2").val(),currentId:'3'}, function (result) {
-            var jsonObj = result["childTagList"];
-            for (var i = 0; i < jsonObj.length; i++) {
-                var $option = $("<option></option>");
-                $option.attr("value", jsonObj[i]["tagId"]);
-                $option.text(jsonObj[i]["tagName"]);
-                $("#level3").append($option);
-            }
+        $("#level1").change(function (){
+            // 清空子类
+            $("#level2 option[value!='-1']").remove();
+            $("#level3 option[value!='-1']").remove();
+            $.get("loadChildTag", {parentId:$("#level1").val(),currentId:'2'}, function (result) {
+                var jsonObj = result["childTagList"];
+                for (var i = 0; i < jsonObj.length; i++) {
+                    var $option = $("<option></option>");
+                    $option.attr("value", jsonObj[i]["tagId"]);
+                    $option.text(jsonObj[i]["tagName"]);
+                    $("#level2").append($option);
+                }
+            });
+        });
+        $("#level2").change(function (){
+            $("#level3 option[value!='-1']").remove();
+            $.get("loadChildTag", {parentId:$("#level2").val(),currentId:'3'}, function (result) {
+                var jsonObj = result["childTagList"];
+                for (var i = 0; i < jsonObj.length; i++) {
+                    var $option = $("<option></option>");
+                    $option.attr("value", jsonObj[i]["tagId"]);
+                    $option.text(jsonObj[i]["tagName"]);
+                    $("#level3").append($option);
+                }
+            });
+        });
+        $("input[type='radio']").each(function() {
+            $(this).click(function(){
+                var selectedvalue = $(this).val();
+                if (selectedvalue == "YES") {
+                    $("#upid").show();
+                }else {
+                    $("#upid").hide();
+                }
+            });
         });
     });
-    $("#level1").change(function (){
-        // 清空子类
-        $("#level2 option[value!='-1']").remove();
-        $("#level3 option[value!='-1']").remove();
-        $.get("loadChildTag", {parentId:$("#level1").val(),currentId:'2'}, function (result) {
-            var jsonObj = result["childTagList"];
-            for (var i = 0; i < jsonObj.length; i++) {
-                var $option = $("<option></option>");
-                 $option.attr("value", jsonObj[i]["tagId"]);
-                 $option.text(jsonObj[i]["tagName"]);
-                 $("#level2").append($option);
-            }
-        });
-    });
-    $("#level2").change(function (){
-        $("#level3 option[value!='-1']").remove();
-        $.get("loadChildTag", {parentId:$("#level2").val(),currentId:'3'}, function (result) {
-            var jsonObj = result["childTagList"];
-            for (var i = 0; i < jsonObj.length; i++) {
-                var $option = $("<option></option>");
-                $option.attr("value", jsonObj[i]["tagId"]);
-                $option.text(jsonObj[i]["tagName"]);
-                $("#level3").append($option);
-            }
-        });
-    });
-    $("input[type='radio']").each(function() {
-        $(this).click(function(){
-            var selectedvalue = $(this).val();
-            if (selectedvalue == "YES") {
-                $("#upid").show();
-            }else {
-                $("#upid").hide();
-            }
-        });
-    });
-});
 </script>
 </body>
 </html>

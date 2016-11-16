@@ -18,6 +18,7 @@ import java.util.List;
  * Created by ZhanHeng on 2016/11/11.
  */
 @Repository
+@Transactional
 public class NewsAndNoticeDaoImpl extends HibernateDaoSupport implements NewsAndNoticeDao{
 
     @Resource
@@ -53,73 +54,6 @@ public class NewsAndNoticeDaoImpl extends HibernateDaoSupport implements NewsAnd
     public void delete(NewsAndNotice newsAndNotice) {
         getCurrentSession().delete(newsAndNotice);
     }
-
-
-  /*  public List<NewsAndNotice> queryInfo(int categoryId, String queryNewsTitle,String queryNewsAuthor, String queryTime1, String queryTime2) {
-        String hql = "from NewsAndNotice where 1=1";
-        if (!"".equals(queryNewsTitle) && queryNewsTitle != null) {
-            hql += " and title like '%" + queryNewsTitle + "%'";
-        }
-        if (!"".equals(queryNewsAuthor) && queryNewsAuthor != null) {
-            hql += " and author like '%" + queryNewsAuthor + "%'";
-        }
-        if (!"".equals(queryTime1) && queryTime1 != null) {
-            hql += " and time >='" + queryTime1 + "'";
-        }
-        if (!"".equals(queryTime2) && queryTime2 != null) {
-            hql += " and time <='" + queryTime2 + "'";
-        }
-        if( categoryId != -1){
-            hql += "  and category.categoryId =" + categoryId+ " order by time desc";
-        }
-        return getCurrentSession().createQuery(hql).list();
-    }*/
-
-/*    public PageBean queryForPage(int categoryId, String queryNewsTitle,
-                                 String queryNewsAuthor, String queryTime1, String queryTime2,
-                                 int pageSize, int page) {
-        List list;
-        int totalPage, length, currentPage, offset;//
-        String hql = "from NewsAndNotice where 1=1";
-        if (!"".equals(queryNewsTitle) && queryNewsTitle != null) {
-            hql += " and title like '%" + queryNewsTitle + "%'";
-        }
-        if (!"".equals(queryNewsAuthor) && queryNewsAuthor != null) {
-            hql += " and author like '%" + queryNewsAuthor + "%'";
-        }
-        if (!"".equals(queryTime1) && queryTime1 != null) {
-            hql += " and time >='" + queryTime1 + "'";
-        }
-        if (!"".equals(queryTime2) && queryTime2 != null) {
-            hql += " and time <='" + queryTime2 + "'";
-        }
-        hql += "  and category.categoryId =" + categoryId
-                + " order by time desc";
-        int allRow = newsAndNoticeDao.getAllRowCount(hql);
-
-        if (allRow != 0) {
-            totalPage = PageBean.countTotalPage(pageSize, allRow);
-            length = pageSize;
-            currentPage = PageBean.countCurrentPage(page, totalPage);
-            offset = PageBean.countOffset(pageSize, currentPage);
-            list = newsAndNoticeDao.queryNewsForPage(hql, offset, length);
-        } else {
-            totalPage = 0;
-            length = pageSize;
-            currentPage = 0;
-            list = null;
-        }
-
-        PageBean pageBean = new PageBean();
-        pageBean.setPageSize(pageSize);
-        pageBean.setCurrentPage(currentPage);
-        pageBean.setAllRow(allRow);
-        pageBean.setTotalPage(totalPage);
-        pageBean.setList(list);
-
-        pageBean.init();
-        return pageBean;
-    }*/
 
     //查出所有焦点图的新闻
     public List<NewsAndNotice> showFocusPicture(){
