@@ -106,14 +106,14 @@ public class CkeditorUpload extends ActionSupport{
         is.close();
         os.close();
         // 返回“图像”选项卡并显示图片，这段很关键实现预览功能
+        logger.info(callback);
         out.println("<script type=\"text/javascript\">");
-        if(IMAGE_TYPE.contains(uploadContentType)){ //对上传的文件进行分类存放
-            out.println("window.parent.CKEDITOR.tools.callFunction(" + callback + ",'" + "uploadNewsFies/postImg/" + fileName + "','')");
+        if(IMAGE_TYPE.contains(uploadContentType)){ //对上传的文件进行分类存放,注意这里的路径!!! 我把添加新闻的页面放到admin目录下了，所有要返回一级目录
+            out.println("window.parent.CKEDITOR.tools.callFunction(" + callback + ",'" + "../uploadNewsFies/postImg/" + fileName + "','')");
         }else{
-            out.println("window.parent.CKEDITOR.tools.callFunction(" + callback + ",'" + "uploadNewsFies/postFile/" + fileName + "','')");
+            out.println("window.parent.CKEDITOR.tools.callFunction(" + callback + ",'" + "../uploadNewsFies/postFile/" + fileName + "','')");
         }
         out.println("</script>");
-
         return null;
     }
 

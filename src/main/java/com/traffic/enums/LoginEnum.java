@@ -12,7 +12,9 @@ public enum LoginEnum {
     LOGIN_ERROR(-1,"用户名/密码错误"),
     INNER_ERROR(-2,"系统异常"),
     REPEAT_NAME(-3,"该名称已被占用"),
-    REPEAT_TAG(-4,"该标签已存在");
+    DELETE_ERROR(-5,"删除失败"),
+    REPEAT_TAG(-4,"该菜单已存在"),
+    TOP_NUMBER(-6,"焦点图数量已达上限");
     private int state ;
     private String stateInfo ;
 

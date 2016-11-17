@@ -4,11 +4,14 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.traffic.dto.Execution;
 import com.traffic.dto.LoginResult;
+import com.traffic.dto.NewsUtil;
 import com.traffic.dto.Page;
 import com.traffic.enums.LoginEnum;
 import com.traffic.model.NewsAndNotice;
+import com.traffic.model.Tag;
 import com.traffic.service.NewsAndNoticeService;
 import com.traffic.service.PageService;
+import com.traffic.service.TagService;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 import org.slf4j.Logger;
@@ -20,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -37,11 +41,13 @@ public class NewsPublishAction extends ActionSupport {
     private NewsAndNoticeService newsAndNoticeService;
     @Autowired
     private PageService pageService;
+    @Autowired
+    private TagService tagService;
     private NewsAndNotice newsAndNotice;
     private File myfile;                    //上传的焦点新闻展示图片
     private String myfileFileName;          //图片名字
     private String myfileContentType;;      //图片文件类型
-    private List<String> tagLevelList;      //记录文件的标签路径
+    private List<String> tagLevelList;      //记录文件的菜单路径
     private List<String> newsList;          //批量删除
     private NewsAndNotice searchNewsNotice;
     private NewsAndNotice editNewsNotice;
@@ -49,15 +55,9 @@ public class NewsPublishAction extends ActionSupport {
     private String newId;
     @Action(
             value="addNews",
-            results={
-                    @Result(name="success",location="/addNews.jsp")
-            },
-            interceptorRefs={
-                    @InterceptorRef("myStack")
-            },
-            exceptionMappings={
-                    @ExceptionMapping(exception="java.lang.Exception",result="error")
-            }
+            results={@Result(name="success",location="/admin/adminAddNews.jsp")},
+            interceptorRefs={ @InterceptorRef("myStack")},
+            exceptionMappings={ @ExceptionMapping(exception="java.lang.Exception",result="error")}
     )
     public String saveNewsAndNotice() throws IOException {
         if("YES".equals(this.newsAndNotice.getFocusFlag())){
@@ -95,37 +95,42 @@ public class NewsPublishAction extends ActionSupport {
 
     }
 
-
-
     @Action(
             value="searchNews",
-            results={
-                    @Result(name="success",location="/manageNews.jsp")
-            },
-            interceptorRefs={
-                    @InterceptorRef("myStack")
-            },
-            exceptionMappings={
-                    @ExceptionMapping(exception="java.lang.Exception",result="error")
-            }
+            results={@Result(name="success",location="/admin/adminManageNews.jsp") },
+            interceptorRefs={ @InterceptorRef("myStack")},
+            exceptionMappings={ @ExceptionMapping(exception="java.lang.Exception",result="error")}
     )
     public String searchNews(){
          try {
              List<NewsAndNotice> list = null;
+             String tagPath = getTagPath(tagLevelList);
             if(page==null){
                  page = new Page();
-                 list = pageService.findNewsList(searchNewsNotice,page);
+                 list = pageService.findNewsList(searchNewsNotice,page,tagPath);
              }else{
-                 list = pageService.findNewsList(searchNewsNotice,page);
+                 list = pageService.findNewsList(searchNewsNotice,page,tagPath);
              }
-             ActionContext.getContext().put("list",list);
+             ActionContext.getContext().put("list",getTagInfoList(list));
+             ActionContext.getContext().put("tagPath",tagPath);
              return SUCCESS;
           }catch (Exception e){
              logger.error(e.getMessage(),e);
              return ERROR;
           }
     }
-
+    private List<NewsUtil> getTagInfoList(List<NewsAndNotice> newsList){
+        List<NewsUtil> list = new ArrayList<NewsUtil>();
+        if (newsList!=null && !newsList.isEmpty()){
+            for (NewsAndNotice news : newsList){
+                NewsUtil util = new NewsUtil();
+                util.setNews(news);
+                util.setTagList(pathToTagList(news.getTagPath()));
+                list.add(util);
+            }
+        }
+        return list;
+    }
 
     //上传文件的公共方法
     private void uploadFile(File file ,String uploadPath){
@@ -164,7 +169,7 @@ public class NewsPublishAction extends ActionSupport {
         String path = file.getPath().substring(file.getPath().indexOf("uploadNewsFies\\"));
         return path;
     }
-    //获取标签路径的公共方法
+    //获取菜单路径的公共方法
     private String getTagPath(List<String> tagLevelList){
         String path = "";
         if(tagLevelList!=null){
@@ -186,13 +191,30 @@ public class NewsPublishAction extends ActionSupport {
         }
         return path;
     }
-    @Action(value="beforeUpdate",results={@Result(name="success",location="/editNews.jsp")})
+    //将tag路径转化成tag列表
+    private List<Tag> pathToTagList(String path){
+        List<Tag> tagList = new ArrayList<Tag>();
+        if(path!=null){
+            if(path.contains("/")){
+                String[] arr = path.split("/");
+                for (int i = 0; i <arr.length ; i++) {
+                    Tag tag = tagService.findById(Long.parseLong(arr[i]));
+                    tagList.add(tag);
+                }
+            }else{
+                Tag tag = tagService.findById(Long.parseLong(path));
+                tagList.add(tag);
+            }
+        }
+        return tagList;
+    }
+    @Action(value="beforeUpdate",results={@Result(name="success",location="/admin/adminEditNews.jsp")})
     public  String beforeUpdateNews(){
         this.setEditNewsNotice(newsAndNoticeService.findById(newId));
         ActionContext.getContext().put("editNewsNotice",editNewsNotice);
         return SUCCESS;
     }
-    @Action(value="updateNews",results={@Result(name="success",location="/manageNews.jsp")})
+    @Action(value="updateNews",results={@Result(name="success",location="/admin/adminManageNews.jsp")})
     public  String updateNews() throws IOException{
         if("".equals(this.editNewsNotice.getPath())){
             if("YES".equals(this.editNewsNotice.getFocusFlag())){
@@ -203,13 +225,16 @@ public class NewsPublishAction extends ActionSupport {
                     this.editNewsNotice.setPath(getPicRelativePath(toFile));
                     this.editNewsNotice.setTagPath(getTagPath(tagLevelList));
                     this.newsAndNoticeService.update(editNewsNotice);
+                    Execution execution = new Execution(LoginEnum.INSERT_SUCCESS);
+                    ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
                     searchNews();
                     //生成静态页，并更新首页
                     //buildHTML(updateNewsAndNotice);
                     //refreshHomePage();
                     return SUCCESS;
                 }else{
-                    ActionContext.getContext().put("maxNumber","YES");
+                    Execution execution = new Execution(LoginEnum.TOP_NUMBER);
+                    ActionContext.getContext().put("loginResult",new LoginResult<Execution>(false,execution));
                     return SUCCESS;
                 }
             }else{
@@ -217,6 +242,8 @@ public class NewsPublishAction extends ActionSupport {
                 this.editNewsNotice.setTagPath(getTagPath(tagLevelList));
                 this.newsAndNoticeService.update(this.editNewsNotice);
                 searchNews();
+                Execution execution = new Execution(LoginEnum.INSERT_SUCCESS);
+                ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
                 //生成静态页，并更新首页
                 //buildHTML(updateNewsAndNotice);
                 //refreshHomePage();
@@ -237,12 +264,15 @@ public class NewsPublishAction extends ActionSupport {
                     this.editNewsNotice.setTagPath(getTagPath(tagLevelList));
                     this.newsAndNoticeService.update(this.editNewsNotice);
                     searchNews();
+                    Execution execution = new Execution(LoginEnum.INSERT_SUCCESS);
+                    ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
                     //生成静态页，并更新首页
                     //buildHTML(updateNewsAndNotice);
                     //refreshHomePage();
                     return SUCCESS;
                 }else{
-                    ActionContext.getContext().put("maxNumber","YES");
+                    Execution execution = new Execution(LoginEnum.TOP_NUMBER);
+                    ActionContext.getContext().put("loginResult",new LoginResult<Execution>(false,execution));
                     return SUCCESS;
                 }
             }else{
@@ -251,6 +281,8 @@ public class NewsPublishAction extends ActionSupport {
                 this.newsAndNoticeService.update(this.editNewsNotice);
                 ActionContext.getContext().put("updateSuccess", "YES");
                 searchNews();
+                Execution execution = new Execution(LoginEnum.INSERT_SUCCESS);
+                ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
                 //生成静态页，并更新首页
                 //buildHTML(updateNewsAndNotice);
                 //refreshHomePage();
@@ -258,7 +290,7 @@ public class NewsPublishAction extends ActionSupport {
             }
         }
     }
-    @Action(value="deleteNews",results={@Result(name="success",location="/manageNews.jsp")})
+    @Action(value="deleteNews",results={@Result(name="success",location="/admin/adminManageNews.jsp")})
     public  String deleteNews(){
         NewsAndNotice newsAndNoticeTemp = this.newsAndNoticeService.findById(newId);
         //删除对应的静态页，并更新首页
@@ -276,11 +308,13 @@ public class NewsPublishAction extends ActionSupport {
             }
         }
         this.newsAndNoticeService.delete(newsAndNoticeTemp);
+        Execution execution = new Execution(LoginEnum.DELETE_SUCCESS);
+        ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
         searchNews();
         //refreshHomePage();//更新首页
         return SUCCESS;
     }
-    @Action(value="bacthDelete",results={@Result(name="success",location="/manageNews.jsp")})
+    @Action(value="bacthDelete",results={@Result(name="success",location="/admin/adminManageNews.jsp")})
     public String  bacthDelete(){
         for (int i = 0; i < newsList.size(); i++) {
             String tempId = newsList.get(i);
@@ -303,6 +337,8 @@ public class NewsPublishAction extends ActionSupport {
             }
         }
         //refreshHomePage();
+        Execution execution = new Execution(LoginEnum.DELETE_SUCCESS);
+        ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
         searchNews();
         return SUCCESS;
     }

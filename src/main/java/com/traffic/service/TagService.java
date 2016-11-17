@@ -7,7 +7,7 @@ import com.traffic.model.Tag;
 import java.util.List;
 
 /**
- * 标签Service接口
+ * 菜单Service接口
  * Created by ZhanHeng on 2016/11/12.
  */
 public interface TagService {
@@ -42,7 +42,7 @@ public interface TagService {
     void update(Tag userInfo) throws DataAccessException;
 
     /**
-     * 查询某级标签
+     * 查询某级菜单
      * @param level
      * @return
      */
@@ -64,7 +64,7 @@ public interface TagService {
     public void bacthDeleteTag(List<String> newsList) throws DataAccessException;
 
     /**
-     * 根据父标签查询子标签
+     * 根据父菜单查询子菜单
      * @param level
      * @param parentId
      * @return

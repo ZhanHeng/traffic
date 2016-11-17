@@ -38,7 +38,7 @@ public class TagServiceImpl implements TagService {
         try {
             if (tag!=null){
                 List<Tag> list =  tagDao.findByTagProperty(tag);
-                if(list!=null&&!list.isEmpty()){ //此标签已存在
+                if(list!=null&&!list.isEmpty()){ //此菜单已存在
                     return new Execution(LoginEnum.REPEAT_TAG);
                 }else{
                     tagDao.save(tag);   //添加到数据库

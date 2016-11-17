@@ -14,7 +14,7 @@ public class NewsAndNotice {
     private String time;					// 发布时间
     private String author;					// 作者
     private String path;					// 焦点图的图片存储路径
-    private String tagPath;                 // 标签的存储路径
+    private String tagPath;                 // 菜单的存储路径
     private String focusFlag;				// 是否是焦点图新闻的标志位
     private String htmlPath;				// 静态Html页的存储地址
     private String orderTime;				// 系统排序时间

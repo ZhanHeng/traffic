@@ -1,7 +1,7 @@
 package com.traffic.model;
 
 /**
- * 标签的实体类
+ * 菜单的实体类
  * Created by ZhanHeng on 2016/11/12.
  */
 public class Tag {
@@ -10,21 +10,21 @@ public class Tag {
      */
     private long tagId;
     /**
-     * 标签名称
+     * 菜单名称
      */
     private String tagName;
     /**
-     * 标签等级
+     * 菜单等级
      */
     private int tagLevel;
 
     /**
-     * 父亲标签 (用来表示 标签之间的关联关系)
+     * 父亲菜单 (用来表示 菜单之间的关联关系)
      */
     private Tag parentTag;
 
     /**
-     * 标签是否可用，0:不可用 , 1:可用
+     * 菜单是否可用，0:不可用 , 1:可用
      */
     private int passFlag;
 
@@ -32,6 +32,7 @@ public class Tag {
         this.tagName="";
         this.tagLevel=1;
         this.passFlag=1;
+        this.parentTag = null;
     }
 
     public Tag(String tagName, int tagLevel, int passFlag) {

@@ -15,12 +15,12 @@ public interface PageDao {
      * @param page
      * @return
      */
-    List<NewsAndNotice> findPageByProperty(NewsAndNotice news , Page page);
+    List<NewsAndNotice> findPageByProperty(NewsAndNotice news , Page page , String tagPath);
 
     /**
      * 根据实体属性拼装成hql语句
      * @param newsAndNotice
      * @return
      */
-    String modelToSql(NewsAndNotice newsAndNotice);
+    String modelToSql(NewsAndNotice newsAndNotice,String tagPath);
 }

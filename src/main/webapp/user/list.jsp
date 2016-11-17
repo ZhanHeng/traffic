@@ -27,13 +27,12 @@
                 <table class="table table-hover table-striped">
                     <thead>
                     <th>序号</th>
-                    <th>名称</th>
+                    <th>用户名</th>
                     <th align="center">操作</th>
                     </thead>
                     <tbody>
                     <c:forEach items="${list}" var="user" varStatus="status">
                         <tr>
-                            <td><input type="checkbox"  name="tagList" value="${user.userId}" /></td>
                             <td>${status.count}</td>
                             <td>${user.userName}</td>
                             <td>

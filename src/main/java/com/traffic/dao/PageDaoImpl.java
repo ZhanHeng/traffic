@@ -30,8 +30,8 @@ public class PageDaoImpl extends HibernateDaoSupport implements PageDao {
         return this.sessionFactory.getCurrentSession();
     }
 
-    public List<NewsAndNotice> findPageByProperty(NewsAndNotice news, Page page) {
-        String hql = modelToSql(news);
+    public List<NewsAndNotice> findPageByProperty(NewsAndNotice news, Page page ,String tagPath) {
+        String hql = modelToSql(news,tagPath);
         logger.info("+++++++++++++ hql = "+hql);
         Query query = getCurrentSession().createQuery(hql);
         //设置查到的所有数据
@@ -45,7 +45,7 @@ public class PageDaoImpl extends HibernateDaoSupport implements PageDao {
         return query.list();
     }
 
-    public String modelToSql(NewsAndNotice news) {
+    public String modelToSql(NewsAndNotice news ,String tagPath) {
         StringBuffer hql = new StringBuffer("from NewsAndNotice as t where 1=1 ");
         if(news!=null && !"".equals(news.getTitle())){
             hql.append("and t.title Like '%"+news.getTitle()+"%'") ;
@@ -59,6 +59,10 @@ public class PageDaoImpl extends HibernateDaoSupport implements PageDao {
         if( news!=null &&!"none".equals(news.getFocusFlag())){
             hql.append(" and t.focusFlag = '"+news.getFocusFlag()+"'");
         }
+        if(tagPath!=null&&!"".equals(tagPath)){
+            hql.append(" and t.tagPath = '"+tagPath+"'");
+        }
+        hql.append(" order by t.time desc");
         return hql.toString();
     }
 }

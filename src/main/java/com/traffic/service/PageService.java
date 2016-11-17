@@ -11,6 +11,6 @@ import java.util.List;
  */
 public interface PageService {
 
-    List<NewsAndNotice> findNewsList(NewsAndNotice news, Page page);
+    List<NewsAndNotice> findNewsList(NewsAndNotice news, Page page ,String tagPath);
 
 }

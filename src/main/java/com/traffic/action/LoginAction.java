@@ -66,7 +66,7 @@ public class LoginAction extends ActionSupport {
     @Action( //表示请求的Action及处理方法
             value="login",  //表示action的请求名称
             results={  //表示结果跳转
-                    @Result(name="success",location="/adminMainPage.jsp"),
+                    @Result(name="success",location="/admin/adminMainPage.jsp"),
                     @Result(name="input",location="/adminLogin.jsp"),
                     @Result(name="error",location="/error.jsp")
             },
@@ -108,8 +108,8 @@ public class LoginAction extends ActionSupport {
     @Action( //表示请求的Action及处理方法
             value="addUser",  //表示action的请求名称
             results={  //表示结果跳转
-                    @Result(name="success",location="/adminMainPage.jsp"),
-                    @Result(name="input",location="/adminMainPage.jsp"),
+                    @Result(name="success",location="/user/list.jsp"),
+                    @Result(name="input",location="/user/list.jsp"),
                     @Result(name="error",location="/error.jsp")
             },
             interceptorRefs={   //表示拦截器引用
@@ -203,8 +203,8 @@ public class LoginAction extends ActionSupport {
     @Action(
             value="alter",
             results={
-                    @Result(name="success",location="/adminMainPage.jsp"),
-                    @Result(name="input",location="/adminMainPage.jsp"),
+                    @Result(name="success",location="/admin/adminMainPage.jsp"),
+                    @Result(name="input",location="/admin/adminMainPage.jsp"),
                     @Result(name="error",location="/error.jsp")
             },
             interceptorRefs={

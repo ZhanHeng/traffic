@@ -27,16 +27,22 @@ public class Loginfilter extends HttpServlet implements Filter {
         HttpSession session = req.getSession(true);
 
         String url = req.getRequestURI();
+
         UserInfo admin= (UserInfo)session.getAttribute("sessionUser");
-        if (admin == null&&url.startsWith("/adminMainPage")) {
-            //request.getRequestDispatcher("adminLogin.jsp").forward(request, response);
-            HttpServletResponse resp = (HttpServletResponse)response;
-            resp.sendRedirect("adminLogin.jsp");
-            logger.warn("有外星人非法闯入网站 : "+ url);
-            respon.setHeader("Cache-Control", "no-store");
-            respon.setDateHeader("Expires", 0);
-            respon.setHeader("Pragma", "no-cache");
+        if(url.equals("/adminLogin.jsp")){
+            chain.doFilter(request, response);
+        }else{
+            if (admin == null&&url.startsWith("/admin")) {
+                //request.getRequestDispatcher("adminLogin.jsp").forward(request, response);
+                HttpServletResponse resp = (HttpServletResponse)response;
+                resp.sendRedirect("adminLogin.jsp");
+                logger.warn("有外星人非法闯入网站 : "+ url);
+                respon.setHeader("Cache-Control", "no-store");
+                respon.setDateHeader("Expires", 0);
+                respon.setHeader("Pragma", "no-cache");
+            }else{
+                chain.doFilter(request, response);
+            }
         }
-        chain.doFilter(request, response);
     }
 }

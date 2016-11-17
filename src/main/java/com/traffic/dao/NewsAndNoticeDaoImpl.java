@@ -38,7 +38,7 @@ public class NewsAndNoticeDaoImpl extends HibernateDaoSupport implements NewsAnd
     }
     //查出所有新闻
     public List<NewsAndNotice> findAll() {
-        List<NewsAndNotice> list = getCurrentSession().createQuery("from NewsAndNotice").list();
+        List<NewsAndNotice> list = getCurrentSession().createQuery("from NewsAndNotice order by time desc").list();
         return list;
     }
 

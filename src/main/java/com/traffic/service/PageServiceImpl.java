@@ -20,7 +20,7 @@ public class PageServiceImpl implements PageService {
     private PageDao pageDao;
 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public List<NewsAndNotice> findNewsList(NewsAndNotice news, Page page) {
-        return pageDao.findPageByProperty(news,page);
+    public List<NewsAndNotice> findNewsList(NewsAndNotice news, Page page,String tagPath) {
+        return pageDao.findPageByProperty(news,page,tagPath);
     }
 }

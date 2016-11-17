@@ -5,7 +5,7 @@
 *插件网站:http://jquery.decadework.com
 *作  者QQ:200592114
 *使用方法:
-*界面构造(IMG标签外必须拥有DIV 而且必须给予DIV控件ID)
+*界面构造(IMG菜单外必须拥有DIV 而且必须给予DIV控件ID)
 * <div id="imgdiv"><img id="imgShow" width="120" height="120" /></div>
 * <input type="file" id="up_img" />
 *调用代码:

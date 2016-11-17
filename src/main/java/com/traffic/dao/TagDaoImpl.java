@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 标签菜单Dao的实现类
+ * 菜单菜单Dao的实现类
  * Created by ZhanHeng on 2016/11/12.
  */
 @Repository

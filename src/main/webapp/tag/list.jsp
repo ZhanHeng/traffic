@@ -4,29 +4,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>标签列表页</title>
+    <title>菜单列表页</title>
     <%@include file="../common/head.jsp"%>
 </head>
 <body>
 <div class="container col-xs-12 col-sm-12" style="padding: 5px;">
+    <div id="repeat" class="alert alert-success" style="display: none">
+        <a href="#" class="close" data-dismiss="alert">
+            &times;
+        </a>
+        <strong>${loginResult.data.stateInfo}</strong>
+    </div>
     <form name="tagForm" action="searchTag" method="post">
     <div class="panel panel-default" >
         <div class="panel-heading" style="padding: 5px 15px 5px 15px;">
-            <h3 style="margin-top:5px">标签管理</h3>
+            <h3 style="margin-top:5px">菜单管理</h3>
             <div class="form-inline" role="banner">
                 <div class="form-group">
                     <label class="sr-only " for="name">名称</label>
                         <input type="text" name="tag.tagName" class="form-control " value="${tag.tagName}" id="name" placeholder="请输入名称">
                 </div>
                 <div class="form-group">
-                    <s:select id = "searchplevelid" name="tag.tagLevel" class="form-control "  list="#{1:'一级标签',2:'二级标签',3:'三级标签',4:'四级标签'}"
+                    <s:select id = "searchplevelid" name="tag.tagLevel" class="form-control "  list="#{1:'一级菜单',2:'二级菜单',3:'三级菜单',4:'四级菜单'}"
                               listKey="key" listValue="value" headerKey="-1" headerValue="请选择等级"></s:select>
 
                 </div>
                 <div class="form-group"></div>
                 <div class="form-group">
                     <select id = "searchpid" name="tag.parentTag.tagId" class = "form-control">
-                        <option value=-1>请选择父级标签</option>
+                        <option value=-1>请选择父级菜单</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -48,8 +54,8 @@
                 <th><input type="checkbox" id="SelectAll"  value="全选" onclick="selectAll(this);"/></th>
                 <th>序号</th>
                 <th>名称</th>
-                <th>标签等级</th>
-                <th>上级直属标签</th>
+                <th>菜单等级</th>
+                <th>上级直属菜单</th>
                 <th>状态</th>
                 <th align="center">操作</th>
                 </thead>
@@ -59,7 +65,7 @@
                         <td><input type="checkbox"  name="tagList" value="${tag.tagId}" /></td>
                         <td>${status.count}</td>
                         <td>${tag.tagName}</td>
-                        <td>${tag.tagLevel} 级标签</td>
+                        <td>${tag.tagLevel} 级菜单</td>
                         <td>
                              ${tag.parentTag.tagName}
                         </td>
@@ -90,7 +96,7 @@
             <div class="modal-header">
                 <h3 class="modal-title text-center">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <span class="glyphicon glyphicon-tag "></span> 编辑标签
+                    <span class="glyphicon glyphicon-tag "></span> 编辑菜单
                 </h3>
             </div>
             <div class="modal-body">
@@ -99,25 +105,20 @@
                     <div class="form-group">
                         <label for="tname" class="col-sm-4 control-label offset2">名称</label>
                         <div class="col-sm-6">
-                            <input type="text" name="editTag.tagName" id="tname" class="form-control"  placeholder="请输入标签名称" required autofocus>
+                            <input type="text" name="editTag.tagName" id="tname" class="form-control"  placeholder="请输入菜单名称" required autofocus>
                         </div>
                     </div>
                     <div class = "form-group">
                         <label class="col-sm-4 control-label offset2"  for = "tlevel">级别</label>
                         <div class="col-sm-6">
-                 <%--           <s:select name="tag.tagLevel" id="tlevel" class="form-control "  list="#{1:'一级标签',2:'二级标签',3:'三级标签',4:'四级标签'}"
-                                      listKey="key" listValue="value"></s:select>--%>
                             <input type="text"  id="tlevel" class="form-control"  readonly>
                             <input type="hidden" id="reallevel" name="editTag.tagLevel">
 
                         </div>
                     </div>
                     <div class = "form-group">
-                        <label class="col-sm-4 control-label offset2" for = "parentlevel">父级标签</label>
+                        <label class="col-sm-4 control-label offset2" for = "parentlevel">父级菜单</label>
                         <div class="col-sm-6">
-                            <%--<select id = "parentlevel" name="tag.parentTag.tagId" class = "form-control" >
-                                <option value=-1>无</option>
-                            </select>--%>
                                 <input type="text"  id="parentlevel" class="form-control"  readonly>
                                 <input type="hidden" id="parentTagId" name="editTag.parentTag.tagId">
                         </div>
@@ -144,6 +145,15 @@
 <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript">
     $(function(){
+        var value = '${loginResult}';//取过来的值可以是空，null，undefined
+        if (value) {
+            var state = '${loginResult.data.state}';
+            if(state < 0){
+                $('#repeat').removeClass('alert-success').addClass('alert-danger').css('display','block').delay(1500).hide(0);
+            }else{
+                $('#repeat').css('display','block').removeClass('alert-danger').addClass('alert-success').delay(1500).hide(0);
+            }
+        }
         $("#delbtn").click(function () {
             if($("input[name ='tagList' ]:checked").length<=0){
                 alert("请选择条目");
@@ -155,7 +165,7 @@
                 }
             }
         });
-        //等级改变，加载父级标签
+        //等级改变，加载父级菜单
         $("#tlevel").change(function() {
             $("#parentlevel option[value!='-1']").remove();
             $.get("loadParentTag", {

@@ -17,7 +17,7 @@
     <constant name="struts.multipart.maxSize" value="104857600" />
     <!-- 让struts2支持动态方法调用 -->
     <constant name="struts.enable.DynamicMethodInvocation" value="true" />
-    <!-- 允许标签中使用表达式语法 -->
+    <!-- 允许菜单中使用表达式语法 -->
     <constant name="struts.tag.altSyntax" value="true" />
     <!-- 对于WebLogic,Orion,OC4J此属性应该设置成true -->
     <constant name="struts.dispatcher.parametersWorkaround" value="false" />
@@ -68,9 +68,9 @@
         </action>
 
         <action name="newsAndNoticeActionForMgr" class="NewsAndNoticeActionForMgr">
-            <result name="beforeAddNewsAndNotice">/addNews.jsp</result>
+            <result name="beforeAddNewsAndNotice">/adminAddNews.jsp</result>
             <result name="beforeEditNewsAndNotice">/edit.jsp</result>
-            <result name="addNewsAndNotice">/addNews.jsp </result>
+            <result name="addNewsAndNotice">/adminAddNews.jsp </result>
             <result name="deleteNewsAndNotice">/newsManage.jsp</result>
             <result name="updateNewsAndNotice">/newsManage.jsp</result>
             <result name="listNewsForPage">/newsManage.jsp	</result>
@@ -82,7 +82,7 @@
         </action>
 
         <action name="upAction" class="NewsAndNoticeActionForMgr" method="uploadTest">
-            <result name="uploadc" >/addNews.jsp</result>
+            <result name="uploadc" >/adminAddNews.jsp</result>
         </action>
         <action name="loginAction" class="LoginAction" method="login">
             <result name="success">/adminMainPage.jsp</result>

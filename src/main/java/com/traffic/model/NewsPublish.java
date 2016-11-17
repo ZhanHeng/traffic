@@ -3,7 +3,7 @@ package com.traffic.model;
 import java.util.Date;
 
 /**
- * 新闻和标签 ，产生的中间实体
+ * 新闻和菜单 ，产生的中间实体
  * Created by ZhanHeng on 2016/11/12.
  */
 public class NewsPublish {
@@ -16,7 +16,7 @@ public class NewsPublish {
      */
     private NewsAndNotice newsAndNotice;
     /**
-     * 关联的标签实体
+     * 关联的菜单实体
      */
     private Tag tag;
     /**
