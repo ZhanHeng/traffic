@@ -83,10 +83,10 @@ function updateCheck(){
     for ( instance in CKEDITOR.instances ){
         CKEDITOR.instances[instance].updateElement();
     }
-    if($.trim($("#content2").val())==''){
+/*    if($.trim($("#content2").val())==''){
         alert( '请输入文章内容');
         return false;
-    }
+    }*/
     if( $("input[type='radio']:checked").val()=="YES"){
         var file=$("#fileid");
         if($.trim(file.val())==''){
@@ -94,7 +94,6 @@ function updateCheck(){
             return false;
         }
     }
-    return true
 }
 function update(){
     if(updateCheck()){

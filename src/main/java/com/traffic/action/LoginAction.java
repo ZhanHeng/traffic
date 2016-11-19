@@ -122,6 +122,8 @@ public class LoginAction extends ActionSupport {
     public String addUser(){
         try {
             Execution execution = userInfoService.add(userInfo);
+            List<UserInfo> list = userInfoService.findAll();
+            ActionContext.getContext().put("list",list);
             ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
             return SUCCESS;
         } catch (Exception e){

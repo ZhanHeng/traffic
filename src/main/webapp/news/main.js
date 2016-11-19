@@ -7,12 +7,15 @@ $(function () {
         $('#repeat').css('display','block').removeClass('alert-danger').addClass('alert-success').delay(1500).hide(0);
     }
     $('#openBtn').click(function () {
+        $('#tagActionId')[0].reset();
         $('#killPhoneModal').modal({
             show : true ,           //显示弹出层
             backdrop : 'static' ,  //禁止位置关闭
             keyboard : false        //关闭键盘事件
         });
     });
+
+
     //等级改变，加载父级菜单
     $("#level").change(function() {
         $("#parentlevel option[value!='-1']").remove();
@@ -35,6 +38,7 @@ $(function () {
     });
 
     $('#userBtn').click(function () {
+        $('#userForm')[0].reset();
         $('#adddUser').modal({
             show : true ,
             backdrop : 'static' ,
@@ -50,13 +54,30 @@ $(function () {
     });
 
     $('#addUserbtn').click(function () {
-        if($("#psw").val()!=$("#psw2").val()){
+        if($.trim($('#uname').val())==''){
+            alert("请输入用户名");
+            return false;
+        } else if($.trim($('#psw').val())==''){
+            alert("请输入密码");
+            return false;
+        }else if($("#psw").val()!=$("#psw2").val()){
             alert("两次输入的密码不一致");
             return false;
         }else{
+            $('#adddUser').modal('hide');
             return true;
         }
     });
+    $('#tagId').click(function () {
+        if($.trim($('#firstname').val())==''){
+            alert("请输入名称");
+            return false;
+        }else{
+            $('#killPhoneModal').modal('hide');
+            return true;
+        }
+    });
+
     $('#alterbtn').click(function () {
         if($("#confirmpsw").val()!=$("#confirm2").val()){
             alert("两次输入的密码不一致");

@@ -22,7 +22,7 @@
     <meta http-equiv="description" content="This is my page">
     <script src="../ckeditor/ckeditor.js"></script>
     <!-- Bootstrap core CSS -->
-    <link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
@@ -42,11 +42,11 @@
             <h3 style="margin-top:5px">发布新闻</h3>
         </div>
         <div class="panel-body">
-            <form action="addNews" role = "form" class="form-horizontal" id="addForm" method="post" enctype="multipart/form-data">
+            <form action="addNews" role ="form" class="form-horizontal" id="addForm" method="post" enctype="multipart/form-data">
                 <div class = "form-group">
-                    <label class="col-sm-1 control-label" for = "title">文章标题</label>
+                    <label class="col-sm-1 control-label" for ="title">文章标题</label>
                     <div class="col-sm-10">
-                        <input type = "text" name="newsAndNotice.title" class = "form-control" id = "title"  placeholder = "请输入文章标题" required>
+                        <input type="text" name="newsAndNotice.title" class = "form-control" id = "title"  placeholder = "请输入文章标题" required>
                     </div>
                 </div>
                 <div class = "form-group">
@@ -103,11 +103,11 @@
                 <input type="hidden" id="stateId" value="${loginResult.data.state}">
                 <div class="form-group">
                     <div class="col-sm-1 col-sm-offset-1">
-                        <button type = "button" class="btn btn-success" onclick="update();">保存提交</button>
+                        <button class="btn  btn-success " type="submit" onclick="update();">保存提交</button>
                     </div>
                 </div>
                 <div class="form-group">
-                    <textarea name="newsAndNotice.content" id="content2"> </textarea>
+                    <textarea name="newsAndNotice.content" class="form-control" id="content2" required> </textarea>
                     <script type="text/javascript">
                         CKEDITOR.replace('content2');
                     </script>
@@ -116,7 +116,8 @@
         </div>
     </div>
 </div>
-<script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+<script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+<script src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../js/uploadPreview.js"></script>
 <script type="text/javascript" src="../js/WdatePicker.js"></script>
 <script type="text/javascript" src="../news/addNews.js"></script>

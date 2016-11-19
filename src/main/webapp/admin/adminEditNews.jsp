@@ -124,7 +124,8 @@
         </div>
     </div>
 </div>
-<script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+<script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+<script src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../js/uploadPreview.js"></script>
 <script type="text/javascript" src="../js/WdatePicker.js"></script>
 <script type="text/javascript" src="../news/editNews.js"></script>

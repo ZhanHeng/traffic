@@ -167,18 +167,17 @@
                         </h3>
                     </div>
                     <div class="modal-body">
-                            <form action="addTag" class="form-horizontal" role="form" method="post">
+                            <form action="addTag" id="tagActionId" class="form-horizontal" role="form" method="post" target="main">
                                 <div class="form-group">
                                     <label for="firstname" class="col-sm-2 control-label offset2">菜单名称</label>
                                     <div class="col-sm-8">
-                                        <input type="text" name="tag.tagName" class="form-control" id="firstname" placeholder="请输入菜单名称" required autofocus>
+                                        <input type="text" name="tag.tagName" class="form-control" id="firstname" placeholder="请输入菜单名称" required>
                                     </div>
                                 </div>
                                 <div class = "form-group">
                                     <label class="col-sm-2 control-label offset2" for = "level">菜单级别</label>
                                     <div class="col-sm-8">
                                         <select id = "level" name="tag.tagLevel" class = "form-control">
-                                            <option value=-1>请选择菜单等级</option>
                                             <option value=1>一级菜单</option>
                                             <option value=2>二级菜单</option>
                                             <option value=3>三级菜单</option>
@@ -186,7 +185,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class = "form-group" id="pid">
+                                <div class = "form-group" id="pid" style="display: none">
                                     <label class="col-sm-2 control-label offset2" for = "parentlevel">父级菜单</label>
                                     <div class="col-sm-8">
                                         <select id = "parentlevel" name="tag.parentTag.tagId" class = "form-control">
@@ -195,14 +194,14 @@
                                 </div>
                                 <div class="modal-footer">
                                     <input type="button" class="btn btn-default" data-dismiss="modal" value="关闭">
-                                    <input type="submit" class="btn btn-primary" value="提交">
+                                    <input type="submit" id="tagId" class="btn btn-primary" value="提交">
                                 </div>
                             </form>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="adddUser" class="modal fade">
+        <div id="adddUser" class="modal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -212,7 +211,7 @@
                         </h3>
                     </div>
                     <div class="modal-body">
-                        <form action="addUser" id="userForm" class="form-horizontal" role="form" method="post">
+                        <form action="addUser" id="userForm" class="form-horizontal" role="form" method="post" target="main">
                             <div class="form-group">
                                 <label for="uname" class="col-sm-2 control-label">用户名</label>
                                 <div class="col-sm-8">

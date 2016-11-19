@@ -225,7 +225,7 @@ public class NewsPublishAction extends ActionSupport {
                     this.editNewsNotice.setPath(getPicRelativePath(toFile));
                     this.editNewsNotice.setTagPath(getTagPath(tagLevelList));
                     this.newsAndNoticeService.update(editNewsNotice);
-                    Execution execution = new Execution(LoginEnum.INSERT_SUCCESS);
+                    Execution execution = new Execution(LoginEnum.UPDATE_SUCCESS);
                     ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
                     searchNews();
                     //生成静态页，并更新首页
@@ -242,7 +242,7 @@ public class NewsPublishAction extends ActionSupport {
                 this.editNewsNotice.setTagPath(getTagPath(tagLevelList));
                 this.newsAndNoticeService.update(this.editNewsNotice);
                 searchNews();
-                Execution execution = new Execution(LoginEnum.INSERT_SUCCESS);
+                Execution execution = new Execution(LoginEnum.UPDATE_SUCCESS);
                 ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
                 //生成静态页，并更新首页
                 //buildHTML(updateNewsAndNotice);
@@ -264,7 +264,7 @@ public class NewsPublishAction extends ActionSupport {
                     this.editNewsNotice.setTagPath(getTagPath(tagLevelList));
                     this.newsAndNoticeService.update(this.editNewsNotice);
                     searchNews();
-                    Execution execution = new Execution(LoginEnum.INSERT_SUCCESS);
+                    Execution execution = new Execution(LoginEnum.UPDATE_SUCCESS);
                     ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
                     //生成静态页，并更新首页
                     //buildHTML(updateNewsAndNotice);
@@ -281,7 +281,7 @@ public class NewsPublishAction extends ActionSupport {
                 this.newsAndNoticeService.update(this.editNewsNotice);
                 ActionContext.getContext().put("updateSuccess", "YES");
                 searchNews();
-                Execution execution = new Execution(LoginEnum.INSERT_SUCCESS);
+                Execution execution = new Execution(LoginEnum.UPDATE_SUCCESS);
                 ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
                 //生成静态页，并更新首页
                 //buildHTML(updateNewsAndNotice);
