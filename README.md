@@ -8,7 +8,7 @@
 
 相关技术：
 
-1.Maven进行项目管理 , 基于MVC逐层编码实现
+1.使用Maven进行项目管理 , git代码版本控制
 
 2.使用 slf4j+logback 进行日志管理
 
@@ -16,9 +16,9 @@
 
 3.基于Spring注解的Bean管理，结合XML配置
 
-4.基于注解的声明式事务，实现优雅接口
+4.基于注解的声明式事务，实现Restful接口
 
-5.基于Bootstrap页面设计，结合jQuery/JavaScript 进行交互
+5.后台基于Bootstrap页面设计，结合jQuery/JavaScript 进行交互
 
 5.Redis缓存优化,减少数据库压力
 
