@@ -199,11 +199,16 @@ public class TagAction extends ActionSupport {
     public String update(){
         try {
             editTag.setParentTag(tagService.findById(editTag.getParentTag().getTagId()));//把实体先SET进去再更新
-            tagService.update(editTag);
-            List<Tag> list = tagService.findAll();
-            ActionContext.getContext().put("list",list);
-            this.setTag(null);
-            return SUCCESS;
+            Execution execution = tagService.update(editTag);
+            if (execution.getState()>0){
+                List<Tag> list = tagService.findAll();
+                ActionContext.getContext().put("list",list);
+                this.setTag(null);
+                return SUCCESS;
+            }else{
+                request.setAttribute("loginResult", new LoginResult<Execution>(false,execution));
+                return SUCCESS;
+            }
         }catch (Exception e){
             logger.error(e.getMessage(),e);
             return ERROR;

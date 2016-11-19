@@ -60,6 +60,12 @@ public interface TagDao {
     public List<Tag> findByTagProperty(Tag tag);
 
     /**
+     * 根据实体属性确定唯一
+     * @param tag
+     * @return
+     */
+    public List<Tag> findOnlyByTagProperty(Tag tag);
+    /**
      * 批量删除
      * @param newsList
      */

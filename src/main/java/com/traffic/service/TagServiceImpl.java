@@ -37,7 +37,7 @@ public class TagServiceImpl implements TagService {
     public Execution add(Tag tag) throws DataAccessException {
         try {
             if (tag!=null){
-                List<Tag> list =  tagDao.findByTagProperty(tag);
+                List<Tag> list =  tagDao.findOnlyByTagProperty(tag);
                 if(list!=null&&!list.isEmpty()){ //此菜单已存在
                     return new Execution(LoginEnum.REPEAT_TAG);
                 }else{
@@ -66,10 +66,16 @@ public class TagServiceImpl implements TagService {
         }
     }
 
-    public void update(Tag tag) throws DataAccessException {
+    public Execution update(Tag tag) throws DataAccessException {
         try {
             if (tag != null) {
-                tagDao.update(tag);
+                List<Tag> list =  tagDao.findOnlyByTagProperty(tag);
+                if(list!=null&&!list.isEmpty()){ //此菜单已存在
+                    return new Execution(LoginEnum.REPEAT_TAG);
+                }else {
+                    tagDao.update(tag);
+                    return new Execution(LoginEnum.INSERT_SUCCESS);
+                }
             } else {
                 throw new DataAccessException(DataEnum.DATA_ERROR.getStateInfo());
             }

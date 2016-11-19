@@ -39,7 +39,7 @@ public interface TagService {
      * 更新信息
      * @param userInfo
      */
-    void update(Tag userInfo) throws DataAccessException;
+    Execution update(Tag userInfo) throws DataAccessException;
 
     /**
      * 查询某级菜单

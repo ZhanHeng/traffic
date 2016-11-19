@@ -13,7 +13,7 @@
     <spring.version>4.1.6.RELEASE</spring.version>
     <hibernate.version>4.3.8.Final</hibernate.version>
     <struts2.version>2.3.20</struts2.version>
-    <jackson.version>2.5.0</jackson.version>
+    <jackson.version>2.7.3</jackson.version>
   </properties>
 
   <dependencies>
@@ -115,13 +115,13 @@
       <artifactId>struts2-core</artifactId>
       <version>${struts2.version}</version>
 
-      <exclusions>
+  <!--    <exclusions>
         <exclusion>
-          <!-- Hibernate已经还有该包的依赖，排除掉 -->
+          &lt;!&ndash; Hibernate已经还有该包的依赖，排除掉 &ndash;&gt;
           <artifactId>javassist</artifactId>
           <groupId>javassist</groupId>
         </exclusion>
-      </exclusions>
+      </exclusions>-->
     </dependency>
 
     <dependency>
