@@ -96,16 +96,16 @@ public class TagAction extends ActionSupport {
             }
     )
     public String listAll(){//TODO 加入Redis 缓存优化
-         try {
-             INITAL();
-             List<Tag> list = tagService.findAll();
-             ActionContext.getContext().put("list",list);
-             ActionContext.getContext().put("loginResult",null);
-             return SUCCESS;
-          }catch (Exception e){
-              logger.error(e.getMessage(),e);
-             return ERROR;
-          }
+        try {
+            INITAL();
+            List<Tag> list = tagService.findAll();
+            ActionContext.getContext().put("list",list);
+            ActionContext.getContext().put("loginResult",null);
+            return SUCCESS;
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            return ERROR;
+        }
     }
     @Action(
             value="searchTag",
@@ -120,14 +120,14 @@ public class TagAction extends ActionSupport {
             }
     )
     public String query(){
-         try {
-             List<Tag> list = tagService.findByTagProperty(tag);
-             ActionContext.getContext().put("list",list);
-             return SUCCESS;
-          }catch (Exception e){
-              logger.error(e.getMessage(),e);
-              return ERROR;
-          }
+        try {
+            List<Tag> list = tagService.findByTagProperty(tag);
+            ActionContext.getContext().put("list",list);
+            return SUCCESS;
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            return ERROR;
+        }
     }
 
     @Action(
@@ -167,21 +167,21 @@ public class TagAction extends ActionSupport {
             }
     )
     public String delete(){
-         try {
-             Tag tag = tagService.findById(Long.parseLong(id));
-             tagService.delete(tag);
-             List<Tag> list = tagService.findAll();
-             ActionContext.getContext().put("list",list);
-             Execution execution = new Execution(LoginEnum.DELETE_SUCCESS);
+        try {
+            Tag tag = tagService.findById(Long.parseLong(id));
+            tagService.delete(tag);
+            List<Tag> list = tagService.findAll();
+            ActionContext.getContext().put("list",list);
+            Execution execution = new Execution(LoginEnum.DELETE_SUCCESS);
             // ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
-             request.setAttribute("loginResult", new LoginResult<Execution>(true,execution));
-             return SUCCESS;
-          }catch (Exception e){
-              logger.error(e.getMessage());
-             Execution execution = new Execution(LoginEnum.DELETE_ERROR);
-             request.setAttribute("loginResult", new LoginResult<Execution>(true,execution));
-              return SUCCESS;
-          }
+            request.setAttribute("loginResult", new LoginResult<Execution>(true,execution));
+            return SUCCESS;
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            Execution execution = new Execution(LoginEnum.DELETE_ERROR);
+            request.setAttribute("loginResult", new LoginResult<Execution>(true,execution));
+            return SUCCESS;
+        }
     }
 
     @Action(
@@ -199,11 +199,19 @@ public class TagAction extends ActionSupport {
     public String update(){
         try {
             editTag.setParentTag(tagService.findById(editTag.getParentTag().getTagId()));//把实体先SET进去再更新
-            tagService.update(editTag);
-            List<Tag> list = tagService.findAll();
-            ActionContext.getContext().put("list",list);
-            this.setTag(null);
-            return SUCCESS;
+            Execution execution = tagService.update(editTag);
+            if (execution.getState()>0){
+                List<Tag> list = tagService.findAll();
+                ActionContext.getContext().put("list",list);
+                this.setTag(null);
+                return SUCCESS;
+            }else{
+                request.setAttribute("loginResult", new LoginResult<Execution>(false,execution));
+                List<Tag> list = tagService.findAll();
+                ActionContext.getContext().put("list",list);
+                this.setTag(null);
+                return SUCCESS;
+            }
         }catch (Exception e){
             logger.error(e.getMessage(),e);
             return ERROR;

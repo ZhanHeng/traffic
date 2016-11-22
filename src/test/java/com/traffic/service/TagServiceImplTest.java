@@ -23,7 +23,9 @@ public class TagServiceImplTest {
         String name = "组织机构";
         int level = 1 ;
         int pass = 1;
-        Tag tag = new Tag(name,level,pass);
+        int position = 0;
+        int weight = 0;
+        Tag tag = new Tag(name,level,pass,position,weight);
         tagService.add(tag);
     }
 

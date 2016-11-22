@@ -41,6 +41,7 @@ public class TagDaoImpl extends HibernateDaoSupport implements TagDao {
     }
 
     public void update(Tag tag) {
+        getCurrentSession().clear();
         getCurrentSession().update(tag);
     }
 
@@ -65,6 +66,23 @@ public class TagDaoImpl extends HibernateDaoSupport implements TagDao {
         StringBuffer hql = new StringBuffer("from Tag as t where 1=1 ");
         if(tag!=null && !"".equals(tag.getTagName().trim())){
             hql.append("and t.tagName Like '%"+tag.getTagName().trim()+"%'") ;
+        }
+        if( tag!=null && tag.getTagLevel()!=-1){
+            hql.append(" and t.tagLevel = '"+tag.getTagLevel()+"'");
+        }
+        if( tag!=null && tag.getPassFlag()!=-1){
+            hql.append(" and t.passFlag = '"+tag.getPassFlag()+"'");
+        }
+        if( tag!=null && tag.getParentTag()!=null && tag.getParentTag().getTagId()!=-1){
+            hql.append(" and t.parentTag.tagId = '"+tag.getParentTag().getTagId()+"'");
+        }
+        return getCurrentSession().createQuery(hql.toString()).list() ;
+    }
+
+    public List<Tag> findOnlyByTagProperty(Tag tag){
+        StringBuffer hql = new StringBuffer("from Tag as t where 1=1 ");
+        if(tag!=null && !"".equals(tag.getTagName().trim())){
+            hql.append("and t.tagName = '"+tag.getTagName().trim()+"'") ;
         }
         if( tag!=null && tag.getTagLevel()!=-1){
             hql.append(" and t.tagLevel = '"+tag.getTagLevel()+"'");

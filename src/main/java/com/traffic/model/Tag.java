@@ -24,6 +24,21 @@ public class Tag {
     private Tag parentTag;
 
     /**
+     * 菜单位置 0 初始 1上 2左下 3 右下
+     */
+    private int position;
+
+
+    /**
+     * 权重 排序用 0 初始 越大越靠左 靠上
+     */
+    private int weight;
+
+
+
+
+
+    /**
      * 菜单是否可用，0:不可用 , 1:可用
      */
     private int passFlag;
@@ -32,13 +47,17 @@ public class Tag {
         this.tagName="";
         this.tagLevel=1;
         this.passFlag=1;
+        this.position=0;
+        this.weight=0;
         this.parentTag = null;
     }
 
-    public Tag(String tagName, int tagLevel, int passFlag) {
+    public Tag(String tagName, int tagLevel, int passFlag ,int position,int weight) {
         this.tagName = tagName;
         this.tagLevel = tagLevel;
         this.passFlag = passFlag;
+        this.position = position;
+        this.weight = weight;
     }
 
     public long getTagId() {
@@ -79,5 +98,21 @@ public class Tag {
 
     public void setParentTag(Tag parentTag) {
         this.parentTag = parentTag;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 }

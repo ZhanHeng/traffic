@@ -50,6 +50,8 @@
         </id>
         <property name="tagName" column="categoryName" type="java.lang.String"/>
         <property name="tagLevel" column="tagLevel" type="java.lang.Integer"/>
+        <property name="position" column="position" type="java.lang.Integer"/>
+        <property name="weight" column="weight" type="java.lang.Integer"/>
         <many-to-one name="parentTag"
                      class="com.traffic.model.Tag"
                      lazy="false">

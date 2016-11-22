@@ -192,6 +192,24 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class = "form-group">
+                                    <label class="col-sm-2 control-label offset2" for = "level">菜单位置</label>
+                                    <div class="col-sm-8">
+                                        <select id = "position" name="tag.position" class = "form-control">
+                                            <option value=-1>请选择菜单位置</option>
+                                            <option value=0>无</option>
+                                            <option value=1>上</option>
+                                            <option value=2>左下</option>
+                                            <option value=3>右下</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="firstname" class="col-sm-2 control-label offset2">菜单权重</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="tag.weight" class="form-control" id="weight" placeholder="请输入权重" required autofocus>
+                                    </div>
+                                </div>
                                 <div class="modal-footer">
                                     <input type="button" class="btn btn-default" data-dismiss="modal" value="关闭">
                                     <input type="submit" id="tagId" class="btn btn-primary" value="提交">

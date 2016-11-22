@@ -37,7 +37,7 @@ public class TagServiceImpl implements TagService {
     public Execution add(Tag tag) throws DataAccessException {
         try {
             if (tag!=null){
-                List<Tag> list =  tagDao.findByTagProperty(tag);
+                List<Tag> list =  tagDao.findOnlyByTagProperty(tag);
                 if(list!=null&&!list.isEmpty()){ //此菜单已存在
                     return new Execution(LoginEnum.REPEAT_TAG);
                 }else{
@@ -66,10 +66,16 @@ public class TagServiceImpl implements TagService {
         }
     }
 
-    public void update(Tag tag) throws DataAccessException {
+    public Execution update(Tag tag) throws DataAccessException {
         try {
             if (tag != null) {
-                tagDao.update(tag);
+                List<Tag> list =  tagDao.findOnlyByTagProperty(tag);
+                if(list==null||list.isEmpty()||tag.getTagId()==list.get(0).getTagId()){ //此菜单已存在且不为其自身
+                    tagDao.update(tag);
+                    return new Execution(LoginEnum.INSERT_SUCCESS);
+                }else {
+                    return new Execution(LoginEnum.REPEAT_TAG);
+                }
             } else {
                 throw new DataAccessException(DataEnum.DATA_ERROR.getStateInfo());
             }
@@ -90,30 +96,30 @@ public class TagServiceImpl implements TagService {
     }
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public List<Tag> findByTagProperty(Tag tag) throws DataAccessException {
-         try {
-             if(tag!=null){
-                 List<Tag> list = tagDao.findByTagProperty(tag);
-                 return list;
-             }else {
-                 throw new DataAccessException(DataEnum.DATA_ERROR.getStateInfo());
-             }
-          }catch (Exception e){
-              logger.error(e.getMessage(),e);
-              throw new DataAccessException(e.getMessage());
-          }
+        try {
+            if(tag!=null){
+                List<Tag> list = tagDao.findByTagProperty(tag);
+                return list;
+            }else {
+                throw new DataAccessException(DataEnum.DATA_ERROR.getStateInfo());
+            }
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            throw new DataAccessException(e.getMessage());
+        }
     }
 
     public void bacthDeleteTag(List<String> newsList) throws DataAccessException{
-         try {
-             if (newsList!=null && !newsList.isEmpty()){
-                 tagDao.bacthDeleteTag(newsList);
-             }else {
-                 throw new DataAccessException(DataEnum.DATA_ERROR.getStateInfo());
-             }
-          }catch (Exception e){
-              logger.error(e.getMessage(),e);
-              throw new DataAccessException(e.getMessage());
-          }
+        try {
+            if (newsList!=null && !newsList.isEmpty()){
+                tagDao.bacthDeleteTag(newsList);
+            }else {
+                throw new DataAccessException(DataEnum.DATA_ERROR.getStateInfo());
+            }
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            throw new DataAccessException(e.getMessage());
+        }
     }
 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)

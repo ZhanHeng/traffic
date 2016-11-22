@@ -54,6 +54,11 @@ public class NewsPublishAction extends ActionSupport {
     private String newsContent;
     private Page page;
     private String newId;
+    private String shownewId;
+    private NewsAndNotice showNewsNotice;
+
+
+
     @Action(
             value="addNews",
             results={@Result(name="success",location="/admin/adminAddNews.jsp")},
@@ -217,6 +222,14 @@ public class NewsPublishAction extends ActionSupport {
         ActionContext.getContext().put("editNewsNotice",editNewsNotice);
         return SUCCESS;
     }
+
+    @Action(value="showOneNews",results={@Result(name="success",location="/user/showContent.jsp")})
+    public  String showOneNews(){
+        this.setShowNewsNotice(newsAndNoticeService.findById(shownewId));
+        ActionContext.getContext().put("showDetailInfo",showNewsNotice);
+        return SUCCESS;
+    }
+
     @Action(value="updateNews",results={@Result(name="success",location="/admin/adminManageNews.jsp")})
     public  String updateNews() throws IOException{
         if("".equals(this.editNewsNotice.getPath())){
@@ -439,5 +452,20 @@ public class NewsPublishAction extends ActionSupport {
 
     public void setNewsContent(String newsContent) {
         this.newsContent = newsContent;
+    }
+    public String getShownewId() {
+        return shownewId;
+    }
+
+    public void setShownewId(String shownewId) {
+        this.shownewId = shownewId;
+    }
+
+    public NewsAndNotice getShowNewsNotice() {
+        return showNewsNotice;
+    }
+
+    public void setShowNewsNotice(NewsAndNotice showNewsNotice) {
+        this.showNewsNotice = showNewsNotice;
     }
 }
