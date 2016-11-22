@@ -107,7 +107,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <textarea name="newsAndNotice.content" class="form-control" id="content2" required> </textarea>
+                    <textarea name="newsContent" class="form-control" id="content2"></textarea>
                     <script type="text/javascript">
                         CKEDITOR.replace('content2');
                     </script>

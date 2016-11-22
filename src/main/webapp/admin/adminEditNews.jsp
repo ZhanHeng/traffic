@@ -112,7 +112,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <textarea name="editNewsNotice.content" id="content1" ><%=data %></textarea>
+                    <textarea name="newsContent" id="content1" ><%=data %></textarea>
                     <script type="text/javascript">
                         CKEDITOR.replace('content1');
                     </script>

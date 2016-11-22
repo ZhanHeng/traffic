@@ -51,6 +51,7 @@ public class NewsPublishAction extends ActionSupport {
     private List<String> newsList;          //批量删除
     private NewsAndNotice searchNewsNotice;
     private NewsAndNotice editNewsNotice;
+    private String newsContent;
     private Page page;
     private String newId;
     @Action(
@@ -68,6 +69,7 @@ public class NewsPublishAction extends ActionSupport {
                 this.newsAndNotice.setOrderTime(formatNowTime());
                 this.newsAndNotice.setPath(getPicRelativePath(toFile));
                 this.newsAndNotice.setTagPath(getTagPath(tagLevelList));
+                this.newsAndNotice.setContent(newsContent.getBytes());
                 this.newsAndNoticeService.save(this.newsAndNotice);
                 Execution execution = new Execution(LoginEnum.INSERT_SUCCESS);
                 ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
@@ -84,6 +86,7 @@ public class NewsPublishAction extends ActionSupport {
             this.newsAndNotice.setPath("");
             this.newsAndNotice.setOrderTime(formatNowTime());
             this.newsAndNotice.setTagPath(getTagPath(tagLevelList));
+            this.newsAndNotice.setContent(newsContent.getBytes());
             this.newsAndNoticeService.save(this.newsAndNotice);
             Execution execution = new Execution(LoginEnum.INSERT_SUCCESS);
             ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
@@ -224,9 +227,11 @@ public class NewsPublishAction extends ActionSupport {
                     File toFile = new File(UPLOAD_PATH + "\\" + getMyfileFileName());
                     this.editNewsNotice.setPath(getPicRelativePath(toFile));
                     this.editNewsNotice.setTagPath(getTagPath(tagLevelList));
+                    this.editNewsNotice.setContent(newsContent.getBytes());
                     this.newsAndNoticeService.update(editNewsNotice);
                     Execution execution = new Execution(LoginEnum.UPDATE_SUCCESS);
                     ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
+                    this.setTagLevelList(null);
                     searchNews();
                     //生成静态页，并更新首页
                     //buildHTML(updateNewsAndNotice);
@@ -240,7 +245,9 @@ public class NewsPublishAction extends ActionSupport {
             }else{
                 this.editNewsNotice.setPath("");
                 this.editNewsNotice.setTagPath(getTagPath(tagLevelList));
+                this.editNewsNotice.setContent(newsContent.getBytes());
                 this.newsAndNoticeService.update(this.editNewsNotice);
+                this.setTagLevelList(null);
                 searchNews();
                 Execution execution = new Execution(LoginEnum.UPDATE_SUCCESS);
                 ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
@@ -262,6 +269,8 @@ public class NewsPublishAction extends ActionSupport {
                     File toFile = new File(UPLOAD_PATH + "\\" + getMyfileFileName());
                     this.editNewsNotice.setPath(getPicRelativePath(toFile));
                     this.editNewsNotice.setTagPath(getTagPath(tagLevelList));
+                    this.editNewsNotice.setContent(newsContent.getBytes());
+                    this.setTagLevelList(null);
                     this.newsAndNoticeService.update(this.editNewsNotice);
                     searchNews();
                     Execution execution = new Execution(LoginEnum.UPDATE_SUCCESS);
@@ -278,8 +287,10 @@ public class NewsPublishAction extends ActionSupport {
             }else{
                 this.editNewsNotice.setPath("");
                 this.editNewsNotice.setTagPath(getTagPath(tagLevelList));
+                this.editNewsNotice.setContent(newsContent.getBytes());
                 this.newsAndNoticeService.update(this.editNewsNotice);
                 ActionContext.getContext().put("updateSuccess", "YES");
+                this.setTagLevelList(null);
                 searchNews();
                 Execution execution = new Execution(LoginEnum.UPDATE_SUCCESS);
                 ActionContext.getContext().put("loginResult",new LoginResult<Execution>(true,execution));
@@ -420,5 +431,13 @@ public class NewsPublishAction extends ActionSupport {
 
     public void setNewsList(List<String> newsList) {
         this.newsList = newsList;
+    }
+
+    public String getNewsContent() {
+        return newsContent;
+    }
+
+    public void setNewsContent(String newsContent) {
+        this.newsContent = newsContent;
     }
 }
