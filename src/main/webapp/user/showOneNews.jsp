@@ -1,11 +1,31 @@
 <%--
   Created by IntelliJ IDEA.
   User: CHENSHUANG
+  Date: 2016/11/21
+  Time: 18:48
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page import="com.traffic.model.NewsAndNotice"%>
+<html>
+<head>
+    <title>抚顺市交通局</title>
+</head>
+<body>
+<%--
+  Created by IntelliJ IDEA.
+  User: CHENSHUANG
   Date: 2016/11/18
   Time: 12:55
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+    NewsAndNotice temp=(NewsAndNotice)request.getAttribute("showOneInfo");
+    String data = temp.getContentStr();
+%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta name='renderer' content='webkit'>
@@ -280,6 +300,659 @@
         }
     })
 </script>
+<style type="text/css">
+
+    body{text-align: center; font-family:"宋体", arial;margin:0; padding:0; background: #ffffff; font-size:12px; color:#272727;line-height:120%;}
+    div{
+        background-color:#ffffff;
+    }
+    #top{
+        width:960px;
+        margin:auto;
+        clear:both;
+    }
+    #bottom{
+        clear:both;
+        width:960px;
+        margin:auto;
+    }
+    /*整体页面*/
+    #page1{
+        width:790px;margin-left:auto;margin-right:auto;background-color:#ffffff;
+    }
+    /*正文部分*/
+    #content{
+        float:left;
+        margin-top:5px;
+        text-align:left;
+        width:960px;
+        background-color:#ffffff;
+    }
+    #content0{
+        float:left;
+        border:0;
+        margin:0;
+        padding:0;
+        display:inline;
+        margin-top:5px;
+        text-align:left;
+        width:960px;
+        background:url('../sites/all/themes/fsjt/images/bg.jpg') repeat-y left top;
+    }
+    #contentleft0{
+        float:left;
+        border:0;
+        width:198px;
+        display:inline;
+        overflow:hidden;
+    }
+    .middle0{
+        float:left;
+        width:960px;
+        margin-left:7px;
+        border:1px #d9d9d9 solid;
+        border-bottom:none;
+        display:inline;
+    }
+    .wznr0{
+        float:left;
+        width:900px;
+        padding:0;
+        margin:25px 30px 0 30px;
+        display:inline;
+    }
+    .dx{
+        float:left;
+        border:0;
+        padding:0;
+        margin:0;
+        display:inline;
+        width:960px;
+        height:1px;
+        overflow:hidden;
+        background:url('../sites/all/themes/fsjt/images/bg.jpg') no-repeat left top;
+    }
+
+    #contentleft{
+        float:left;
+        border:0;
+        width:198px;
+        height:634px;
+        overflow:hidden;
+        border-bottom:1px #d9d9d9 solid;
+    }
+    .contentleft1{
+        float:left;
+        width:196px;
+        border:1px #d9d9d9 solid;
+        background-color:#FFE8DD;
+    }
+    .contentwszx{
+        float:left;
+        width:196px;
+        border:1px #d9d9d9 solid;
+        height:710px;
+        border-bottom:none;
+        background-color:#FFE8DD;
+    }
+    .contentleft1 img{
+        float:left;
+        border:0;
+        padding:0;
+        margin:0;
+        display:inline;
+        width:196px;
+    }
+    .bar{
+        float:left;
+        border:0;
+        width:196px;
+        height:28px;
+        background:url('../sites/all/themes/fsjt/images/leftbar.jpg') no-repeat left top;
+    }
+    .bar label{
+        float:left;
+        font-size:14px;
+        color:#920000;
+        font-weight:bold;
+        margin:8px 0 0 10px;
+        padding-top:1px;
+    }
+    .contentleft1 ul{
+        float:left;
+        margin:0;
+        padding:0;
+        display:inline;
+        width:163px;
+        list-style: disc;
+        margin:10px 0 0 16px;
+    }
+    .contentleft1 ul li{
+        float:left;
+        width:170px;
+        height:27px;
+        display:inline;
+        margin-bottom:6px;
+        background:url('../sites/all/themes/fsjt/images/leftlibg.jpg') no-repeat;
+    }
+    .contentleft1 ul li a{
+        float:left;
+        display:inline;
+        width:110px;
+        height:20px;
+        color:#920000;
+        text-align:left;
+        padding:7px 0 0 60px;
+        text-decoration:none;
+        background-image:url('../sites/all/themes/fsjt/images/leftlijt.jpg');
+        background-position:49px 0px;
+        background-repeat:no-repeat;
+    }
+    .contentleft1 ul li a:hover{
+        text-decoration:none;
+    }
+    .contentleft2{
+        float:left;
+        width:196px;
+        height:106px;
+        margin-top:5px;
+        border:1px #d9d9d9 solid;
+        background-color:#FFE8DD;
+    }
+    .contentleft3{
+        float:left;
+        width:196px;
+        height:450px;
+        margin-top:5px;
+        border:1px #d9d9d9 solid;
+        border-bottom:none;
+        background-color:#FFE8DD;
+    }
+    .middle1{
+        float:left;
+        width:582px;
+        height:633px;
+        margin-left:8px;
+        border:1px #d9d9d9 solid;
+    }
+    .middlebar{
+        float:left;
+        border:0;
+        width:753px;
+        height:28px;
+        background:url('../sites/all/themes/fsjt/images/middlebar.jpg') repeat-x left top;
+    }
+    .tzxx{
+        float:left;
+        margin:0;
+        padding:0;
+        margin-left:20px;
+        margin-top:40px;
+        display:inline;
+        width:545px;
+    }
+    .tzxx label{
+        float:left;
+        margin:0;
+        padding:0;
+        display:inline;
+        color:#b50d00;
+        font-size:13px;
+        margin-bottom:4px;
+        width:480px;
+        margin-right:77px;
+    }
+
+    .middlebar label{
+        float:left;
+        border:0;
+        font-size:14px;
+        color:#A10000;
+        font-weight:bold;
+        padding:1px 0 0 20px;
+        margin:8px 0 0 12px;
+    }
+    .middle1 ul{
+        float:left;
+        margin:0;
+        padding:0;
+        display:inline;
+        margin:25px 0px 0px 20px;
+        width:558px;
+        height:540px;
+    }
+    .middle1 ul li{
+        float:left;
+        width:540px;
+        height:16px;
+        display:inline;
+        margin-bottom:13px;
+        background:url('../sites/all/themes/fsjt/images/jt.jpg') no-repeat left;
+    }
+    .middle1 ul li div{
+        float:left;
+        display:inline;
+        background:none;
+        width:475px;
+        margin:0;
+        padding-top:2px;
+    }
+    .middle1 ul li label{
+        float:right;
+        display:inline;
+    }
+    .middle1 ul li a{
+        float:left;
+        display:inline;
+        margin-left:12px;
+        color:black;
+        text-decoration:none;
+    }
+    .middle1 ul li a:hover{
+        text-decoration:underline;
+        color:#b50d00;
+    }
+    .wznr{
+        float:left;
+        width:551px;
+        height:550px;
+        margin-top:25px;
+        margin-left:30px;
+        display:inline;
+        overflow:auto;
+
+    }
+    /*网站地图*/
+    .contentdt{
+        float:left;
+        width:583px;
+        margin-left:7px;
+        border:1px #d9d9d9 solid;
+        display:inline;
+        height:634px;
+    }
+    .contentdt table{
+        float:left;
+        display:inline;
+        width:545px;
+        padding:0;
+        margin:0;
+        margin:20px 0 20px 20px;
+        border-collapse: collapse;
+        font-size:14px;
+    }
+    .contentdt table tr{
+        width:545px;
+        height:20px;
+    }
+    .contentdt table td{
+        vertical-align:middle;
+        height:20px;
+        border:1px #d9d9d9 solid;
+        padding:10px 10px 10px 20px;
+    }
+    .contentdt table td a{
+        color:black;
+        text-decoration:none;
+    }
+    .contentdt table td a:hover{
+        text-decoration:underline;
+    }
+    .dtsy{
+        width:60px;
+        text-align:center;
+        font-weight:bold;
+        background-color:#FFD6BE;
+    }
+    .dtlm{
+        width:138px;
+        text-align:center;
+        font-weight:bold;
+    }
+    .dtzlm{
+        width:342px;
+        text-align:left;
+    }
+    .dtzlm a{
+        line-height:20px;
+        margin-right:20px;
+    }
+    /************图片新闻***********/
+    .tpxwdiv{
+        margin:0;
+        padding:0;
+        float:left;
+        height:220px;
+        width:240px;
+        margin-left:32px;
+        margin-top:40px;
+        display:inline;
+        overflow:hidden;
+    }
+
+    .tpxwpic{
+        margin:0;
+        padding:0;
+        float:left;
+        margin-bottom:1px;
+        width:240px;
+        height:180px;
+        display:inline;
+    }
+    .tpxwpic img{
+        float:left;
+        border:0;
+        height:180px;
+        width:240px;
+        float:left;
+        display:inline;
+    }
+    .tpxwtitle{
+        margin:0;
+        padding:0;
+        float:left;
+        width:240px;
+        white-space:normal;
+        font-size:14px;
+        padding-top:10px;
+        display:inline;
+    }
+    .tpxwtitle a{
+        color:#272727;
+        text-decoration:none;
+    }
+    .tpxwtitle a:hover{
+        text-decoration:underline;
+    }
+    /****************************/
+
+    /********分页DIV********/
+    .fenye{
+        float:right;
+        height:20px;
+        margin-right:26px !important;
+        margin-right:12px;
+        font-size:12px;
+        color:#B50D00;
+        width:430px;
+    }
+    .fenye a{
+        color:#B50D00;
+        text-decoration:none;
+    }
+    .fenye a:hover{
+        color:#B50D00;
+        text-decoration:underline;
+    }
+    /*细览部分*/
+    #xlcontent{
+        border:1px #D9D9D9 solid;
+        float:left;
+        width:788px;
+        padding-bottom:10px;
+    }
+    #contentTop{
+        float:left;
+        height:24px;
+        background-image:url('..//sites/all/themes/fsjt/images/nrTitleBg.jpg');
+        background-repeat:repeat-x;
+        width:786px;
+        border:1px #fff solid;
+    }
+    #contentTop img{
+        float:left;
+        margin:7px 10px 0px 25px;
+    }
+    #contentTop label{
+        float:left;
+        margin-top:6px;
+        color:#A10000;
+    }
+    #contentTop #firstLab{
+        font-weight:bold;
+    }
+    #contentTop #firstLab1{
+        float:left;
+        color:#A10000;
+    }
+    #contentTop a{
+        margin:6px 3px 0 3px;
+        color:#A10000;
+        text-decoration:none;
+    }
+    #contentTop a:hover{
+        text-decoration:underline;
+    }
+    #contenttopbtn{
+        float:right;
+        margin-right:22px;
+        background:none;
+    }
+    #contenttopbtn a{
+        float:left;
+        color:#616161;
+    }
+    #contenttopbtn label{
+        color:#616161;
+    }
+    #contentTopBottom{
+        border-top:1px #D9D9D9 solid;
+        clear:both;
+    }
+    #middle{
+        float:left;
+        width:640px;
+        margin-left:70px;
+        display:inline;
+    }
+    #middleTitle{
+        text-align:center;
+        float:left;
+        line-height:30px;
+        font-size:18px;
+        font-weight:900;
+        margin-top:50px;
+        width:660px;
+    }
+    #pubTime{
+        text-align:center;
+        font-size:14px;
+        float:left;
+        margin-top:25px;
+        width:650px;
+        padding-top:1px;
+    }
+    #middleContent{
+        float:left;
+        width:680px;
+        margin-top:50px;
+        display:inline;
+        text-align:left;
+        font-size:14px;
+        line-height:140%;
+    }
+    #middleBottom{
+        float:left;
+        margin-left:0px;
+        margin-top:60px;
+        margin-bottom:8px;
+        display:inline;
+        border:1px #D9D9D9 solid;
+    }
+    #middleBottom img{
+        float:left;
+        margin:7px 10px 0px 25px;
+    }
+    #middleBottom label{
+        float:left;
+        margin-top:7px;
+        color:#A10000;
+        font-weight:bold;
+    }
+    #middleBottom div{
+        background-image:url('../sites/all/themes/fsjt/images/nrTitleBg.jpg');
+        background-repeat:repeat-x;
+        float:left;
+        width:690px;
+        height:24px;
+        border:1px #fff solid;
+    }
+    .list{
+        float:left;
+        margin-left:80px;
+        margin-top:5px;
+        padding-top:4px;
+        display:inline;
+        width:610px;
+        background-image:url('..//sites/all/themes/fsjt/images/listIcon.jpg');
+        background-repeat:no-repeat;
+        background-position:left 6px;
+        color:#262626;
+        clear:both;
+    }
+    .list a{
+        float:left;
+        margin-left:18px;
+        color:#262626;
+        text-decoration:none;
+    }
+    .list a:hover{
+        text-decoration:underline;
+        color:#A10000;
+    }
+    .list label{
+        float:right;
+    }
+    .content h1 {
+        width:700px;
+        margin:0 auto;
+        font-size: 20px;
+        text-align: center;
+        border-bottom: 1px solid #DFDFDF;
+        padding: 20px 0px 10px;
+        font-weight:bold;
+        color: #000;
+    }
+    .right_title {
+        font-size: 13px;
+        color: #999;
+        text-align: center;
+        padding-top: 5px;
+    }
+    .detailcontent{
+        /* background-color: red; */
+        margin: 45px auto;
+        padding: 5px 2px;
+        width: 700px;
+        height: auto;
+        min-height: 550px;
+
+    }
+    .detailcontent a{
+        color:blue;
+        text-decoration: underline;
+    }
+    .detailcontent p{
+        font-family: "Microsoft YaHei";
+        font-size: 14px;
+        margin: 0;
+    }
+</style>
+<style type="text/css">
+
+    #contentleft{
+        float:left;
+        border:0;
+        width:198px;
+        height:500px!important;
+        overflow:hidden;
+        border-bottom:1px #d9d9d9 solid;
+        margin-left:-1px;
+    }
+    .contentleft1{
+        float:left;
+        width:196px;
+        border:1px #d9d9d9 solid;
+        background-color:#FFE8DD;
+
+    }
+    .contentleft1 ul li a{
+        float:left;
+        display:inline;
+        width:156px;
+        height:20px;
+        color:#920000;
+        text-align:left;
+        padding:7px 0 0 10px;
+        text-decoration:none;
+        background-image:url('../sites/all/themes/fsjt/images/leftlijt.jpg');
+        background-position:0px 0px;
+        background-repeat:no-repeat;
+    }
+
+    /*菜单定义*/
+    #navlist{
+        margin-left:17px;
+        margin-right:auto;
+        float:left;
+        width:736px;
+        height:36px;
+        /*	background-image:url('/sites/all/themes/fsjt/images/04.jpg');*/
+    }
+    #navlist ul {
+        CLEAR: left;
+        MARGIN: 0px;
+        PADDING: 0px;
+        BORDER: 0px;
+        TEXT-ALIGN: center;
+        display: inline;
+        background:none;
+        list-style-type:none;
+        height:28px;
+    }
+
+    #navlist li {
+        height:28px;
+        border:0;
+        FLOAT: left;
+        MARGIN: 0px;
+        PADDING: 0px;
+        TEXT-ALIGN: center;
+        line-height:36px;
+        list-style:none;
+        list-style-type:none;
+        display:inline;
+        width:100px;
+    }
+    #navlist li a , #navlist li a:link {
+        float:left;
+        DISPLAY: block;
+        MARGIN:0;
+        PADDING:0 11px 0 11px;
+        border:0;
+        height:36px;
+        COLOR: #920000;
+        TEXT-DECORATION: none;
+        font-weight:800;
+        font-size:14px;
+        /*	background-image: url('/sites/all/themes/fsjt/images/04.jpg');	*/
+        list-style-type:none;
+        display:inline;
+    }
+    #navlist li a:hover {
+        /*	background-image: url('/sites/all/themes/fsjt/images/02.jpg');*/
+    }
+
+    .middle1{
+        float:left;
+        width:582px!important;
+        width:555px;
+        /*	height:458px;*/
+        margin-left:8px!important;
+        margin-left:-1px;
+        border:1px #d9d9d9 solid;
+    }
+</style>
 
 <body>
 <style type="text/css">
@@ -330,7 +1003,7 @@
     }
     .middle0{
         float:left;
-        width:583px;
+        width:960px;
         margin-left:7px;
         border:1px #d9d9d9 solid;
         border-bottom:none;
@@ -338,7 +1011,7 @@
     }
     .wznr0{
         float:left;
-        width:700px;
+        width:900px;
         padding:0;
         margin:25px 30px 0 30px;
         display:inline;
@@ -805,7 +1478,41 @@
     .list label{
         float:right;
     }
-    </style>
+    .content h1 {
+        width:700px;
+        margin:0 auto;
+        font-size: 20px;
+        text-align: center;
+        border-bottom: 1px solid #DFDFDF;
+        padding: 20px 0px 10px;
+        font-weight:bold;
+        color: #000;
+    }
+    .right_title {
+        font-size: 13px;
+        color: #999;
+        text-align: center;
+        padding-top: 5px;
+    }
+    .detailcontent{
+        /* background-color: red; */
+        margin: 45px auto;
+        padding: 5px 2px;
+        width: 700px;
+        height: auto;
+        min-height: 550px;
+
+    }
+    .detailcontent a{
+        color:blue;
+        text-decoration: underline;
+    }
+    .detailcontent p{
+        font-family: "Microsoft YaHei";
+        font-size: 14px;
+        margin: 0;
+    }
+</style>
 <style type="text/css">
 
     #contentleft{
@@ -992,77 +1699,172 @@
 
 
 
-    <DIV id=content>
-        <DIV id=contentleft>
-            <DIV class=contentleft1>
-                <DIV class=bar><LABEL>组织机构</LABEL> </DIV><IMG src="/sites/all/themes/fsjt/images/lm_hywm.jpg">
-                <ul id="ss">
-                    <!--<li><a href="/zzjg/抚顺市交通局" target="_parent">抚顺市交通局</a></li>
-                    <li><a href="/zzjg/抚顺县交通局" target="_parent">抚顺县交通局</a></li>
-                    <li><a href="/zzjg/清原县交通局" target="_parent">清原县交通局</a></li>
-                    <li><a href="/zzjg/新宾县交通局" target="_parent">新宾县交通局</a></li>
-                    <li><a href="/zzjg/顺城区交通局" target="_parent">顺城区交通局</a></li>
-                    <li><a href="/zzjg/东洲区交通局" target="_parent">东洲区交通局</a></li>-->
-                    <li><a href="/zzjg/市公路管理处" target="_parent">市公路管理局</a></li>
-                    <li><a href="/zzjg/市公路运输管理处" target="_parent">市公路运输管理处</a></li>
-                    <li><a href="/zzjg/市交通工程质量与安全监督处" target="_parent">市交通工程质量与安全监督处</a></li>
-                    <li><a href="/zzjg/市城市客运交通管理处" target="_parent">市城市客运交通管理处</a></li>
-                    <li><a href="/zzjg/市交通培训管理处" target="_parent">市交通培训管理处</a></li>
-                </ul>
+    <div id="xlcontent">
 
+
+        <link href="/sites/all/themes/fsjt/css/viewslist.css" type="text/css" rel="stylesheet">
+
+        <style type="text/css">
+
+            #contentleft{
+                float:left;
+                border:0;
+                width:198px;
+                height:500px!important;
+                overflow:hidden;
+                border-bottom:1px #d9d9d9 solid;
+                margin-left:-1px;
+            }
+            .contentleft1{
+                float:left;
+                width:196px;
+                border:1px #d9d9d9 solid;
+                background-color:#FFE8DD;
+
+            }
+            .contentleft1 ul li a{
+                float:left;
+                display:inline;
+                width:156px;
+                height:20px;
+                color:#920000;
+                text-align:left;
+                padding:7px 0 0 10px;
+                text-decoration:none;
+                background-image:url('/sites/all/themes/fsjt/images/leftlijt.jpg');
+                background-position:0px 0px;
+                background-repeat:no-repeat;
+            }
+
+            /*菜单定义*/
+            #navlist{
+                margin-left:17px;
+                margin-right:auto;
+                float:left;
+                width:500px;
+                height:36px;
+                /*	background-image:url('/sites/all/themes/fsjt/images/04.jpg');*/
+            }
+            #navlist ul {
+                CLEAR: left;
+                MARGIN: 0px;
+                PADDING: 0px;
+                BORDER: 0px;
+                TEXT-ALIGN: center;
+                display: inline;
+                background:none;
+                list-style-type:none;
+                height:28px;
+            }
+
+            #navlist li {
+                height:28px;
+                border:0;
+                FLOAT: left;
+                MARGIN: 0px;
+                PADDING: 0px;
+                TEXT-ALIGN: center;
+                line-height:36px;
+                list-style:none;
+                list-style-type:none;
+                display:inline;
+                width:100px;
+            }
+            #navlist li a , #navlist li a:link {
+                float:left;
+                DISPLAY: block;
+                MARGIN:0;
+                PADDING:0 11px 0 11px;
+                border:0;
+                height:36px;
+                COLOR: #920000;
+                TEXT-DECORATION: none;
+                font-weight:800;
+                font-size:14px;
+                /*	background-image: url('/sites/all/themes/fsjt/images/04.jpg');	*/
+                list-style-type:none;
+                display:inline;
+            }
+            #navlist li a:hover {
+                /*	background-image: url('/sites/all/themes/fsjt/images/02.jpg');*/
+            }
+
+            .middle1{
+                float:left;
+                width:582px!important;
+                width:555px;
+                /*	height:458px;*/
+                margin-left:8px!important;
+                margin-left:-1px;
+                border:1px #d9d9d9 solid;
+            }
+        </style>
+
+
+        <DIV id=content>
+            <DIV id=contentleft>
+                <DIV class=contentleft1>
+                    <DIV class=bar><LABEL>组织机构</LABEL> </DIV><IMG src="/sites/all/themes/fsjt/images/lm_hywm.jpg">
+                    <ul id="ss">
+                        <!--<li><a href="/zzjg/抚顺市交通局" target="_parent">抚顺市交通局</a></li>
+                        <li><a href="/zzjg/抚顺县交通局" target="_parent">抚顺县交通局</a></li>
+                        <li><a href="/zzjg/清原县交通局" target="_parent">清原县交通局</a></li>
+                        <li><a href="/zzjg/新宾县交通局" target="_parent">新宾县交通局</a></li>
+                        <li><a href="/zzjg/顺城区交通局" target="_parent">顺城区交通局</a></li>
+                        <li><a href="/zzjg/东洲区交通局" target="_parent">东洲区交通局</a></li>-->
+                        <li><a href="/zzjg/市公路管理处" target="_parent">市公路管理局</a></li>
+                        <li><a href="/zzjg/市公路运输管理处" target="_parent">市公路运输管理处</a></li>
+                        <li><a href="/zzjg/市交通工程质量与安全监督处" target="_parent">市交通工程质量与安全监督处</a></li>
+                        <li><a href="/zzjg/市城市客运交通管理处" target="_parent">市城市客运交通管理处</a></li>
+                        <li><a href="/zzjg/市交通培训管理处" target="_parent">市交通培训管理处</a></li>
+                    </ul>
+
+                </DIV>
+                <!--
+                <DIV class=contentleft2>
+                <DIV class=bar><LABEL>站内搜索</LABEL> </DIV>
+                <DIV style="DISPLAY: inline; FLOAT: left; MARGIN: 10px 0px 0px 10px"><IFRAME
+                src="/sites/all/themes/fsjt/templates/page/fss-search.php" frameBorder=0 width=170 scrolling=no height=60
+                target="_blank"></IFRAME></DIV></DIV>
+
+                <DIV class=contentleft3></DIV>
+                -->
             </DIV>
-            <!--
-            <DIV class=contentleft2>
-            <DIV class=bar><LABEL>站内搜索</LABEL> </DIV>
-            <DIV style="DISPLAY: inline; FLOAT: left; MARGIN: 10px 0px 0px 10px"><IFRAME
-            src="/sites/all/themes/fsjt/templates/page/fss-search.php" frameBorder=0 width=170 scrolling=no height=60
-            target="_blank"></IFRAME></DIV></DIV>
 
-            <DIV class=contentleft3></DIV>
-            -->
-        </DIV>
+            <DIV class=middle0 style="width: 753px">
+                <DIV class=middlebar><LABEL>抚顺市交通局</LABEL> </DIV>
 
-        <DIV class=middle0 style="width: 753px">
-            <DIV class=middlebar><LABEL>抚顺市交通局</LABEL> </DIV>
+                <div id="navlist" style="width: 753px">
+                    <ul >
+                        <li ><a href="/zzjg/抚顺市交通局/主要职责/" target="_parent">主要职责</a> </li>
+                        <li ><a href="/zzjg/抚顺市交通局/领导分工/" target="_parent">领导分工</a> </li>
+                        <li ><a href="/zzjg/抚顺市交通局/内设机构/" target="_parent">内设机构</a> </li>
+                    </ul>
+                </div>
 
-            <div id="navlist">
-                <ul >
-                    <li ><a href="/zzjg/抚顺市交通局/主要职责/" target="_parent">主要职责</a> </li>
-                    <li ><a href="/zzjg/抚顺市交通局/领导分工/" target="_parent">领导分工</a> </li>
-                    <li ><a href="/zzjg/抚顺市交通局/内设机构/" target="_parent">内设机构</a> </li>
-                </ul>
-            </div>
-            <div class="wznr0">
-                <UL>
-                    <div class="views-row views-row-1 views-row-odd views-row-first views-row-last">
-
-                        <div class="views-field views-field-body">        <div class="field-content"><p class="MsoNormal" style="text-indent:32.0pt;mso-char-indent-count:2.0">一、主要职责</p>
-                            <p>（一）贯彻执行国家和省有关交通运输行业的方针政策和法律法规；组织起草交通运输地方性法规、规章草案，并监督实施；参与拟定物流业发展战略和规划。</p>
-                            <p>（二）承担全市交通运输规划协调工作；组织协调重点物资运输和紧急客货运输。</p>
-                            <p>（三）承担全市公路建设市场监管责任；负责全市公路及其附属设施建设与维护的管理和监督；组织实施重点交通工程建设；负责交通工程造价、工程质量与安全生产的监督管理工作。</p>
-                            <p>（四）承担全市道路运输和城市公共交通市场监管责任；负责全市道路运输和城市公共交通场站建设的布局规划并监督实施；负责汽车出入境运输和中外合资、合作经营道路运输的管理。</p>
-                            <p>（五）负责全市道路客货运输、公共汽车、出租汽车、汽车租赁、运输站（场）经营、车辆维修、车辆技术综合性能检测、机动车驾驶员培训机构及驾驶员培训的行业管理，指导长途客车、公共汽车、出租汽车的运营管理。</p>
-                            <p>（六）承担全市水路运输监管责任；拟订全市水路运输、水路工程建设相关政策、运营规范并监督实施；负责全市船舶运输、水运服务业的行业管理；承担全市水上交通安全监管责任。</p>
-                            <p>（七）负责提出全市公路、水路和城市公共交通固定资产投资规模和方向、财政性资金安排意见；负责交通建设资金的筹集、使用和监督管理工作。</p>
-                            <p>（八）指导全市公路、水路和城市公共交通行业安全生产和应急管理工作；指导全市交通运输行业体制改革，引导交通运输行业优化结构、协调发展。</p>
-                            <p>（九）拟订全市交通运输行业科技政策，组织重大科研开发，推进行业技术进步；指导全市公路、水路行业环境保护和节能减排工作；指导交通运输行业信息化建设。</p>
-                            <p>（十）承办市政府交办的其他事项。</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                        </div>  </div>  </div>
+                <div class="content" style="width: 753px">
+                    <h1> ${showOneInfo.title}</h1 >
+                    <div class="right_title">时间 : ${showOneInfo.time} &nbsp;来源: ${showOneInfo.author}</div>
+                    <div class="detailcontent" cssStyle="font-family: Microsoft YaHei; font-size: 20px;">
+                        <%=data %>
+                    </div>
+                </div>
+                <DIV class=fenye>
+                    <ul>
+                    </ul>
+                </DIV>
+                <DIV class=fenye>
+                    <ul>
+                    </ul>
+                </DIV>
+            </DIV></DIV>
 
 
-                </UL>
-            </div>
-            <DIV class=fenye>
-                <ul>
-                </ul>
-            </DIV>
-        </DIV></DIV>
 
+
+
+
+    </div>
 
 
 
@@ -1131,5 +1933,7 @@
 
 <script src="include/stat/stat.php?type=para&u=&d=10001--cn" type="text/javascript"></script>
 
+</body>
+</html>
 </body>
 </html>

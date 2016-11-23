@@ -23,4 +23,7 @@ public class PageServiceImpl implements PageService {
     public List<NewsAndNotice> findNewsList(NewsAndNotice news, Page page,String tagPath) {
         return pageDao.findPageByProperty(news,page,tagPath);
     }
+    public List<NewsAndNotice> findNewsListFront(Page page ,String tagPath){
+        return pageDao.findPageByPropertyFront(page,tagPath);
+    }
 }

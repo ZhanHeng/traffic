@@ -33,6 +33,8 @@ public class NewsAndNoticeServiceImpl implements NewsAndNoticeService{
         return newsAndNoticeDao.findAll();
     }
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public List<NewsAndNotice> findNewsByTag(String tagPath){return newsAndNoticeDao.findNewsByTag(tagPath);}
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public List<NewsAndNotice> showFocusPicture() {
         return newsAndNoticeDao.showFocusPicture();
     }

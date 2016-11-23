@@ -16,6 +16,8 @@ public interface PageDao {
      * @return
      */
     List<NewsAndNotice> findPageByProperty(NewsAndNotice news , Page page , String tagPath);
+    List<NewsAndNotice> findPageByPropertyFront(Page page , String tagPath);
+
 
     /**
      * 根据实体属性拼装成hql语句

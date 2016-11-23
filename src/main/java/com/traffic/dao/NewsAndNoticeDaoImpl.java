@@ -41,6 +41,10 @@ public class NewsAndNoticeDaoImpl extends HibernateDaoSupport implements NewsAnd
         List<NewsAndNotice> list = getCurrentSession().createQuery("from NewsAndNotice order by time desc").list();
         return list;
     }
+    public List<NewsAndNotice> findNewsByTag(String tagPath){
+        List<NewsAndNotice> list = getCurrentSession().createQuery("from NewsAndNotice  where tagPath ='"+tagPath+"' order by time desc").list();
+        return list;
+    }
 
     public void save(NewsAndNotice newsAndNotice) {
 //        newsAndNotice.setBlob(Hibernate.getLobCreator(getCurrentSession()).createBlob(newsAndNotice.getContent()));

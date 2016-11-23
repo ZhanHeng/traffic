@@ -12,5 +12,7 @@ import java.util.List;
 public interface PageService {
 
     List<NewsAndNotice> findNewsList(NewsAndNotice news, Page page ,String tagPath);
+    List<NewsAndNotice> findNewsListFront(Page page ,String tagPath);
+
 
 }

@@ -223,10 +223,19 @@ public class NewsPublishAction extends ActionSupport {
         return SUCCESS;
     }
 
-    @Action(value="showOneNews",results={@Result(name="success",location="/user/showContent.jsp")})
-    public  String showOneNews(){
+    @Action(value="showNewsDetail",results={@Result(name="success",location="/user/showContent.jsp")},
+            interceptorRefs={ @InterceptorRef("defaultStack")})
+    public  String showNewsDetail(){
         this.setShowNewsNotice(newsAndNoticeService.findById(shownewId));
         ActionContext.getContext().put("showDetailInfo",showNewsNotice);
+        return SUCCESS;
+    }
+
+    @Action(value="showOneNews",results={@Result(name="success",location="/user/showOneNews.jsp")},
+            interceptorRefs={ @InterceptorRef("defaultStack")})
+    public  String showOneNews(){
+        this.setShowNewsNotice(newsAndNoticeService.findById(shownewId));
+        ActionContext.getContext().put("showOneInfo",showNewsNotice);
         return SUCCESS;
     }
 

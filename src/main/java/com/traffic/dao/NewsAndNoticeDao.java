@@ -23,6 +23,13 @@ public interface NewsAndNoticeDao {
     List<NewsAndNotice> findAll();
 
     /**
+     * 返回Tag下的新闻列表
+     * @return
+     */
+    List<NewsAndNotice> findNewsByTag(String tagPath);
+
+
+    /**
      * 添加保存一个新闻
      * @param newsAndNotice
      * @return

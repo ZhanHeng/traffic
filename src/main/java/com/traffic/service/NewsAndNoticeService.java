@@ -23,6 +23,12 @@ public interface NewsAndNoticeService {
     List<NewsAndNotice> findAll();
 
     /**
+     * 返回Tag下所有新闻
+     */
+    List<NewsAndNotice> findNewsByTag(String tagPath);
+
+
+    /**
      * 添加保存一个新闻
      * @param newsAndNotice
      * @return

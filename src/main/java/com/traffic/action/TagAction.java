@@ -5,8 +5,12 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.traffic.dto.Execution;
 import com.traffic.dto.LoginResult;
+import com.traffic.dto.Page;
 import com.traffic.enums.LoginEnum;
+import com.traffic.model.NewsAndNotice;
 import com.traffic.model.Tag;
+import com.traffic.service.NewsAndNoticeService;
+import com.traffic.service.PageService;
 import com.traffic.service.TagService;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
@@ -39,16 +43,25 @@ public class TagAction extends ActionSupport {
     HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
     @Autowired
     private TagService tagService;
+    @Autowired
+    private NewsAndNoticeService newsAndNoticeService;
     private Tag tag;
     private String id;
+    private String tid;
     private List<String> tagList;
     private Tag editTag;
     private String levelId;
     private List<Tag> belongTagList;
     private List<Tag> levelTagList;
+
+
     private List<Tag> childTagList;
     private String currentId ;
     private String parentId ;
+    @Autowired
+    private PageService pageService;
+    private Page page;
+
 
     private  void INITAL(){
         this.setTag(null);
@@ -225,6 +238,41 @@ public class TagAction extends ActionSupport {
         return "tagjson";
     }
 
+    @Action(
+            value="getTagNews",
+            results={
+                    @Result(name="success",location="/user/showNewsList.jsp")
+            },
+            interceptorRefs={
+                    @InterceptorRef("defaultStack")
+            }
+    )
+    public String getTagNews() {
+        editTag = tagService.findById(Long.parseLong(tid));
+        List<NewsAndNotice> list = null;
+        String tagPath = tid;
+        if(editTag.getParentTag() !=null)
+        {
+            tagPath = editTag.getParentTag().getTagId()+"/" +tagPath;
+            if(editTag.getParentTag().getParentTag() !=null)
+            {
+                tagPath = editTag.getParentTag().getParentTag().getTagId()+"/" +tagPath;
+            }
+        }
+
+
+        if(page==null){
+            page = new Page();
+
+            list = pageService.findNewsListFront(page,tagPath);
+        }else{
+            list = pageService.findNewsListFront(page,tagPath);
+        }
+        ActionContext.getContext().put("list",list);
+        ActionContext.getContext().put("tagPath",tagPath);
+        return SUCCESS;
+    }
+
     @Action(value="loadParentTag", results={@Result(type="json", params={"root","belongTagList"})})
     public String loadParentTag(){
         belongTagList = tagService.findByLevel(Integer.parseInt(levelId)-1);
@@ -320,4 +368,21 @@ public class TagAction extends ActionSupport {
     public void setParentId(String parentId) {
         this.parentId = parentId;
     }
+
+    public String getTid() {
+        return tid;
+    }
+
+    public void setTid(String tid) {
+        this.tid = tid;
+    }
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+
 }
