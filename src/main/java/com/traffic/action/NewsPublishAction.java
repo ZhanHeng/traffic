@@ -234,8 +234,15 @@ public class NewsPublishAction extends ActionSupport {
     @Action(value="showOneNews",results={@Result(name="success",location="/user/showOneNews.jsp")},
             interceptorRefs={ @InterceptorRef("defaultStack")})
     public  String showOneNews(){
-        this.setShowNewsNotice(newsAndNoticeService.findById(shownewId));
-        ActionContext.getContext().put("showOneInfo",showNewsNotice);
+        shownewId=(String) ActionContext.getContext().get("chainnewId");
+        if(shownewId!=null) {
+            this.setShowNewsNotice(newsAndNoticeService.findById(shownewId));
+            ActionContext.getContext().put("showOneInfo",showNewsNotice);
+        }else{
+
+            ActionContext.getContext().put("showOneInfo",null);
+        }
+
         return SUCCESS;
     }
 

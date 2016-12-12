@@ -12,6 +12,7 @@
 <html>
 <head>
     <title>抚顺市交通局</title>
+    <%@include file="../common/head.jsp"%>
 </head>
 <body>
 <%--
@@ -1810,17 +1811,9 @@
                 <DIV class=contentleft1>
                     <DIV class=bar><LABEL>组织机构</LABEL> </DIV><IMG src="/sites/all/themes/fsjt/images/lm_hywm.jpg">
                     <ul id="ss">
-                        <!--<li><a href="/zzjg/抚顺市交通局" target="_parent">抚顺市交通局</a></li>
-                        <li><a href="/zzjg/抚顺县交通局" target="_parent">抚顺县交通局</a></li>
-                        <li><a href="/zzjg/清原县交通局" target="_parent">清原县交通局</a></li>
-                        <li><a href="/zzjg/新宾县交通局" target="_parent">新宾县交通局</a></li>
-                        <li><a href="/zzjg/顺城区交通局" target="_parent">顺城区交通局</a></li>
-                        <li><a href="/zzjg/东洲区交通局" target="_parent">东洲区交通局</a></li>-->
-                        <li><a href="/zzjg/市公路管理处" target="_parent">市公路管理局</a></li>
-                        <li><a href="/zzjg/市公路运输管理处" target="_parent">市公路运输管理处</a></li>
-                        <li><a href="/zzjg/市交通工程质量与安全监督处" target="_parent">市交通工程质量与安全监督处</a></li>
-                        <li><a href="/zzjg/市城市客运交通管理处" target="_parent">市城市客运交通管理处</a></li>
-                        <li><a href="/zzjg/市交通培训管理处" target="_parent">市交通培训管理处</a></li>
+                        <c:forEach items="${leftList}" var="util" varStatus="status">
+                            <li > <a href="getTagNews?tid=${util.tagId}" title="${util.tagName}" target='_self'>${util.tagName}</a> </li>
+                        </c:forEach>
                     </ul>
 
                 </DIV>
@@ -1840,9 +1833,9 @@
 
                 <div id="navlist" style="width: 753px">
                     <ul >
-                        <li ><a href="/zzjg/抚顺市交通局/主要职责/" target="_parent">主要职责</a> </li>
-                        <li ><a href="/zzjg/抚顺市交通局/领导分工/" target="_parent">领导分工</a> </li>
-                        <li ><a href="/zzjg/抚顺市交通局/内设机构/" target="_parent">内设机构</a> </li>
+                      <c:forEach items="${aboveList}" var="util" varStatus="status">
+                        <li > <a href="getTagNews?tid=${util.tagId}" title="${util.tagName}" target='_self'>${util.tagName}</a> </li>
+                      </c:forEach>
                     </ul>
                 </div>
 
@@ -1851,7 +1844,11 @@
 
 
 
-                    <table class="table table-hover table-striped ">
+                    <table class="table table-hover table-striped " style="width: 733px;
+                           padding-left: 0px;
+                           border-left-width: 20px;
+                           border-left-width: 20px;
+                           margin-left: 20px;"  >
 
                         <tbody>
                         <c:forEach items="${list}" var="util" varStatus="status">
@@ -1864,7 +1861,7 @@
                     </table>
 
                 </div>
-                <DIV class=fenye>
+
                     <c:if test="${page.recordCount>0}">
                         <ul class="pager">
                             <li>总记录${page.recordCount}条</li>
@@ -1898,7 +1895,7 @@
                         </ul>
                     </c:if>
 
-                </DIV>
+
 
             </DIV></DIV>
 

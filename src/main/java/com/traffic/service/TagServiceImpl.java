@@ -132,4 +132,10 @@ public class TagServiceImpl implements TagService {
             throw new DataAccessException(e.getMessage());
         }
     }
+
+    public List<Tag> queryByHql(String hql)
+    {
+        List<Tag> list = tagDao.queryByHql(hql);
+        return list;
+    }
 }

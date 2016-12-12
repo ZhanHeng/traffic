@@ -40,7 +40,7 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $("#nav_10001").addClass("downnav");
+
         $("#nav li").hover(
                 function () {
                     $(this).addClass("hover");
@@ -324,7 +324,7 @@
         <div class="top-nav">
             <ul class="top-nav list-style">
                 <li class="line top-nav"></li>
-                <li id="nav_10001">
+                <li id="">
                     <a href="http://cac.sau.edu.cn/" title="民航首页">
                         <span>民航首页</span>
                     </a>
@@ -519,7 +519,7 @@
         </script>
     </div>
     <div id="main">
-        <div class="main2_nr fl">
+        <div class="main2_nr fl" style="">
             <div class="title fix">
                 <div class="title1 xz"><a href="http://zizhan.mot.gov.cn/zfxxgk/index.html" title="通知公告" target="_blank">通知公告</a></div>
                 <div class="title1"><a href="./zhengcejiedu/" title="政策解读" target="_blank">政策解读</a></div>
@@ -732,7 +732,7 @@
 
     <div id="bottom">
         <div class="nav">
-            <a href='http://oa.sau.edu.cn' target='_blank' title='在线办公'>在线办公</a><span>|</span><a href='http://mail.sau.edu.cn' target='_blank' title='沈航邮件'>沈航邮件</a><span>|</span><a href='sitemap/'  title='网站地图'>网站地图</a><span>|</span><a href='http://cac.sau.edu.cn/admin/' target='_blank' title='网站管理'>网站管理</a>
+            <a href='http://oa.sau.edu.cn' target='_blank' title='在线办公'>在线办公</a><span>|</span><a href='http://mail.sau.edu.cn' target='_blank' title='沈航邮件'>沈航邮件</a><span>|</span><a href='sitemap/'  title='网站地图'>网站地图</a><span>|</span><a href='http://localhost:8080/adminLogin.jsp' target='_blank' title='网站管理'>网站管理</a>
         </div>
         <div class="text">
             <ul>

@@ -121,4 +121,9 @@ public class TagDaoImpl extends HibernateDaoSupport implements TagDao {
         query.setLong(1,parentId);
         return query.list();
     }
+
+    public List<Tag> queryByHql(String hql)
+    {
+        return getCurrentSession().createQuery(hql).list();
+    }
 }

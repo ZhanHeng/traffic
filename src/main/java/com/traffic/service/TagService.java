@@ -71,4 +71,9 @@ public interface TagService {
      */
     public List<Tag> findChildTagByparentIdAndLevel(int level , long parentId) throws DataAccessException;
 
+    /**
+     * 根据hql灵活查询
+     */
+    public List<Tag> queryByHql(String hql);
+
 }

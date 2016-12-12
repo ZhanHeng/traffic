@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <%--
   Created by IntelliJ IDEA.
   User: CHENSHUANG
@@ -22,9 +23,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String path = request.getContextPath();
+    String data = null;
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
     NewsAndNotice temp=(NewsAndNotice)request.getAttribute("showOneInfo");
-    String data = temp.getContentStr();
+    if(temp!=null)
+    { data = temp.getContentStr();}
+
+
 %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -1806,17 +1811,9 @@
                 <DIV class=contentleft1>
                     <DIV class=bar><LABEL>组织机构</LABEL> </DIV><IMG src="/sites/all/themes/fsjt/images/lm_hywm.jpg">
                     <ul id="ss">
-                        <!--<li><a href="/zzjg/抚顺市交通局" target="_parent">抚顺市交通局</a></li>
-                        <li><a href="/zzjg/抚顺县交通局" target="_parent">抚顺县交通局</a></li>
-                        <li><a href="/zzjg/清原县交通局" target="_parent">清原县交通局</a></li>
-                        <li><a href="/zzjg/新宾县交通局" target="_parent">新宾县交通局</a></li>
-                        <li><a href="/zzjg/顺城区交通局" target="_parent">顺城区交通局</a></li>
-                        <li><a href="/zzjg/东洲区交通局" target="_parent">东洲区交通局</a></li>-->
-                        <li><a href="/zzjg/市公路管理处" target="_parent">市公路管理局</a></li>
-                        <li><a href="/zzjg/市公路运输管理处" target="_parent">市公路运输管理处</a></li>
-                        <li><a href="/zzjg/市交通工程质量与安全监督处" target="_parent">市交通工程质量与安全监督处</a></li>
-                        <li><a href="/zzjg/市城市客运交通管理处" target="_parent">市城市客运交通管理处</a></li>
-                        <li><a href="/zzjg/市交通培训管理处" target="_parent">市交通培训管理处</a></li>
+                        <c:forEach items="${leftList}" var="util" varStatus="status">
+                            <li > <a href="getTagNews?tid=${util.tagId}" title="${util.tagName}" target='_self'>${util.tagName}</a> </li>
+                        </c:forEach>
                     </ul>
 
                 </DIV>
@@ -1836,18 +1833,21 @@
 
                 <div id="navlist" style="width: 753px">
                     <ul >
-                        <li ><a href="/zzjg/抚顺市交通局/主要职责/" target="_parent">主要职责</a> </li>
-                        <li ><a href="/zzjg/抚顺市交通局/领导分工/" target="_parent">领导分工</a> </li>
-                        <li ><a href="/zzjg/抚顺市交通局/内设机构/" target="_parent">内设机构</a> </li>
+                        <c:forEach items="${aboveList}" var="util" varStatus="status">
+                            <li > <a href="getTagNews?tid=${util.tagId}" title="${util.tagName}" target='_self'>${util.tagName}</a> </li>
+                        </c:forEach>
                     </ul>
                 </div>
 
                 <div class="content" style="width: 753px">
+                    <c:if test="${data ==null}"> <h1> 暂无信息！</h1 ></c:if>
+                    <c:if test="${data !=null}">
                     <h1> ${showOneInfo.title}</h1 >
                     <div class="right_title">时间 : ${showOneInfo.time} &nbsp;来源: ${showOneInfo.author}</div>
                     <div class="detailcontent" cssStyle="font-family: Microsoft YaHei; font-size: 20px;">
                         <%=data %>
                     </div>
+                    </c:if>
                 </div>
                 <DIV class=fenye>
                     <ul>

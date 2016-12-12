@@ -61,6 +61,8 @@ public class TagAction extends ActionSupport {
     @Autowired
     private PageService pageService;
     private Page page;
+    private String chainnewId;
+
 
 
     private  void INITAL(){
@@ -238,40 +240,6 @@ public class TagAction extends ActionSupport {
         return "tagjson";
     }
 
-    @Action(
-            value="getTagNews",
-            results={
-                    @Result(name="success",location="/user/showNewsList.jsp")
-            },
-            interceptorRefs={
-                    @InterceptorRef("defaultStack")
-            }
-    )
-    public String getTagNews() {
-        editTag = tagService.findById(Long.parseLong(tid));
-        List<NewsAndNotice> list = null;
-        String tagPath = tid;
-        if(editTag.getParentTag() !=null)
-        {
-            tagPath = editTag.getParentTag().getTagId()+"/" +tagPath;
-            if(editTag.getParentTag().getParentTag() !=null)
-            {
-                tagPath = editTag.getParentTag().getParentTag().getTagId()+"/" +tagPath;
-            }
-        }
-
-
-        if(page==null){
-            page = new Page();
-
-            list = pageService.findNewsListFront(page,tagPath);
-        }else{
-            list = pageService.findNewsListFront(page,tagPath);
-        }
-        ActionContext.getContext().put("list",list);
-        ActionContext.getContext().put("tagPath",tagPath);
-        return SUCCESS;
-    }
 
     @Action(value="loadParentTag", results={@Result(type="json", params={"root","belongTagList"})})
     public String loadParentTag(){
@@ -289,6 +257,96 @@ public class TagAction extends ActionSupport {
         childTagList = tagService.findChildTagByparentIdAndLevel(Integer.parseInt(currentId),Long.parseLong(parentId));
         return  "childTagjson";
     }
+
+ /*
+    @Action(
+            value="getTagNews",
+            results={
+                    @Result(name="success",location="/user/showNewsList.jsp"),
+                    @Result(name="toone",type = "chain" ,location="showOneNews")
+            },
+            interceptorRefs={
+                    @InterceptorRef("defaultStack")
+            }
+    )
+ public String getTagNew(){
+        Tag tagtemp = tagService.findById(Long.parseLong(tid));
+        List<NewsAndNotice> list = null;
+        List<Tag> aboveList =null;
+        List<Tag> leftList =null;
+        String tagPath = tid;
+
+        if(tagtemp.getParentTag() !=null)
+        {
+            tagPath = tagtemp.getParentTag().getTagId()+"/" +tagPath;
+            if(tagtemp.getParentTag().getParentTag() !=null)
+            {
+                tagPath = tagtemp.getParentTag().getParentTag().getTagId()+"/" +tagPath;
+            }
+        }
+
+
+        if(tagtemp.getTagLevel()==1)
+        {
+            String hql ="";
+            hql="from Tag where passFlag = 1 and  parentTag.tagId ="+tagtemp.getTagId()+"order by weight desc";
+            leftList = tagService.queryByHql(hql);
+            if(leftList.size()>0)
+            {
+                hql="from Tag where passFlag = 1 and  parentTag.tagId ="+leftList.get(0).getTagId()+"order by weight desc";
+                aboveList = tagService.queryByHql(hql);
+            }
+        }
+        if(tagtemp.getTagLevel()==2)
+        {
+            String hql ="";
+            hql="from Tag where passFlag = 1 and  parentTag.tagId ="+tagtemp.getParentTag().getTagId()+"order by weight desc";
+            leftList = tagService.queryByHql(hql);
+            if(leftList.size()>0)
+            {
+                hql="from Tag where passFlag = 1 and  parentTag.tagId ="+tagtemp.getTagId()+"order by weight desc";
+                aboveList = tagService.queryByHql(hql);
+            }
+        }
+        if(tagtemp.getTagLevel()==3)
+        {
+            String hql ="";
+            hql="from Tag where passFlag = 1 and  parentTag.tagId ="+tagtemp.getParentTag().getParentTag().getTagId()+"order by weight desc";
+            leftList = tagService.queryByHql(hql);
+            if(leftList.size()>0)
+            {
+                hql="from Tag where passFlag = 1 and  parentTag.tagId ="+tagtemp.getParentTag().getTagId()+"order by weight desc";
+                aboveList = tagService.queryByHql(hql);
+            }
+        }
+        ActionContext.getContext().put("aboveList",aboveList);
+        ActionContext.getContext().put("leftList",leftList);
+
+
+
+        if(page==null){
+            page = new Page();
+
+            list = pageService.findNewsListFront(page,tagPath);
+        }else{
+            list = pageService.findNewsListFront(page,tagPath);
+        }
+        if(list.size()>1)
+        {
+            ActionContext.getContext().put("list",list);
+            ActionContext.getContext().put("tagPath",tagPath);
+            return SUCCESS;
+        }
+        else
+        {
+            chainnewId = list.get(0).getId();
+            ActionContext.getContext().put("chainnewId",chainnewId);
+            return "toone";
+        }
+
+    }
+    */
+
     public Tag getTag() {
         return tag;
     }
@@ -382,6 +440,14 @@ public class TagAction extends ActionSupport {
 
     public void setPage(Page page) {
         this.page = page;
+    }
+
+    public String getChainnewId() {
+        return chainnewId;
+    }
+
+    public void setChainnewId(String chainnewId) {
+        this.chainnewId = chainnewId;
     }
 
 
