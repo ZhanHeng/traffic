@@ -48,10 +48,12 @@ public class NewsAndNoticeDaoImpl extends HibernateDaoSupport implements NewsAnd
 
     public void save(NewsAndNotice newsAndNotice) {
 //        newsAndNotice.setBlob(Hibernate.getLobCreator(getCurrentSession()).createBlob(newsAndNotice.getContent()));
+        getCurrentSession().clear();
         getCurrentSession().save(newsAndNotice);
     }
 
     public void update(NewsAndNotice newsAndNotice) {
+        getCurrentSession().clear();
         getCurrentSession().update(newsAndNotice);
     }
 
@@ -61,7 +63,7 @@ public class NewsAndNoticeDaoImpl extends HibernateDaoSupport implements NewsAnd
 
     //查出所有焦点图的新闻
     public List<NewsAndNotice> showFocusPicture(){
-        String hql = "from NewsAndNotice as e where e.focusFlag='YES' ";
+        String hql = "from NewsAndNotice as e where e.focusFlag='YES'order by time desc ";
         return getCurrentSession().createQuery(hql).list();
     }
     //获取焦点图的数量
@@ -80,6 +82,7 @@ public class NewsAndNoticeDaoImpl extends HibernateDaoSupport implements NewsAnd
             // 拼装sql语句
             String sql = "delete from NewsAndNotice as n where n.id IN (:userIdList)";
             // 执行sql语句
+            getCurrentSession().clear();
             Query query = getCurrentSession().createQuery(sql);
             //设置参数
             query.setParameterList("userIdList",paramlist);

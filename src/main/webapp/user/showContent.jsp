@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
 <%@page import="com.traffic.model.NewsAndNotice"%>
 <html>
 <head>
@@ -978,67 +980,19 @@
         <div class="top-nav">
             <ul class="top-nav list-style">
                 <li class="line top-nav"></li>
-                <li id="nav_10001">
-                    <a href="http://cac.sau.edu.cn/" title="民航首页">
-                        <span>民航首页</span>
+                <li class=>
+                    <a href="welcome.jsp" title="首页">
+                        <span>首页</span>
                     </a>
                 </li>
-
-                <li class="line top-nav"></li>
-                <li id="nav_106">
-                    <a href="CacIntroduce/" 0 title="学院概况">
-                        <span>学院概况</span>
-                    </a>
-                </li>
-
-                <li class="line top-nav"></li>
-                <li id="nav_149">
-                    <a href="TeacherTeam/" 0 title="师资队伍">
-                        <span>师资队伍</span>
-                    </a>
-                </li>
-                <li class="line top-nav"></li>
-                <li id="nav_150">
-                    <a href="TrainingCenter/" 0 title="民航培训">
-                        <span>民航培训</span>
-                    </a>
-                </li>
-
-                <li class="line top-nav"></li>
-                <li id="nav_191">
-                    <a href="RecruitStudents/"  title="招飞招乘">
-                        <span>招飞招乘</span>
-                    </a>
-                </li>
-
-                <li class="line top-nav"></li>
-                <li id="nav_132">
-                    <a href="StuNews/" 0 title="学生工作">
-                        <span>学生工作</span>
-                    </a>
-                </li>
-
-                <li class="line top-nav"></li>
-                <li id="nav_141">
-                    <a href="PartyNews/" 0 title="党群园地">
-                        <span>党群园地</span>
-                    </a>
-                </li>
-
-                <li class="line top-nav"></li>
-                <li id="nav_32">
-                    <a href="download/"  title="下载中心">
-                        <span>下载中心</span>
-                    </a>
-                </li>
-
-                <li class="line top-nav"></li>
-                <li id="nav_1">
-                    <a href="about/" 0 title="联系我们">
-                        <span>联系我们</span>
-                    </a>
-                </li>
-
+                <c:forEach items="${aboveTagList}" var="util" varStatus="status">
+                    <li class="line top-nav"></li>
+                    <li>
+                        <a href="getTagNews?tid=${util.tagId}"  title="${util.tagName}">
+                            <span>${util.tagName}</span>
+                        </a>
+                    </li>
+                </c:forEach>
             </ul>
         </div>
     </div>

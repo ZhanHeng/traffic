@@ -49,6 +49,13 @@ public interface TagService {
     public List<Tag> findByLevel(int level);
 
     /**
+     * 前台查询某级菜单
+     * @param level
+     * @return
+     */
+    public List<Tag> frontFindByPosition(int level);
+
+    /**
      * 根据实体属性多条件查询
      * @param tag
      * @return

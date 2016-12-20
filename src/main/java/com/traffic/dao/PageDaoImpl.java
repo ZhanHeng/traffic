@@ -62,6 +62,24 @@ public class PageDaoImpl extends HibernateDaoSupport implements PageDao {
         return query.list();
     }
 
+    public List<NewsAndNotice> frontSearchNews(String searchword,Page page){
+        String hql ="from NewsAndNotice as t where 1=1";
+        if(searchword!=null&&!"".equals(searchword)){
+            hql= hql+" and t.title like '%"+searchword+"%'order by t.time desc";
+        }
+        logger.info("+++++++++++++ hql = "+hql);
+        Query query = getCurrentSession().createQuery(hql);
+        //设置查到的所有数据
+        page.setRecordCount(query.list().size());
+        //重新计算分页
+        page.freshPage();
+        //设置查询的第一条记录位置,即偏移量
+        query.setFirstResult((page.getCurPage() - 1) * page.getPageSize());
+        //设置要查询的页的大小
+        query.setMaxResults(page.getPageSize());
+        return query.list();
+    }
+
     public String modelToSql(NewsAndNotice news ,String tagPath) {
         StringBuffer hql = new StringBuffer("from NewsAndNotice as t where 1=1 ");
         if(news!=null && !"".equals(news.getTitle())){

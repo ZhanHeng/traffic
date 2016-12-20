@@ -94,6 +94,17 @@ public class TagServiceImpl implements TagService {
             throw new DataAccessException(e.getMessage());
         }
     }
+
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public List<Tag> frontFindByPosition(int level) throws DataAccessException{
+        try {
+            List<Tag> tagList = tagDao.frontFindByPosition(level);
+            return tagList;
+        } catch (Exception e){
+            logger.error(e.getMessage() , e );
+            throw new DataAccessException(e.getMessage());
+        }
+    }
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public List<Tag> findByTagProperty(Tag tag) throws DataAccessException {
         try {

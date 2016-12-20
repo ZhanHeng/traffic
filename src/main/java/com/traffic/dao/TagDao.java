@@ -46,6 +46,10 @@ public interface TagDao {
      */
     List<Tag> findByLevel(int level);
 
+    /**
+     * 前台根据级别查询
+     */
+    List<Tag> frontFindByPosition(int level);
 
     /**
      * 根据名称查询

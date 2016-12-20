@@ -49,15 +49,38 @@ public class TagDaoImpl extends HibernateDaoSupport implements TagDao {
         getCurrentSession().delete(tag);
     }
 
+    public List<Tag> frontFindByPosition(int position) {
+        if(position==1){
+            String hql = "from Tag where passFlag = 1 and ( position = ? or position = ? or position = ? )order by weight desc";
+            Query query = getCurrentSession().createQuery(hql) ;
+            query.setInteger(0,1);
+            query.setInteger(1,4);
+            query.setInteger(2,5);
+            return query.list();
+        }else if(position==2){
+            String hql = "from Tag where passFlag = 1 and  ( position = ? or position= ? )order by weight desc";
+            Query query = getCurrentSession().createQuery(hql) ;
+            query.setInteger(0,2);
+            query.setInteger(1,4);
+            return query.list();
+        }else{
+            String hql = "from Tag where passFlag = 1 and  ( position = ? or position= ? )order by weight desc";
+            Query query = getCurrentSession().createQuery(hql) ;
+            query.setInteger(0,3);
+            query.setInteger(1,5);
+            return query.list();
+        }
+    }
+
     public List<Tag> findByLevel(int level) {
-        String hql = "from Tag where passFlag = 1 and  tagLevel = ? ";
+        String hql = "from Tag where passFlag = 1 and  tagLevel = ? order by weight desc ";
         Query query = getCurrentSession().createQuery(hql) ;
         query.setInteger(0,level);
         return query.list();
     }
 
     public List<Tag> findByName(String name) {
-        String hql = "from Tag where passFlag = 1 and  tagName = ? ";
+        String hql = "from Tag where passFlag = 1 and  tagName = ? order by weight desc ";
         Query query = getCurrentSession().createQuery(hql) ;
         query.setString(0,name);
         return query.list();

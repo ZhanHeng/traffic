@@ -55,6 +55,7 @@ public class TagAction extends ActionSupport {
     private List<Tag> levelTagList;
 
 
+
     private List<Tag> childTagList;
     private String currentId ;
     private String parentId ;
@@ -449,6 +450,7 @@ public class TagAction extends ActionSupport {
     public void setChainnewId(String chainnewId) {
         this.chainnewId = chainnewId;
     }
+
 
 
 }

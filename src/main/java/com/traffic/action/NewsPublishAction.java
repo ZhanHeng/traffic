@@ -56,6 +56,7 @@ public class NewsPublishAction extends ActionSupport {
     private String newId;
     private String shownewId;
     private NewsAndNotice showNewsNotice;
+    private List<Tag> aboveTagList;
 
 
 
@@ -228,6 +229,8 @@ public class NewsPublishAction extends ActionSupport {
     public  String showNewsDetail(){
         this.setShowNewsNotice(newsAndNoticeService.findById(shownewId));
         ActionContext.getContext().put("showDetailInfo",showNewsNotice);
+        aboveTagList = tagService.frontFindByPosition(1);
+        ActionContext.getContext().put("aboveTagList",aboveTagList);
         return SUCCESS;
     }
 
@@ -238,8 +241,11 @@ public class NewsPublishAction extends ActionSupport {
         if(shownewId!=null) {
             this.setShowNewsNotice(newsAndNoticeService.findById(shownewId));
             ActionContext.getContext().put("showOneInfo",showNewsNotice);
+            aboveTagList = tagService.frontFindByPosition(1);
+            ActionContext.getContext().put("aboveTagList",aboveTagList);
         }else{
-
+            aboveTagList = tagService.frontFindByPosition(1);
+            ActionContext.getContext().put("aboveTagList",aboveTagList);
             ActionContext.getContext().put("showOneInfo",null);
         }
 
@@ -483,5 +489,13 @@ public class NewsPublishAction extends ActionSupport {
 
     public void setShowNewsNotice(NewsAndNotice showNewsNotice) {
         this.showNewsNotice = showNewsNotice;
+    }
+
+    public List<Tag> getAboveTagList() {
+        return aboveTagList;
+    }
+
+    public void setAboveTagList(List<Tag> aboveTagList) {
+        this.aboveTagList = aboveTagList;
     }
 }

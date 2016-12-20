@@ -478,13 +478,13 @@ table.feedback_table td.feedback_submit input{ cursor:pointer;}
 #sitemap .sitemapclass2 h4 a{ text-decoration:underline;}
 
 
-.main2_nr{ width:473px;height: 234px; float: left;}
+.main2_nr{ width:473px;height: 298px; float: left;}
 .main2_nr .title{ width:437px; height:34px; padding-left:36px; background:url(../mot2016_pic5.jpg) repeat-x;}
 .main2_nr .title1{ width:73px; height:21px; text-align:center; margin:9px 8px 0 0; padding-top:4px; background:url(../mot2016_bg17.png) no-repeat; float:left; cursor:pointer;}
 .main2_nr .title1 a{ font-weight:bold; color:#000;}
 .main2_nr .title1.xz{ width:88px; height:21px; margin-top:6px; padding-top:7px; background:url(../mot2016_bg18.png) no-repeat;}
 .main2_nr .title1.xz a{ color:#de0000;}
-.main2_nr .title_nr{ width:473px; background:url(../mot2016_pic6.jpg) no-repeat left bottom;}
+.main2_nr .title_nr{ width:473px; background:url(../mot2016_pic6.jpg) no-repeat left bottom;height: 264px;}
 .main2_nr .title_nr1{ width:449px; padding:10px 12px;}
 .main2_nr .title_nr1 ul{ width:470px; line-height:30px;}
 .main2_nr .title_nr1 ul li{ width:461px; text-align:right; list-style: none;}
@@ -493,13 +493,13 @@ table.feedback_table td.feedback_submit input{ cursor:pointer;}
 .main2_nr .title_nr1 ul li a:hover { color:#000;}
 
 
-.main2_nrf{ width:473px;height: 234px;float: right;}
+.main2_nrf{ width:473px;height: 298px;float: right;}
 .main2_nrf .title{ width:437px; height:34px; padding-left:36px; background:url(../mot2016_pic5.jpg) repeat-x;}
 .main2_nrf .title1{ width:73px; height:21px; text-align:center; margin:9px 8px 0 0; padding-top:4px; background:url(../mot2016_bg17.png) no-repeat; float:left; cursor:pointer;}
 .main2_nrf .title1 a{ font-weight:bold; color:#000;}
 .main2_nrf .title1.xz{ width:88px; height:21px; margin-top:6px; padding-top:7px; background:url(../mot2016_bg18.png) no-repeat;}
 .main2_nrf .title1.xz a{ color:#de0000;}
-.main2_nrf .title_nr{ width:473px; background:url(../mot2016_pic6.jpg) no-repeat left bottom;}
+.main2_nrf .title_nr{ width:473px; background:url(../mot2016_pic6.jpg) no-repeat left bottom;height: 264px;}
 .main2_nrf .title_nr1{ width:449px; padding:10px 12px;}
 .main2_nrf .title_nr1 ul{ width:470px; line-height:30px;}
 .main2_nrf .title_nr1 ul li{ width:461px; text-align:right; list-style: none;}

@@ -201,6 +201,8 @@
                                             <option value=1>上</option>
                                             <option value=2>左下</option>
                                             <option value=3>右下</option>
+                                            <option value=4>上和左下</option>
+                                            <option value=5>上和右下</option>
                                         </select>
                                     </div>
                                 </div>

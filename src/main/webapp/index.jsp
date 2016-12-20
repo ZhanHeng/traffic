@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta name='renderer' content='webkit'>
@@ -18,6 +20,7 @@
     <link href="favicon.ico" rel="shortcut icon" />
     <link rel="stylesheet" type="text/css" href="templates/met007/images/css/metinfo.css" />
     <script src="public/js/metinfo-min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/jquery-1.8.2.js"></script>
     <link rel="stylesheet" type="text/css" href="templates/met007/images/css/focusStyle.css" />
     <style type="text/css">
         body{
@@ -197,90 +200,100 @@
         })
 
 
-        //
-        function Banner(){
-            $.ajax( {
-                type: "get",
-                url: "newsAndNoticeAction!listFocusPicture",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function(news) {
-                    if (news.length > 0) {
-                        for(var i=0;i< news.length;i++){
-                            var s="";
-                            s=(news[i].path).substring(news[i].path.indexOf("\Economic")+9, news[i].path.length).replace(/\\/,"/");
-                            var li="<li>"+"<a href='NewsPublishAction!showOneNewsAndNotice?searchNewsAndNoticeID="+news[i].id+"' class='focus-banner-img' target='_self'>"+"<img src='"
-                                    +s+"'/>"+"</a>";
-                            li=li+"<div class='focus-banner-text'><p>"+news[i].title+"</p></div>";
-                            li=li+"</li>";
-                            $("#focus-banner-list").append(li);
-                        }
-                        var $focusBanner=$("#focus-banner"),
-                                $bannerList=$("#focus-banner-list li"),
-                                $focusHandle=$(".focus-handle"),
-                                $bannerImg=$(".focus-banner-img"),
-                                $nextBnt=$("#next-img"),
-                                $prevBnt=$("#prev-img"),
-                                $focusBubble=$("#focus-bubble"),
-                                bannerLength=$bannerList.length,
-                                _index=0,
-                                _timer="";
-                        //alert(" 长度为： "+$bannerList.length)
-                        for(var i=0; i<bannerLength; i++){
-                            $bannerList.eq(i).css("zIndex",bannerLength-i);
-                            $focusBubble.append("<li></li>");
-                        }
-                        $focusBubble.find("li").eq(0).addClass("current");
-                        var bubbleLength=$focusBubble.find("li").length;
-                        $focusBubble.css({
-                            "width":bubbleLength*22,
-                            "marginLeft":-bubbleLength*11
-                        });//初始化
 
-                        $focusBubble.on("click","li",function(){
-                            $(this).addClass("current").siblings().removeClass("current");
-                            _index=$(this).index();
-                            changeImg(_index);
-                        });//点击轮换
-
-                        $prevBnt.on("click",function(){
-                            _index++
-                            if(_index>bannerLength-1){
-                                _index=0;
-                            }
-                            changeImg(_index);
-                        });//下一张
-
-                        $nextBnt.on("click",function(){
-                            _index--
-                            if(_index<0){
-                                _index=bannerLength-1;
-                            }
-                            changeImg(_index);
-                        });//上一张
-
-                        function changeImg(_index){
-                            $bannerList.eq(_index).fadeIn(700);//淡入
-                            $bannerList.eq(_index).siblings().fadeOut(700);//淡出
-                            $focusBubble.find("li").removeClass("current");
-                            $focusBubble.find("li").eq(_index).addClass("current");
-                            clearInterval(_timer);
-                            _timer=setInterval(function(){$prevBnt.click()},5000)
-                        }//切换主函数
-                        _timer=setInterval(function(){$prevBnt.click()},5000)
-                    } else {
-                        var li="<li><img src='images/banner2.jpg' /></li>";
-                        $("#focus-banner-list").append(li);
-                    }
-                },
-                error: function() {
-                    alert("系统故障，请重试！");
-                }
-            });
-        }
     })
 </script>
 
+<script>
+    function Banner(){
+        $.ajax( {
+            type: "get",
+            url: "listFocusPicture",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(result) {
+                var news =result["focusPictureList"];
+
+                if (news.length > 0) {
+                    for(var i=0;i< news.length;i++){
+                        var s="";
+                        s=news[i].path;
+                       // s=(news[i].path).substring(news[i].path.indexOf("\Economic")+9, news[i].path.length).replace(/\\/,"/");
+                        var li="<li>"+"<a href='showNewsDetail?shownewId="+news[i].id+"' class='focus-banner-img' target='_self'>"+"<img src='"
+                                +s+"'/>"+"</a>";
+                        li=li+"<div class='focus-banner-text'><p>"+news[i].title+"</p></div>";
+                        li=li+"</li>";
+                        $("#focus-banner-list").append(li);
+
+                    }
+                    var $focusBanner=$("#focus-banner"),
+                            $bannerList=$("#focus-banner-list li"),
+                            $focusHandle=$(".focus-handle"),
+                            $bannerImg=$(".focus-banner-img"),
+                            $nextBnt=$("#next-img"),
+                            $prevBnt=$("#prev-img"),
+                            $focusBubble=$("#focus-bubble"),
+                            bannerLength=$bannerList.length,
+                            _index=0,
+                            _timer="";
+                    //alert(" 长度为： "+$bannerList.length)
+                    for(var i=0; i<bannerLength; i++){
+                        $bannerList.eq(i).css("zIndex",bannerLength-i);
+                        $focusBubble.append("<li></li>");
+                    }
+                    $focusBubble.find("li").eq(0).addClass("current");
+                    var bubbleLength=$focusBubble.find("li").length;
+                    $focusBubble.css({
+                        "width":bubbleLength*22,
+                        "marginLeft":-bubbleLength*11
+                    });//初始化
+
+                    $focusBubble.on("click","li",function(){
+                        $(this).addClass("current").siblings().removeClass("current");
+                        _index=$(this).index();
+                        changeImg(_index);
+                    });//点击轮换
+
+                    $prevBnt.on("click",function(){
+                        _index++
+                        if(_index>bannerLength-1){
+                            _index=0;
+                        }
+                        changeImg(_index);
+                    });//下一张
+
+                    $nextBnt.on("click",function(){
+                        _index--
+                        if(_index<0){
+                            _index=bannerLength-1;
+                        }
+                        changeImg(_index);
+                    });//上一张
+
+                    function changeImg(_index){
+                        $bannerList.eq(_index).fadeIn(700);//淡入
+                        $bannerList.eq(_index).siblings().fadeOut(700);//淡出
+                        $focusBubble.find("li").removeClass("current");
+                        $focusBubble.find("li").eq(_index).addClass("current");
+                        clearInterval(_timer);
+                        _timer=setInterval(function(){$prevBnt.click()},5000)
+                    }//切换主函数
+                    _timer=setInterval(function(){$prevBnt.click()},5000)
+                } else {
+                    var li="<li><img src='images/banner2.jpg' /></li>";
+                    $("#focus-banner-list").append(li);
+                }
+            },
+            error: function() {
+                alert("系统故障，请重试！");
+                var li="<li><img src='images/banner2.jpg' /></li>";
+                $("#focus-banner-list").append(li);
+            }
+        });
+    }
+
+
+</script>
 <body onload="Banner();">
 
 <div id="metinfo">
@@ -323,68 +336,83 @@
     <div id="nav" class="top-nav">
         <div class="top-nav">
             <ul class="top-nav list-style">
-                <li class="line top-nav"></li>
-                <li id="">
-                    <a href="http://cac.sau.edu.cn/" title="民航首页">
-                        <span>民航首页</span>
-                    </a>
-                </li>
 
                 <li class="line top-nav"></li>
-                <li id="nav_106">
-                    <a href="CacIntroduce/" 0 title="学院概况">
-                        <span>学院概况</span>
+                <li class=>
+                    <a href="welcome.jsp" title="首页">
+                        <span>首页</span>
                     </a>
                 </li>
-
+                <c:forEach items="${aboveTagList}" var="util" varStatus="status">
+                    <li class="line top-nav"></li>
+                    <li>
+                        <a href="getTagNews?tid=${util.tagId}"  title="${util.tagName}">
+                            <span>${util.tagName}</span>
+                        </a>
+                    </li>
+                </c:forEach>
                 <li class="line top-nav"></li>
-                <li id="nav_149">
-                    <a href="TeacherTeam/" 0 title="师资队伍">
-                        <span>师资队伍</span>
+                <li>
+                    <a href="http://www.moc.gov.cn/zhengce/"  title="政策法规">
+                        <span>政策法规</span>
                     </a>
                 </li>
-                <li class="line top-nav"></li>
-                <li id="nav_150">
-                    <a href="TrainingCenter/" 0 title="民航培训">
-                        <span>民航培训</span>
-                    </a>
-                </li>
+                <!--
+                               <li class="line top-nav"></li>
+                               <li>
+                                   <a href="CacIntroduce/" 0 title="学院概况">
+                                       <span>学院概况</span>
+                                   </a>
+                               </li>
 
-                <li class="line top-nav"></li>
-                <li id="nav_191">
-                    <a href="RecruitStudents/"  title="招飞招乘">
-                        <span>招飞招乘</span>
-                    </a>
-                </li>
+                               <li class="line top-nav"></li>
+                               <li id="nav_149">
+                                   <a href="TeacherTeam/" 0 title="师资队伍">
+                                       <span>师资队伍</span>
+                                   </a>
+                               </li>
+                               <li class="line top-nav"></li>
+                               <li id="nav_150">
+                                   <a href="TrainingCenter/" 0 title="民航培训">
+                                       <span>民航培训</span>
+                                   </a>
+                               </li>
 
-                <li class="line top-nav"></li>
-                <li id="nav_132">
-                    <a href="StuNews/" 0 title="学生工作">
-                        <span>学生工作</span>
-                    </a>
-                </li>
+                               <li class="line top-nav"></li>
+                               <li id="nav_191">
+                                   <a href="RecruitStudents/"  title="招飞招乘">
+                                       <span>招飞招乘</span>
+                                   </a>
+                               </li>
 
-                <li class="line top-nav"></li>
-                <li id="nav_141">
-                    <a href="PartyNews/" 0 title="党群园地">
-                        <span>党群园地</span>
-                    </a>
-                </li>
+                               <li class="line top-nav"></li>
+                               <li id="nav_132">
+                                   <a href="StuNews/" 0 title="学生工作">
+                                       <span>学生工作</span>
+                                   </a>
+                               </li>
 
-                <li class="line top-nav"></li>
-                <li id="nav_32">
-                    <a href="download/"  title="下载中心">
-                        <span>下载中心</span>
-                    </a>
-                </li>
+                               <li class="line top-nav"></li>
+                               <li id="nav_141">
+                                   <a href="PartyNews/" 0 title="党群园地">
+                                       <span>党群园地</span>
+                                   </a>
+                               </li>
 
-                <li class="line top-nav"></li>
-                <li id="nav_1">
-                    <a href="about/" 0 title="联系我们">
-                        <span>联系我们</span>
-                    </a>
-                </li>
+                               <li class="line top-nav"></li>
+                               <li id="nav_32">
+                                   <a href="download/"  title="下载中心">
+                                       <span>下载中心</span>
+                                   </a>
+                               </li>
 
+                               <li class="line top-nav"></li>
+                               <li id="nav_1">
+                                   <a href="about/" 0 title="联系我们">
+                                       <span>联系我们</span>
+                                   </a>
+                               </li>
+                            -->
             </ul>
         </div>
     </div>
@@ -392,6 +420,18 @@
 
 
     <div id="flash">
+
+        <div style="clear:both;height:0"></div>
+        <div id="focus-banner">
+            <ul id="focus-banner-list">
+            </ul>
+            <a href="javascript:;" id="next-img" class="focus-handle"></a>
+            <a href="javascript:;" id="prev-img" class="focus-handle"></a>
+            <ul id="focus-bubble"></ul>
+        </div>
+
+
+        <!--
         <div class="left floatl">
             <link href='public/banner/banner6/css.css' rel='stylesheet' type='text/css' />
             <script src='public/banner/banner6/jquery.bxSlider.min.js'></script><div class='flash flash6' style='width:650px; height:300px;'>
@@ -409,78 +449,31 @@
             </ul>
         </div>
             <script type="text/javascript">$(document).ready(function(){ $('#slider6').bxSlider({ mode:'vertical',autoHover:true,auto:true,pager: true,pause: 5000,controls:false});});</script></div>
-
+-->
         <div class="right floatr">
             <div class="top">
                 <ul class="list list-style">
-                    <li class="hover">招飞招乘</li>
-                    <!--<li></li>
-                    <li class="line"></li>  删除首页flash右侧三个栏目中的两个 -->
+                    <li class="hover">通知公告</li>
+
                 </ul>
                 <div class="text clear">
                     <div class="box editor">
                         <ul class="newslist">
-                            <!--删除下面methtml_getarray函数的第三个参数,以保证后台对前台新闻列表的排序有效 现在排序优先级为: 排序权值>置顶状态值>发布时间值>推荐状态值-->
+                            <c:forEach items="${noticeList}" var="util" varStatus="status">
+                                <li><a href="showNewsDetail?shownewId=${util.id}" target="_blank" title="${util.title}">${util.title}</a>
+                                </li>
+                            </c:forEach>
 
-                            <li><a href="RecruitStudents/shownews.php?lang=cn&id=201" target="_blank" title="关于无法下载2016版沈航大飞行学员背景调查材料的说明">关于无法下载2016版沈航大飞行学员背景调查材料的说明</a></li>
-
-                            <li><a href="RecruitStudents/shownews.php?lang=cn&id=188" target="_blank" title="沈阳航空航天大学2016年招飞简章（高中生）、初检面试安排及报考系统说明">沈阳航空航天大学2016年招飞简章（高中生）、初检面试安排及报考系统说明</a></li>
-
-                            <li><a href="RecruitStudents/shownews.php?lang=cn&id=154" target="_blank" title="沈阳航空航天大学2015年招飞简章（高中生）">沈阳航空航天大学2015年招飞简章（高中生）</a></li>
-
-                            <li><a href="RecruitStudents/shownews.php?lang=cn&id=182" target="_blank" title="2015年飞行技术专业合格证发放名单">2015年飞行技术专业合格证发放名单</a></li>
 
                         </ul>
                     </div>
-                    <div class="box editor" style="display:none;">
-                        <ul class="newslist">
-                            <!--删除下面methtml_getarray函数的第三个参数,以保证后台对前台新闻列表的排序有效 现在排序优先级为: 排序权值>置顶状态值>发布时间值>推荐状态值-->
 
-                            <li><a href="PartyNews/shownews.php?lang=cn&id=45" target="_blank" title="民用航空学院2013年大学生初级党校培训计划">民用航空学院2013年大学生初级党校培训计划</a></li>
 
-                            <li><a href="PartyNews/shownews.php?lang=cn&id=44" target="_blank" title="基层党组织委员会成员名单">基层党组织委员会成员名单</a></li>
-
-                            <li><a href="PartyNews/shownews.php?lang=cn&id=47" target="_blank" title="民航学院党建特色活动总结">民航学院党建特色活动总结</a></li>
-
-                            <li><a href="CacNews/shownews.php?lang=cn&id=49" target="_blank" title="“情洒校园，服务你我”—学习雷锋，民航在行动">“情洒校园，服务你我”—学习雷锋，民航在行动</a></li>
-
-                            <li><a href="StuNews/shownews.php?lang=cn&id=105" target="_blank" title="2013年7月2日民航学院第三届学生会第一次例会总结">2013年7月2日民航学院第三届学生会第一次例会总结</a></li>
-
-                            <li><a href="CacNews/shownews.php?lang=cn&id=52" target="_blank" title="民用航空学院迎新生工作圆满完成">民用航空学院迎新生工作圆满完成</a></li>
-
-                            <li><a href="CacNews/shownews.php?lang=cn&id=50" target="_blank" title="“心系清原 众志成城”">“心系清原 众志成城”</a></li>
-
-                            <li><a href="CacNews/shownews.php?lang=cn&id=51" target="_blank" title="民用航空学院2013年党总支理论中心组学习计划">民用航空学院2013年党总支理论中心组学习计划</a></li>
-
-                        </ul>
-                    </div>
-                    <div class="box editor" style="display:none;">
-                        <ul class="newslist">
-                            <!--删除下面methtml_getarray函数的第三个参数,以保证后台对前台新闻列表的排序有效 现在排序优先级为: 排序权值>置顶状态值>发布时间值>推荐状态值-->
-
-                            <li><a href="PartyNews/shownews.php?lang=cn&id=45" target="_blank" title="民用航空学院2013年大学生初级党校培训计划">民用航空学院2013年大学生初级党校培训计划</a></li>
-
-                            <li><a href="PartyNews/shownews.php?lang=cn&id=44" target="_blank" title="基层党组织委员会成员名单">基层党组织委员会成员名单</a></li>
-
-                            <li><a href="PartyNews/shownews.php?lang=cn&id=47" target="_blank" title="民航学院党建特色活动总结">民航学院党建特色活动总结</a></li>
-
-                            <li><a href="CacNews/shownews.php?lang=cn&id=49" target="_blank" title="“情洒校园，服务你我”—学习雷锋，民航在行动">“情洒校园，服务你我”—学习雷锋，民航在行动</a></li>
-
-                            <li><a href="StuNews/shownews.php?lang=cn&id=105" target="_blank" title="2013年7月2日民航学院第三届学生会第一次例会总结">2013年7月2日民航学院第三届学生会第一次例会总结</a></li>
-
-                            <li><a href="CacNews/shownews.php?lang=cn&id=52" target="_blank" title="民用航空学院迎新生工作圆满完成">民用航空学院迎新生工作圆满完成</a></li>
-
-                            <li><a href="CacNews/shownews.php?lang=cn&id=50" target="_blank" title="“心系清原 众志成城”">“心系清原 众志成城”</a></li>
-
-                            <li><a href="CacNews/shownews.php?lang=cn&id=51" target="_blank" title="民用航空学院2013年党总支理论中心组学习计划">民用航空学院2013年党总支理论中心组学习计划</a></li>
-
-                        </ul>
-                    </div>
                 </div>
             </div>
 
             <div id="searchbox">
-                <form method="POST" name="myform1" action="http://cac.sau.edu.cn/search/search.php?lang=cn"  target="_self">
+                <form method="POST" name="myform1" action="frontSearchNews"  target="_self">
                     <input type="text" name="searchword" size="30"  class="navtext" />
                     <input type='submit' name='Submit' value='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;搜索&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' class="navsb" />
                 </form>
@@ -521,185 +514,289 @@
     <div id="main">
         <div class="main2_nr fl" style="">
             <div class="title fix">
-                <div class="title1 xz"><a href="http://zizhan.mot.gov.cn/zfxxgk/index.html" title="通知公告" target="_blank">通知公告</a></div>
-                <div class="title1"><a href="./zhengcejiedu/" title="政策解读" target="_blank">政策解读</a></div>
+                <c:forEach items="${leftTagList}" var="util" varStatus="status">
+                    <c:if test="${status.first}">
+
+                            <div class="title1 xz"><a href="getTagNews?tid=${util.tagId}" title="${util.tagName}" target="_blank">${util.tagName}</a></div>
+
+                    </c:if>
+                    <c:if test="${!status.first}">
+
+                            <div class="title1"><a href="getTagNews?tid=${util.tagId}" title="${util.tagName}" target="_blank">${util.tagName}</a></div>
+
+                    </c:if>
+
+                </c:forEach>
+
             </div>
             <div class="title_nr">
+
+                <c:forEach items="${leftNewsList}" var="util" varStatus="status">
+                    <c:if test="${status.first}">
+
+                        <div class="title_nr1" style="display: block;">
+                            <ul>
+                                <c:forEach items="${util}" var="x" varStatus="substatus">
+                                    <li class="fix"><a href="showNewsDetail?shownewId=${x.id}" title="${x.title}" target="_blank">${x.title}</a>[${x.time}]</li>
+
+                                </c:forEach>
+                            </ul>
+                        </div>
+
+                    </c:if>
+                    <c:if test="${!status.first}">
+
+                        <div class="title_nr1" style="display: none;">
+                            <ul>
+
+                                <c:forEach items="${util}" var="x" varStatus="substatus">
+                                    <li class="fix"><a href="showNewsDetail?shownewId=${x.id}" title="${x.title}" target="_blank">${x.title}</a>[${x.time}]</li>
+
+                                </c:forEach>
+
+                            </ul>
+                        </div>
+
+                    </c:if>
+
+                </c:forEach>
+
+
+                <!--
                 <div class="title_nr1" style="display: block;">
                     <ul>
-                        <!-- order="DocRelTime desc" -->
+
                         <li class="fix"><a href="/zhengcejiedu/shuilulkyssmzglgd" title="《水路旅客运输实名制管理规定》" target="_blank">《水路旅客运输实名制管理规定》</a>[10-14]</li>
-                        <!-- order="DocRelTime desc" -->
+
                         <li class="fix"><a href="/zhengcejiedu/zhongguocyfzgh" title="为海洋强国战略提供高素质人才保障 部海事局局长许如清《中国船员发展规划（2016—2020年）》" target="_blank">为海洋强国战略提供高素质人才保障 部海事局局长许如清...</a>[10-11]</li>
-                        <!-- order="DocRelTime desc" -->
+
                         <li class="fix"><a href="/zhengcejiedu/glgcsgjlgf" title="依法监理 改革提升 促进公路建设健康发展——《公路工程施工监理规范》修订" target="_blank">依法监理 改革提升 促进公路建设健康发展——《公路工程...</a>[09-26]</li>
-                        <!-- order="DocRelTime desc" -->
+
                         <li class="fix"><a href="/zhengcejiedu/2015qgsfgltjgb" title="《2015年全国收费公路统计公报》" target="_blank">《2015年全国收费公路统计公报》</a>[09-20]</li>
-                        <!-- order="DocRelTime desc" -->
+
                         <li class="fix"><a href="/zhengcejiedu/chuzuqcjsycyzgandxunyouczqcjygfglgd" title="《出租汽车驾驶员从业资格管理规定》和《巡游出租汽车经营服务管理规定》" target="_blank">《出租汽车驾驶员从业资格管理规定》和《巡游出租汽车经...</a>[09-12]</li>
-                        <!-- order="DocRelTime desc" -->
+
                         <li class="fix"><a href="/zhengcejiedu/chaoxianysclxsglglgd" title="《超限运输车辆行驶公路管理规定》" target="_blank">《超限运输车辆行驶公路管理规定》</a>[09-08]</li>
                         <li class="fix"><a href="/zhengcejiedu/chaoxianysclxsglglgd" title="更多" target="_blank">     更多>>></a></li>
                     </ul>
                 </div>
                 <div class="title_nr1" style="display: none;">
                     <ul>
-                        <!-- order="DocRelTime desc" -->
+
                         <li class="fix"><a href="/zhengcejiedu/shuilulkyssmzglgd" title="《水路旅客运输实名制管理规定》解读" target="_blank">《水路旅客运输实名制管理规定》解读</a>[10-14]</li>
-                        <!-- order="DocRelTime desc" -->
+
                         <li class="fix"><a href="/zhengcejiedu/zhongguocyfzgh" title="为海洋强国战略提供高素质人才保障 部海事局局长许如清解读《中国船员发展规划（2016—2020年）》" target="_blank">为海洋强国战略提供高素质人才保障 部海事局局长许如清解...</a>[10-11]</li>
-                        <!-- order="DocRelTime desc" -->
+
                         <li class="fix"><a href="/zhengcejiedu/glgcsgjlgf" title="依法监理 改革提升 促进公路建设健康发展——《公路工程施工监理规范》修订解读" target="_blank">依法监理 改革提升 促进公路建设健康发展——《公路工程...</a>[09-26]</li>
-                        <!-- order="DocRelTime desc" -->
+
                         <li class="fix"><a href="/zhengcejiedu/2015qgsfgltjgb" title="《2015年全国收费公路统计公报》解读" target="_blank">《2015年全国收费公路统计公报》解读</a>[09-20]</li>
-                        <!-- order="DocRelTime desc" -->
+
                         <li class="fix"><a href="/zhengcejiedu/chuzuqcjsycyzgandxunyouczqcjygfglgd" title="《出租汽车驾驶员从业资格管理规定》和《巡游出租汽车经营服务管理规定》解读" target="_blank">《出租汽车驾驶员从业资格管理规定》和《巡游出租汽车经...</a>[09-12]</li>
-                        <!-- order="DocRelTime desc" -->
+
                         <li class="fix"><a href="/zhengcejiedu/chaoxianysclxsglglgd" title="《超限运输车辆行驶公路管理规定》解读" target="_blank">《超限运输车辆行驶公路管理规定》解读</a>[09-08]</li>
+
+                        <li class="fix"><a href="/zhengcejiedu/chaoxianysclxsglglgd" title="更多" target="_blank">     更多>>></a></li>
 
                     </ul>
                 </div>
+                -->
             </div>
         </div>
 
         <div class="main2_nrf fl">
             <div class="title fix">
-                <div class="title1 xz"><a href="http://zizhan.mot.gov.cn/zfxxgk/index.html" title="通知公告" target="_blank">通知公告</a></div>
-                <div class="title1"><a href="./zhengcejiedu/" title="政策解读" target="_blank">政策解读</a></div>
+                    <c:forEach items="${rightTagList}" var="util" varStatus="status">
+                        <c:if test="${status.first}">
+
+                            <div class="title1 xz"><a href="getTagNews?tid=${util.tagId}" title="${util.tagName}" target="_blank">${util.tagName}</a></div>
+
+                        </c:if>
+                        <c:if test="${!status.first}">
+
+                            <div class="title1"><a href="getTagNews?tid=${util.tagId}" title="${util.tagName}" target="_blank">${util.tagName}</a></div>
+
+                        </c:if>
+
+                    </c:forEach>
+
             </div>
             <div class="title_nr">
-                <div class="title_nr1" style="display: block;">
+
+                <c:forEach items="${rightNewsList}" var="util" varStatus="status">
+                    <c:if test="${status.first}">
+
+                        <div class="title_nr1" style="display: block;">
+                            <ul>
+                                <c:forEach items="${util}" var="x" varStatus="substatus">
+                                    <li class="fix"><a href="showNewsDetail?shownewId=${x.id}" title="${x.title}" target="_blank">${x.title}</a>[${x.time}]</li>
+
+                                </c:forEach>
+
+                            </ul>
+                        </div>
+
+                    </c:if>
+                    <c:if test="${!status.first}">
+
+                        <div class="title_nr1" style="display: none;">
+                            <ul>
+                                <c:forEach items="${util}" var="x" varStatus="substatus">
+                                    <li class="fix"><a href="showNewsDetail?shownewId=${x.id}" title="${x.title}" target="_blank">${x.title}</a>[${x.time}]</li>
+
+                                </c:forEach>
+                            </ul>
+                        </div>
+
+                    </c:if>
+
+                </c:forEach>
+
+
+              <!--
+               <div class="title_nr1" style="display: block;">
                     <ul>
-                        <!-- order="DocRelTime desc" -->
+
                         <li class="fix"><a href="/zhengcejiedu/shuilulkyssmzglgd" title="《水路旅客运输实名制管理规定》" target="_blank">《水路旅客运输实名制管理规定》</a>[10-14]</li>
-                        <!-- order="DocRelTime desc" -->
+
                         <li class="fix"><a href="/zhengcejiedu/zhongguocyfzgh" title="为海洋强国战略提供高素质人才保障 部海事局局长许如清《中国船员发展规划（2016—2020年）》" target="_blank">为海洋强国战略提供高素质人才保障 部海事局局长许如清...</a>[10-11]</li>
-                        <!-- order="DocRelTime desc" -->
+
                         <li class="fix"><a href="/zhengcejiedu/glgcsgjlgf" title="依法监理 改革提升 促进公路建设健康发展——《公路工程施工监理规范》修订" target="_blank">依法监理 改革提升 促进公路建设健康发展——《公路工程...</a>[09-26]</li>
-                        <!-- order="DocRelTime desc" -->
+
                         <li class="fix"><a href="/zhengcejiedu/2015qgsfgltjgb" title="《2015年全国收费公路统计公报》" target="_blank">《2015年全国收费公路统计公报》</a>[09-20]</li>
-                        <!-- order="DocRelTime desc" -->
+
                         <li class="fix"><a href="/zhengcejiedu/chuzuqcjsycyzgandxunyouczqcjygfglgd" title="《出租汽车驾驶员从业资格管理规定》和《巡游出租汽车经营服务管理规定》" target="_blank">《出租汽车驾驶员从业资格管理规定》和《巡游出租汽车经...</a>[09-12]</li>
-                        <!-- order="DocRelTime desc" -->
+                        <
                         <li class="fix"><a href="/zhengcejiedu/chaoxianysclxsglglgd" title="《超限运输车辆行驶公路管理规定》" target="_blank">《超限运输车辆行驶公路管理规定》</a>[09-08]</li>
+                        <li class="fix"><a href="/zhengcejiedu/chaoxianysclxsglglgd" title="更多" target="_blank">     更多>>></a></li>
                     </ul>
                 </div>
                 <div class="title_nr1" style="display: none;">
                     <ul>
-                        <!-- order="DocRelTime desc" -->
-                        <li class="fix"><a href="/zhengcejiedu/shuilulkyssmzglgd" title="《水路旅客运输实名制管理规定》解读" target="_blank">《水路旅客运输实名制管理规定》解读</a>[10-14]</li>
-                        <!-- order="DocRelTime desc" -->
-                        <li class="fix"><a href="/zhengcejiedu/zhongguocyfzgh" title="为海洋强国战略提供高素质人才保障 部海事局局长许如清解读《中国船员发展规划（2016—2020年）》" target="_blank">为海洋强国战略提供高素质人才保障 部海事局局长许如清解...</a>[10-11]</li>
-                        <!-- order="DocRelTime desc" -->
-                        <li class="fix"><a href="/zhengcejiedu/glgcsgjlgf" title="依法监理 改革提升 促进公路建设健康发展——《公路工程施工监理规范》修订解读" target="_blank">依法监理 改革提升 促进公路建设健康发展——《公路工程...</a>[09-26]</li>
-                        <!-- order="DocRelTime desc" -->
-                        <li class="fix"><a href="/zhengcejiedu/2015qgsfgltjgb" title="《2015年全国收费公路统计公报》解读" target="_blank">《2015年全国收费公路统计公报》解读</a>[09-20]</li>
-                        <!-- order="DocRelTime desc" -->
-                        <li class="fix"><a href="/zhengcejiedu/chuzuqcjsycyzgandxunyouczqcjygfglgd" title="《出租汽车驾驶员从业资格管理规定》和《巡游出租汽车经营服务管理规定》解读" target="_blank">《出租汽车驾驶员从业资格管理规定》和《巡游出租汽车经...</a>[09-12]</li>
-                        <!-- order="DocRelTime desc" -->
-                        <li class="fix"><a href="/zhengcejiedu/chaoxianysclxsglglgd" title="《超限运输车辆行驶公路管理规定》解读" target="_blank">《超限运输车辆行驶公路管理规定》解读</a>[09-08]</li>
 
+                        <li class="fix"><a href="/zhengcejiedu/shuilulkyssmzglgd" title="《水路旅客运输实名制管理规定》解读" target="_blank">《水路旅客运输实名制管理规定》解读</a>[10-14]</li>
+
+                        <li class="fix"><a href="/zhengcejiedu/zhongguocyfzgh" title="为海洋强国战略提供高素质人才保障 部海事局局长许如清解读《中国船员发展规划（2016—2020年）》" target="_blank">为海洋强国战略提供高素质人才保障 部海事局局长许如清解...</a>[10-11]</li>
+
+                        <li class="fix"><a href="/zhengcejiedu/glgcsgjlgf" title="依法监理 改革提升 促进公路建设健康发展——《公路工程施工监理规范》修订解读" target="_blank">依法监理 改革提升 促进公路建设健康发展——《公路工程...</a>[09-26]</li>
+
+                        <li class="fix"><a href="/zhengcejiedu/2015qgsfgltjgb" title="《2015年全国收费公路统计公报》解读" target="_blank">《2015年全国收费公路统计公报》解读</a>[09-20]</li>
+
+                        <li class="fix"><a href="/zhengcejiedu/chuzuqcjsycyzgandxunyouczqcjygfglgd" title="《出租汽车驾驶员从业资格管理规定》和《巡游出租汽车经营服务管理规定》解读" target="_blank">《出租汽车驾驶员从业资格管理规定》和《巡游出租汽车经...</a>[09-12]</li>
+
+                        <li class="fix"><a href="/zhengcejiedu/chaoxianysclxsglglgd" title="《超限运输车辆行驶公路管理规定》解读" target="_blank">《超限运输车辆行驶公路管理规定》解读</a>[09-08]</li>
+                        <li class="fix"><a href="/zhengcejiedu/chaoxianysclxsglglgd" title="更多" target="_blank">     更多>>></a></li>
                     </ul>
                 </div>
+            -->
             </div>
         </div>
         <div class="clear"></div>
-        <div class="product floatl columnde"><!-- Met007 v2首页 产品或图片 模块展示栏目 无后台栏目标识 -->
-            <h3 class="title-product">
-                <div class="flip floatr">
-                    <a class="next" id="next4" href="javascript:void(0);"></a>
-                    <a class="prev" id="prev4" href="javascript:void(0);"></a>
-                    <p id="trigger4"></p>
+        <div class="main2_nr fl" style="height: 204px;">
+            <div class="title fix">
+
+
+                        <div class="title1 xz"><a href="javascript:void(0);" title="政府信息公开" target="_blank">政府信息公开</a></div>
+                        <div class="title1 "><a href="javascript:void(0);" title="领导分工" target="_blank">领导分工</a></div>
+                        <div class="title1 "><a href="http://www.mxwz.com/comp/jb.aspx?fs=%E5%92%A8%E8%AF%A2" title="政策咨询" target="_blank">政策咨询</a></div>
+               　　　　 <div class="title1 "><a href="http://www.lncom.gov.cn/bs/" title="在线办理" target="_blank">在线办理</a></div>
+
+
+
+            </div>
+            <div class="title_nr" style="height: 170px;">
+
+
+
+
+
+                <div class="title_nr1" style="display: block;">
+                    <ul>
+
+                        <li class="fix"><a href="http://www.fszwgk.gov.cn/szfxxgk/dw.asp?s=25" title="信息公开目录" target="_blank">信息公开目录</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </li>
+
+                        <li class="fix"><a href="http://www.fszwgk.gov.cn/szfxxgk/zn.asp?s=25" title="信息公开指南" target="_blank">信息公开指南</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </li>
+
+                        <li class="fix"><a href="javascript:void(0);" title="办事指南" target="_blank">办事指南</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      </li>
+
+                        <li class="fix"><a href="http://www.fszwgk.gov.cn/gk_list_Department.asp?d=25" title="行政权力公开" target="_blank">行政权力公开</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+
+                        <li class="fix"><a href="javascript:void(0);" title="依申请公开" target="_blank">依申请公开</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+
+
+                    </ul>
                 </div>
-                <div class="line"><span>学生风采</span></div>
-            </h3>
-            <div class="imglist" id="panel4" style="height:169px;">
-                <ul class="list-style" style="height:169px;">
-                    <!--删除下面methtml_getarray函数的第三个参数,以保证后台对前台新闻列表的排序有效 现在排序优先级为: 排序权值>置顶状态值>发布时间值>推荐状态值-->
+                <div class="title_nr1" style="display: none;">
+                    <ul>
 
-                    <li style="width:206px; height:169px;">
-                        <a href="StuStyleShow/showimg.php?lang=cn&id=51" target="_blank" title="12.9长跑" class="img">
-                            <img src="upload/201412/thumb/1418297794.jpg" title="12.9长跑" alt="12.9长跑" width="200" height="138" />
-                        </a>
-                        <h4><a href="StuStyleShow/showimg.php?lang=cn&id=51" target="_blank" title="12.9长跑">12.9长跑</a></h4>
-                    </li>
+                        <li class="fix"><a href="javascript:void(0);" title="进入领导分工" target="_blank">进入领导分工</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                    </ul>
+                </div>
 
-                    <li style="width:206px; height:169px;">
-                        <a href="StuStyleShow/showimg.php?lang=cn&id=20" target="_blank" title="毕业学生在东航风采" class="img">
-                            <img src="upload/201311/thumb/1384848783.jpg" title="毕业学生在东航风采" alt="毕业学生在东航风采" width="200" height="138" />
-                        </a>
-                        <h4><a href="StuStyleShow/showimg.php?lang=cn&id=20" target="_blank" title="毕业学生在东航风采">毕业学生在东航风采</a></h4>
-                    </li>
+                <div class="title_nr1" style="display: none;">
+                    <ul>
 
-                    <li style="width:206px; height:169px;">
-                        <a href="StuStyleShow/showimg.php?lang=cn&id=52" target="_blank" title="12.9长跑" class="img">
-                            <img src="upload/201412/thumb/1418297781.jpg" title="12.9长跑" alt="12.9长跑" width="200" height="138" />
-                        </a>
-                        <h4><a href="StuStyleShow/showimg.php?lang=cn&id=52" target="_blank" title="12.9长跑">12.9长跑</a></h4>
-                    </li>
+                        <li class="fix"><a href="http://www.mxwz.com/comp/jb.aspx?fs=%E5%92%A8%E8%AF%A2" title="进入政策咨询" target="_blank">进入政策咨询</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                    </ul>
+                </div>
 
-                    <li style="width:206px; height:169px;">
-                        <a href="StuStyleShow/showimg.php?lang=cn&id=41" target="_blank" title="运动会老师合影" class="img">
-                            <img src="upload/201405/thumb/1399813279.JPG" title="运动会老师合影" alt="运动会老师合影" width="200" height="138" />
-                        </a>
-                        <h4><a href="StuStyleShow/showimg.php?lang=cn&id=41" target="_blank" title="运动会老师合影">运动会老师合影</a></h4>
-                    </li>
+                <div class="title_nr1" style="display: none;">
+                    <ul>
 
-                    <li style="width:206px; height:169px;">
-                        <a href="StuStyleShow/showimg.php?lang=cn&id=29" target="_blank" title="迎新晚会" class="img">
-                            <img src="upload/201311/thumb/1384848985.JPG" title="迎新晚会" alt="迎新晚会" width="200" height="138" />
-                        </a>
-                        <h4><a href="StuStyleShow/showimg.php?lang=cn&id=29" target="_blank" title="迎新晚会">迎新晚会</a></h4>
-                    </li>
+                        <li class="fix"><a href="http://www.lncom.gov.cn/bs/" title="进入在线办理" target="_blank">进入在线办理</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                    </ul>
+                </div>
 
-                    <li style="width:206px; height:169px;">
-                        <a href="StuStyleShow/showimg.php?lang=cn&id=27" target="_blank" title="模拟机舱" class="img">
-                            <img src="upload/201311/thumb/1384849182.JPG" title="模拟机舱" alt="模拟机舱" width="200" height="138" />
-                        </a>
-                        <h4><a href="StuStyleShow/showimg.php?lang=cn&id=27" target="_blank" title="模拟机舱">模拟机舱</a></h4>
-                    </li>
 
-                    <li style="width:206px; height:169px;">
-                        <a href="StuStyleShow/showimg.php?lang=cn&id=26" target="_blank" title="技能大赛获奖照片" class="img">
-                            <img src="upload/201311/thumb/1384848725.JPG" title="技能大赛获奖照片" alt="技能大赛获奖照片" width="200" height="138" />
-                        </a>
-                        <h4><a href="StuStyleShow/showimg.php?lang=cn&id=26" target="_blank" title="技能大赛获奖照片">技能大赛获奖照片</a></h4>
-                    </li>
 
-                    <li style="width:206px; height:169px;">
-                        <a href="StuStyleShow/showimg.php?lang=cn&id=24" target="_blank" title="团代会代表与杨校长合影" class="img">
-                            <img src="upload/201311/thumb/1384848410.JPG" title="团代会代表与杨校长合影" alt="团代会代表与杨校长合影" width="200" height="138" />
-                        </a>
-                        <h4><a href="StuStyleShow/showimg.php?lang=cn&id=24" target="_blank" title="团代会代表与杨校长合影">团代会代表与杨校长合影</a></h4>
-                    </li>
 
-                </ul>
             </div>
         </div>
-        <!--<div class="case floatr columnde"> Met007 v2首页右侧第二个栏目 后台栏目标识为8 暂时删除这个栏目 栏目改为信箱 -20131206
-            <h3 class="title"><a href="download/" title="更多>>" class="more floatr">更多>></a><div class="line"><span>下载中心</span></div></h3>
-               <ul class="newsx list-style">
-    <!--删除下面methtml_getarray函数的第三个参数,以保证后台对前台新闻列表的排序有效 现在排序优先级为: 排序权值>置顶状态值>发布时间值>推荐状态值-->
-        <!----
-                    <li><a href="download/showdownload.php?lang=cn&id=32" target="_blank" title="沈阳航空航天大学飞行签派员800小时(签派“+1”班) 培训招生简章">沈阳航空航天大学飞行签派员800小时(签派“+1”班) 培训招生简章</a><img class='listtop' src='templates/met007/images/top.gif' alt='' />  </li>
-        <!----
-                    <li><a href="download/showdownload.php?lang=cn&id=30" target="_blank" title="2016版沈航大飞行学员背景调查材料">2016版沈航大飞行学员背景调查材料</a>  </li>
-        <!----
-                    <li><a href="download/showdownload.php?lang=cn&id=27" target="_blank" title="民用航空学院评优申请表">民用航空学院评优申请表</a>  </li>
-        <!----
-                    <li><a href="download/showdownload.php?lang=cn&id=26" target="_blank" title="毕业生实习请假单">毕业生实习请假单</a>  </li>
-        <!----
-                    <li><a href="download/showdownload.php?lang=cn&id=25" target="_blank" title="关于组织申报2013年度青年教师自选课题(人文)的附件">关于组织申报2013年度青年教师自选课题(人文)的附件</a>  </li>
-        <!----
-                    <li><a href="download/showdownload.php?lang=cn&id=23" target="_blank" title="2014年沈航民航机务执照笔试、口试考试计划">2014年沈航民航机务执照笔试、口试考试计划</a>  </li>
-        <!----
-                    <li><a href="download/showdownload.php?lang=cn&id=24" target="_blank" title="关于组织申报2013年度青年教师自选课题(理工科)的附件">关于组织申报2013年度青年教师自选课题(理工科)的附件</a>  </li>
-        <!----
-                    </ul>
-            </div> -->
 
-        <div id=mail-box>
-            <img src="/upload/cac-static/mail-3.jpg" />
+        <div class="main2_nrf fl"  style="height: 204px;">
+            <div class="title fix">
+
+
+                        <div class="title1 xz"><a href="javascript:void(0);" title="局长信箱" target="_blank">局长信箱</a></div>
+
+
+
+                        <div class="title1"><a href="http://www.fszwgk.gov.cn/surveyol.asp" title="意见征集" target="_blank">意见征集</a></div>
+
+               　　　　 <div class="title1 xz"><a href="javascript:void(0);" title="双创政策" target="_blank">双创政策</a></div>
+
+
+
+            </div>
+            <div class="title_nr"  style="height: 170px;">
+
+
+
+
+                 <div class="title_nr1" style="display: block;">
+                      <ul>
+
+                          <li class="fix"><a href="javascript:void(0);" title="进入局长信箱" target="_blank">进入局长信箱</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+
+                          <li class="fix"><a href="javascript:void(0);" title="查看办理情况" target="_blank">查看办理情况</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+
+
+                      </ul>
+                  </div>
+                  <div class="title_nr1" style="display: none;">
+                      <ul>
+
+                          <li class="fix"><a href="http://www.fszwgk.gov.cn/surveyol.asp" title="进入意见征集" target="_blank">进入意见征集</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                      </ul>
+                  </div>
+
+                <div class="title_nr1" style="display: none;">
+                    <ul>
+
+                        <li class="fix"><a href="javascript:void(0);" title="进入双创政策" target="_blank">进入双创政策</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                    </ul>
+                </div>
+
+            </div>
         </div>
 
         <div class="clear"></div>
@@ -715,11 +812,13 @@
 
                     <div class="clear"></div>
                     <ul class='list-none'>
-                        <li><a href='http://http://www.caac.gov.cn/' target='_blank' title=''>中国民用航空局</a></li>
-                        <li><a href='http://db.caac.gov.cn/' target='_blank' title='中国民用航空东北地区管理局'>中国民用航空东北地区管理局</a></li>
-                        <li><a href='http://www.sau.edu.cn' target='_blank' title='沈阳航空航天大学'>沈阳航空航天大学</a></li>
-                        <li><a href='http://dept.cauc.edu.cn/kgzx/' target='_blank' title=''>民用航空器维修人员执照考试管理中心</a></li>
-                        <li><a href='http://www.carnoc.com/' target='_blank' title=''>民航资源网</a></li>
+                        <li style="display:inline;"><a href='http://www.moc.gov.cn/' target='_blank' title='交通部'><h3>交通部</h3></a></li>
+                        <li style="display:inline;"><a href='http://www.lncom.gov.cn/' target='_blank' title='辽宁省交通厅'><h3>辽宁省交通厅</h3></a></li>
+                        <li style="display:inline;"><a href='http://www.fushun.gov.cn/' target='_blank' title='抚顺政府门户网'><h3>抚顺政府门户网</h3></a></li>
+                        <li style="display:inline;"><a href='http://www.fszwgk.gov.cn/' target='_blank' title='抚顺政务公开网'><h3>抚顺政务公开网</h3></a></li>
+                        <li style="display:inline;"><a href='http://www.mxwz.com/' target='_blank' title='民心网'><h3>民心网</h3></a></li>
+                        <li style="display:inline;"><a href='http://www.lncredit.gov.cn/' target='_blank' title='信用辽宁'><h3>信用辽宁</h3></a></li>
+                        <li style="display:inline;"><a href='http://www.fscredit.gov.cn/' target='_blank' title='信用抚顺'><h3>信用抚顺</h3></a></li>
                     </ul>
 
                 </div>
@@ -732,12 +831,12 @@
 
     <div id="bottom">
         <div class="nav">
-            <a href='http://oa.sau.edu.cn' target='_blank' title='在线办公'>在线办公</a><span>|</span><a href='http://mail.sau.edu.cn' target='_blank' title='沈航邮件'>沈航邮件</a><span>|</span><a href='sitemap/'  title='网站地图'>网站地图</a><span>|</span><a href='http://localhost:8080/adminLogin.jsp' target='_blank' title='网站管理'>网站管理</a>
+            </span><a href='http://localhost:8080/adminLogin.jsp' target='_blank' title='网站管理'>网站管理</a>
         </div>
         <div class="text">
             <ul>
-                <li>沈航民用航空学院 版权所有 &copy2004-2015 未经许可 严禁转载本站内容 辽ICP备案05001370号 </li>
-                <li>计算机学院技术与美工支持 沈阳市道义南大街37号 电话：024-89728966  网站部分内容来源网络</li>
+                <li>版权所有：抚顺市交通局  &nbsp;&nbsp;地址：顺城区临江东路1号&nbsp;&nbsp; 电话：024-57505000 </li>
+                <li>维护单位：抚顺市交通局信息中心 &nbsp;&nbsp; fscic@163.com &nbsp;&nbsp; <span style="text-decoration: underline;">辽ICP06018765</span></li>
                 <li><span style="color:#696969;"><strong>为获得最佳浏览体验并使用完整的功能，推荐使用谷歌(Chrome)或其他使用WebKit内核(如猎豹)的浏览器，IE用户请使用8.0以上的版本&nbsp;<br />
 推荐使用不小于1024*768且不大于1920*1080(比例为16:9或16:10)的屏幕分辨率，最佳屏幕分辨率为1366*768且比例为16:9</strong></span></li>
             </ul>
@@ -751,6 +850,7 @@
                 <a href="http://www.MetInfo.cn" target="_blank" title="企业网站建设">
                     www.MetInfo.cn
                 </a>
+                &nbsp;&nbsp;Designed by ZH&LC,NEU
             </div>
         </div>
     </div>
@@ -792,8 +892,14 @@
         });
     });
 </script>
+<div id="icon" style="text-align:center">
+
+    <script type="text/javascript">document.write(unescape("%3Cspan id='_ideConac' %3E%3C/span%3E%3Cscript src='http://dcs.conac.cn/js/08/140/0000/40539783/CA081400000405397830002.js' type='text/javascript'%3E%3C/script%3E"));</script>
+    <a  href="http://webscan.360.cn/index/checkwebsite/url/www.fsjt.gov.cn"><img border="0" src="http://img.webscan.360.cn/status/pai/hash/749e8c93d6b78a0d46b3878af69258ab"/></a>
+</div>
 
 <script src="include/stat/stat.php?type=para&u=&d=10001--cn" type="text/javascript"></script>
 
 </body>
 </html>
+

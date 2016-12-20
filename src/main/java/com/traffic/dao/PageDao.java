@@ -17,6 +17,7 @@ public interface PageDao {
      */
     List<NewsAndNotice> findPageByProperty(NewsAndNotice news , Page page , String tagPath);
     List<NewsAndNotice> findPageByPropertyFront(Page page , String tagPath);
+    List<NewsAndNotice> frontSearchNews(String searchword,Page page);
 
 
     /**

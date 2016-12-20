@@ -51,8 +51,10 @@ import java.util.List;
  */
 @Controller
 @Namespace(value="/")             //表示当前Action所在命名空间
+
 @Scope("session")                  //支持多例
 @ParentPackage("all")              //表示继承的父包
+
 public class NewsForUserAction extends ActionSupport {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
@@ -66,6 +68,14 @@ public class NewsForUserAction extends ActionSupport {
     private PageService pageService;
     private Page page;
     private String chainnewId;
+    private List<Tag> aboveTagList;
+    private List<Tag> leftTagList;
+    private List<Tag> rightTagList;
+    private String searchword;
+    private List<NewsAndNotice> searchList;
+
+
+
     @Action(
             value="getTagNews",
             results={
@@ -141,6 +151,8 @@ public class NewsForUserAction extends ActionSupport {
 
         if(list.size()>1) {
             ActionContext.getContext().put("list",list);
+            aboveTagList = tagService.frontFindByPosition(1);
+            ActionContext.getContext().put("aboveTagList",aboveTagList);
             return SUCCESS;
         }
         else if(list.size()==1) {
@@ -154,6 +166,8 @@ public class NewsForUserAction extends ActionSupport {
                     list = pageService.findNewsListFront(page,tagtemp.getTagId()+"/"+leftList.get(0).getTagId());
                     if(list.size()>1) {
                         ActionContext.getContext().put("list",list);
+                        aboveTagList = tagService.frontFindByPosition(1);
+                        ActionContext.getContext().put("aboveTagList",aboveTagList);
                         return SUCCESS;
                     }else if(list.size()==1){
                         chainnewId = list.get(0).getId();
@@ -165,6 +179,8 @@ public class NewsForUserAction extends ActionSupport {
                             list = pageService.findNewsListFront(page,tagtemp.getTagId()+"/"+leftList.get(0).getTagId()+"/"+aboveList.get(0).getTagId());
                             if(list.size()>1) {
                                 ActionContext.getContext().put("list",list);
+                                aboveTagList = tagService.frontFindByPosition(1);
+                                ActionContext.getContext().put("aboveTagList",aboveTagList);
                                 return SUCCESS;
                             }else if(list.size()==1){
                                 chainnewId = list.get(0).getId();
@@ -190,6 +206,8 @@ public class NewsForUserAction extends ActionSupport {
                     list = pageService.findNewsListFront(page,tagtemp.getParentTag().getTagId()+"/"+tagtemp.getTagId()+"/"+aboveList.get(0).getTagId());
                     if(list.size()>1) {
                         ActionContext.getContext().put("list",list);
+                        aboveTagList = tagService.frontFindByPosition(1);
+                        ActionContext.getContext().put("aboveTagList",aboveTagList);
                         return SUCCESS;
                     }else if(list.size()==1){
                         chainnewId = list.get(0).getId();
@@ -208,6 +226,8 @@ public class NewsForUserAction extends ActionSupport {
                 list = pageService.findNewsListFront(page,tagtemp.getParentTag().getParentTag().getTagId()+"/"+tagtemp.getParentTag().getTagId()+"/"+tagtemp.getTagId());
                 if(list.size()>1) {
                     ActionContext.getContext().put("list",list);
+                    aboveTagList = tagService.frontFindByPosition(1);
+                    ActionContext.getContext().put("aboveTagList",aboveTagList);
                     return SUCCESS;
                 }else if(list.size()==1){
                     chainnewId = list.get(0).getId();
@@ -223,6 +243,115 @@ public class NewsForUserAction extends ActionSupport {
         }
 
     }
+/*
+    @Action(value="loadAboveTags", results={@Result(type="json", params={"root","aboveTagList"})}, interceptorRefs={
+            @InterceptorRef("defaultStack")
+    })
+    public String loadAboveTags(){
+
+        aboveTagList = tagService.frontFindByPosition(1);
+        return "aboveTagsjson";
+    }
+*/
+
+    @Action(
+            value="loadFrontTags",
+            results={
+                    @Result(name="success",location="/index.jsp")
+
+            },
+            interceptorRefs={
+                    @InterceptorRef("defaultStack")
+            }
+    )
+    public String loadFrontTags(){
+//上部列表加载
+        aboveTagList = tagService.frontFindByPosition(1);
+        ActionContext.getContext().put("aboveTagList",aboveTagList);
+        //通知公告位置新闻列表加载
+        List <NewsAndNotice> noticeList = newsAndNoticeService.findNewsByTag("39");
+        ActionContext.getContext().put("noticeList",noticeList);
+        //左下位置列表加载
+        leftTagList = tagService.frontFindByPosition(2);
+        ActionContext.getContext().put("leftTagList",leftTagList);
+        List<List<NewsAndNotice>> leftNewsList= new ArrayList<List<NewsAndNotice>>();
+        if(leftTagList.size()!=0){
+            for(int i=0;i<leftTagList.size();i++){
+               Tag tagtemp = leftTagList.get(i);
+                String pathtemp = String.valueOf(tagtemp.getTagId());
+                if(tagtemp.getParentTag() !=null)
+                {
+                    pathtemp = tagtemp.getParentTag().getTagId()+"/" +pathtemp;
+                    if(tagtemp.getParentTag().getParentTag() !=null)
+                    {
+                        pathtemp = tagtemp.getParentTag().getParentTag().getTagId()+"/" +pathtemp;
+                    }
+                }
+                List temp = newsAndNoticeService.findNewsByTag(pathtemp);
+                leftNewsList.add(temp);
+            }
+        }
+        ActionContext.getContext().put("leftNewsList",leftNewsList);
+
+        //右下位置列表加载
+        rightTagList = tagService.frontFindByPosition(3);
+        ActionContext.getContext().put("rightTagList",rightTagList);
+        List<List<NewsAndNotice>> rightNewsList= new ArrayList<List<NewsAndNotice>>();
+        if(rightTagList.size()!=0){
+            for(int i=0;i<rightTagList.size();i++){
+                Tag tagtemp = rightTagList.get(i);
+                String pathtemp = String.valueOf(tagtemp.getTagId());
+                if(tagtemp.getParentTag() !=null)
+                {
+                    pathtemp = tagtemp.getParentTag().getTagId()+"/" +pathtemp;
+                    if(tagtemp.getParentTag().getParentTag() !=null)
+                    {
+                        pathtemp = tagtemp.getParentTag().getParentTag().getTagId()+"/" +pathtemp;
+                    }
+                }
+                List temp = newsAndNoticeService.findNewsByTag(pathtemp);
+                rightNewsList.add(temp);
+            }
+        }
+        ActionContext.getContext().put("rightNewsList",rightNewsList);
+
+
+
+        return "success";
+    }
+
+
+
+    @Action(
+            value="frontSearchNews",
+            results={
+                    @Result(name="success",location="/user/searchNews.jsp")
+
+            },
+            interceptorRefs={
+                    @InterceptorRef("defaultStack")
+            }
+    )
+    public String frontSearchNews(){
+//上部列表加载
+        aboveTagList = tagService.frontFindByPosition(1);
+        ActionContext.getContext().put("aboveTagList",aboveTagList);
+        if(page==null)
+        {
+            page = new Page();
+            searchList = pageService.frontSearchNews(searchword.trim(),page);
+        }else{
+            searchList = pageService.frontSearchNews(searchword.trim(),page);
+        }
+
+        ActionContext.getContext().put("searchList",searchList);
+
+        ActionContext.getContext().put("presearchword",searchword.trim());
+
+
+        return "success";
+    }
+
 
     public Tag getTag() {
         return tag;
@@ -254,5 +383,42 @@ public class NewsForUserAction extends ActionSupport {
 
     public void setChainnewId(String chainnewId) {
         this.chainnewId = chainnewId;
+    }
+    public List<Tag> getAboveTagList() {
+        return aboveTagList;
+    }
+
+    public void setAboveTagList(List<Tag> aboveTagList) {
+        this.aboveTagList = aboveTagList;
+    }
+
+    public List<Tag> getLeftTagList() {
+        return leftTagList;
+    }
+
+    public void setLeftTagList(List<Tag> leftTagList) {
+        this.leftTagList = leftTagList;
+    }
+
+    public List<Tag> getRightTagList() {
+        return rightTagList;
+    }
+
+    public void setRightTagList(List<Tag> rightTagList) {
+        this.rightTagList = rightTagList;
+    }
+    public String getSearchword() {
+        return searchword;
+    }
+
+    public void setSearchword(String searchword) {
+        this.searchword = searchword;
+    }
+    public List<NewsAndNotice> getSearchList() {
+        return searchList;
+    }
+
+    public void setSearchList(List<NewsAndNotice> searchList) {
+        this.searchList = searchList;
     }
 }

@@ -85,6 +85,12 @@
                                 <c:if test="${tag.position==3}">
                                     右下
                                 </c:if>
+                                <c:if test="${tag.position==4}">
+                                    上和左下
+                                </c:if>
+                                <c:if test="${tag.position==5}">
+                                    上和右下
+                                </c:if>
                             </td>
                             <td>
                                     ${tag.weight}
@@ -147,7 +153,7 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label offset2" for = "tposition"  >位置</label>
                             <div class="col-sm-6">
-                                <s:select name="editTag.position" class="form-control " list="#{0:'无',1:'上',2:'左下',3:'右下'}"
+                                <s:select name="editTag.position" class="form-control " list="#{0:'无',1:'上',2:'左下',3:'右下',4:'上和左下',5:'上和右下'}"
                                           id="tposition" listKey="key" listValue="value" headerKey="0" headerValue="请选择位置"></s:select>
                             </div>
                         </div>
