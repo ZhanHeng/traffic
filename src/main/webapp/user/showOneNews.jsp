@@ -46,6 +46,12 @@
     });
 </script>
 <style>
+    body{
+        font-family:微软雅黑;
+        color:black;
+        margin: 0;
+        padding: 0;
+    }
     .h3, h3 {
         font-family: '微软雅黑';
         font-size: 15px;
@@ -297,6 +303,53 @@
         color:#999;
         border-color:#999;
         background:#fff;
+    }
+
+    #navlist{
+        margin-left:17px;
+        margin-right:auto;
+        width:734px;
+        height:36px;
+    }
+    #navlist ul {
+        margin: 0px;
+        padding: 0px;
+        border: 0px;
+        text-align: center;
+        display: inline;
+        background:none;
+        list-style-type:none;
+        height:28px;
+    }
+
+    #navlist li {
+        height:28px;
+        border:0;
+        float: left;
+        padding: 0px;
+        border: 0px;
+        text-align: center;
+        line-height:36px;
+        list-style:none;
+        display:inline;
+        width:100px;
+    }
+    #navlist li a , #navlist li a:link {
+        display: block;
+        padding:3px 11px ;
+        border:0;
+        height:36px;
+        TEXT-DECORATION: none;
+        font-weight:800;
+        font-size:13px;
+        list-style-type:none;
+        display:inline;
+        color: #FFf;
+        background: #2a84b1;
+    }
+    #navlist li a p:hover {
+        text-decoration: underline;
+        color:red;
     }
 </style>
 

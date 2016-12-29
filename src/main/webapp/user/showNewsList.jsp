@@ -348,16 +348,14 @@
     #navlist{
         margin-left:17px;
         margin-right:auto;
-        float:left;
         width:734px;
         height:36px;
     }
     #navlist ul {
-        CLEAR: left;
-        MARGIN: 0px;
-        PADDING: 0px;
-        BORDER: 0px;
-        TEXT-ALIGN: center;
+        margin: 0px;
+        padding: 0px;
+        border: 0px;
+        text-align: center;
         display: inline;
         background:none;
         list-style-type:none;
@@ -367,29 +365,27 @@
     #navlist li {
         height:28px;
         border:0;
-        FLOAT: left;
-        MARGIN: 0px;
-        PADDING: 0px;
-        TEXT-ALIGN: center;
+        float: left;
+        padding: 0px;
+        border: 0px;
+        text-align: center;
         line-height:36px;
         list-style:none;
-        list-style-type:none;
         display:inline;
         width:100px;
     }
     #navlist li a , #navlist li a:link {
-        float:left;
-        DISPLAY: block;
-        MARGIN:0;
-        PADDING:0 11px 0 11px;
+        display: block;
+        padding:3px 11px ;
         border:0;
         height:36px;
-        COLOR: #920000;
-        TEXT-DECORATION: none;
+        text-decoration: none;
         font-weight:800;
-        font-size:14px;
+        font-size:13px;
         list-style-type:none;
         display:inline;
+        color: #FFf;
+        background: #2a84b1;
     }
     #navlist li a p:hover {
         text-decoration: underline;
@@ -431,7 +427,7 @@
         <div id="navlist">
             <ul >
                 <c:forEach items="${aboveList}" var="util" varStatus="status">
-                    <li > <a href="getTagNews?tid=${util.tagId}" title="${util.tagName}" target='_self'> <p>${util.tagName}</p></a> </li>
+                    <li > <a href="getTagNews?tid=${util.tagId}" title="${util.tagName}" target='_self'>${util.tagName}</a> </li>
                 </c:forEach>
             </ul>
         </div>

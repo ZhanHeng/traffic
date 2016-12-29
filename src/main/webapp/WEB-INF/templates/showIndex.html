@@ -1,0 +1,425 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name='renderer' content='webkit'>
+    <meta http-equiv="X-UA-COMPATIBLE" content="IE=11,chrome=1"/>
+    <meta charset='utf-8' />
+    <title>抚顺市交通局</title>
+    <meta name="Keywords" content="辽宁省出行服务,高速公路,路段,救援,服务区,路况,出入口,普通公路,路段,普通货车通行费,优惠货车通行费,客运线路,旅游景区,订票电话,售票网点,服务热线,养路费,养路费网点,运管费网点,出行路径">
+    <meta name="Description" content="辽宁省出行服务|高速公路,|路段|救援|服务区|路况|出入口|普通公路|路段|普通货车通行费|优惠货车通行费|客运线路|旅游景区|订票电话|售票网点|服务热线|养路费|养路费网点|运管费网点|出行路径">
+    <meta name="author" content="抚顺市交通局" />
+    <meta name="copyright" content="Copyright 2008-2016 MetInfo" />
+    <link href="favicon.ico" rel="shortcut icon" />
+    <link rel="stylesheet" type="text/css" href="templates/met007/images/css/metinfo.css" />
+    <link rel="stylesheet" type="text/css" href="templates/met007/images/css/footer.css" />
+    <script src="public/js/metinfo-min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/jquery-1.8.2.js"></script>
+    <link rel="stylesheet" type="text/css" href="templates/met007/images/css/focusStyle.css" />
+    <style type="text/css">
+        a:hover{color:red;}
+        body{margin:0;padding: 0}
+        .gd a{
+            height: 20px;
+            line-height: 20px;
+            padding: 0 10px;
+            background-color: #0054ba;
+            color: #fff;
+            font-size: 14px;
+        }
+        .listsection{
+            float: left;
+            width: 100px;
+            margin :10px 0px 5px 10px;
+
+        }
+        .listsection h3{
+            text-align: left;
+        }
+        .listsection ul li{
+            text-align: left;
+            padding: 5px 0px;
+        }
+    </style>
+    <script src="public/js/public.js" type="text/javascript" language="javascript"></script>
+</head>
+<!--[if IE 6]>
+<script src="templates/met007/images/js/IE6-png.js" language="javascript" type="text/javascript"></script>
+<script type="text/javascript">
+    DD_belatedPNG.fix('.bg,img');
+</script>
+<![endif]-->
+<link href="templates/met007/images/css/reset.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        $("#nav li").hover(
+                function () {
+                    $(this).addClass("hover");
+                },
+                function () {
+                    $(this).removeClass("hover");
+                }
+        );
+    });
+    $(function(){
+
+
+        //TAB切换
+        $('.title').each(function(){
+            $(this).children('.title1').eq(0).addClass('xz');
+        })
+
+        $('.title_nr').each(function(){
+            $(this).children('.title_nr1').eq(0).show();
+        })
+
+        $('.title1').mouseover(function(){
+            $(this).addClass('xz').siblings().removeClass('xz');
+            $(this).parent().siblings('.title_nr').children('.title_nr1').eq($(this).index()).show().siblings().hide();
+        })
+
+        //TAB切换
+        $('.title2').each(function(){
+            $(this).children('.title2_1').eq(1).addClass('xz');
+        })
+
+        $('.title2_nr').each(function(){
+            $(this).children('.title2_nr1').eq(1).show().siblings().hide();
+        })
+
+        $('.title2_1').mouseover(function(){
+            $(this).addClass('xz').siblings().removeClass('xz');
+            $('.title2_nr').children('.title2_nr1').eq($(this).index()).show().siblings().hide();
+        })
+
+        //TAB切换-访谈
+        $('.title3').each(function(){
+            $(this).children('.title3_1').eq(0).addClass('xz');
+        })
+
+        $('.title3_nr').each(function(){
+            $(this).children('.title3_nr1').eq(0).show().siblings().hide();
+        })
+
+        $('.title3_1').mouseover(function(){
+            $(this).addClass('xz').siblings().removeClass('xz');
+            $('.title3_nr').children('.title3_nr1').eq($(this).index()).show().siblings().hide();
+        })
+
+    })
+</script>
+<script>
+    function Banner(){
+        var $focusBanner=$("#focus-banner"),
+                $bannerList=$("#focus-banner-list li"),
+                $focusHandle=$(".focus-handle"),
+                $bannerImg=$(".focus-banner-img"),
+                $nextBnt=$("#next-img"),
+                $prevBnt=$("#prev-img"),
+                $focusBubble=$("#focus-bubble"),
+                bannerLength=$bannerList.length,
+                _index=0,
+                _timer="";
+        //alert(" 长度为： "+$bannerList.length)
+        for(var i=0; i<bannerLength; i++){
+            $bannerList.eq(i).css("zIndex",bannerLength-i);
+            $focusBubble.append("<li></li>");
+        }
+        $focusBubble.find("li").eq(0).addClass("current");
+        var bubbleLength=$focusBubble.find("li").length;
+        $focusBubble.css({
+            "width":bubbleLength*22,
+            "marginLeft":-bubbleLength*11
+        });//初始化
+
+        $focusBubble.on("click","li",function(){
+            $(this).addClass("current").siblings().removeClass("current");
+            _index=$(this).index();
+            changeImg(_index);
+        });//点击轮换
+
+        $prevBnt.on("click",function(){
+            _index++
+            if(_index>bannerLength-1){
+                _index=0;
+            }
+            changeImg(_index);
+        });//下一张
+
+        $nextBnt.on("click",function(){
+            _index--
+            if(_index<0){
+                _index=bannerLength-1;
+            }
+            changeImg(_index);
+        });//上一张
+
+        function changeImg(_index){
+            $bannerList.eq(_index).fadeIn(700);//淡入
+            $bannerList.eq(_index).siblings().fadeOut(700);//淡出
+            $focusBubble.find("li").removeClass("current");
+            $focusBubble.find("li").eq(_index).addClass("current");
+            clearInterval(_timer);
+            _timer=setInterval(function(){$prevBnt.click()},8000);
+        }//切换主函数
+        _timer=setInterval(function(){$prevBnt.click()},8000);
+    }
+</script>
+
+<body onload="Banner();">
+
+<div id="metinfo">
+    <div id="top" style="margin-top:-10px; margin-left:0px;width: 960px; background:url(../../upload/cac-static/top-bg002.png) no-repeat">
+    </div>
+    <div id="nav" class="top-nav">
+        <div class="top-nav">
+            <ul class="top-nav list-style">
+
+                <li class="line top-nav"></li>
+                <li class=>
+                    <a href="welcome.jsp" title="首页">
+                        <span>首页</span>
+                    </a>
+                </li>
+                <#if (aboveTagList?size > 0)>
+                    <#list aboveTagList as news>
+                        <li class="line top-nav"></li>
+                        <li>
+                            <a href="getTagNews?tid=${news.tagId}"  title="${news.tagName}">
+                                <span>${news.tagName}</span>
+                            </a>
+                        </li>
+                    </#list>
+                </#if>
+             </ul>
+        </div>
+    </div>
+
+
+
+    <div id="flash">
+
+        <div style="clear:both;height:0"></div>
+        <div id="focus-banner">
+            <ul id="focus-banner-list">
+                <#if focusPictureList?size gt 0>
+                    <#list focusPictureList as pic>
+                        <li> <a href="showNewsDetail?shownewId=${pic.id}" class='focus-banner-img' target='_self'><img src="${pic.path}" alt=""/> </a>
+                            <div class='focus-banner-text'><p>${pic.title}</p></div>
+                        </li>
+                    </#list>
+                  <#else>
+                      <li><img src='images/banner2.jpg' />
+                      </li>
+                </#if>
+            </ul>
+            <a href="javascript:;" id="next-img" class="focus-handle"></a>
+            <a href="javascript:;" id="prev-img" class="focus-handle"></a>
+            <ul id="focus-bubble"></ul>
+        </div>
+
+
+
+        <div class="right floatr" style="font-size: 14px;">
+            <div class="top">
+                <ul class="list list-style">
+                    <li class="hover" style="font-size: 16px;text-align: right;">通知公告</li>
+                    <li class="gd" style="font-size: 16px;text-align: right;padding-right: 5px"><a href="getTagNews?tid=39" title="" target="_self">更多</a></li>
+                </ul>
+                <div class="text clear">
+                    <div class="box editor">
+                        <ul class="newslist">
+                            <#list noticeList as util>
+                                <li><a href="showNewsDetail?shownewId=${util.id}" target="_self" title="${util.title}">
+                                    <#if util.title?length gt 18>
+                                        ${util.title?substring(0,18)}...
+                                    <#else>
+                                        ${util.title}
+                                    </#if>
+                                </a>[${util.time}]</li>
+                            </#list>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="searchbox">
+                <form method="POST" name="myform1" action="frontSearchNews"  target="_self">
+                    <input type="text" name="searchword" size="40"  class="navtext" />
+                    <input type='submit' name='Submit' value='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;搜索&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' class="navsb" />
+                </form>
+            </div>
+
+
+        </div>
+        <div class="clear"></div>
+
+    </div>
+    <div id="main">
+        <div class="main2_nr fl" style="">
+            <div class="title fix">
+                <#list leftTagList as util>
+                    <#if util_index == 0>
+                        <div class="title1 xz"><a href="getTagNews?tid=${util.tagId}" title="${util.tagName}" target="_self">${util.tagName}</a></div>
+                    </#if>
+                    <#if util_index != 0>
+                        <div class="title1"><a href="getTagNews?tid=${util.tagId}" title="${util.tagName}" target="_self">${util.tagName}</a></div>
+                    </#if>
+                 </#list>
+            </div>
+            <div class="title_nr">
+                <#list leftNewsList as util>
+                    <#if util_index == 0>
+                        <div class="title_nr1" style="display: block;">
+                            <ul>
+                        <#list util as x>
+                            <li class="fix"><a href="showNewsDetail?shownewId=${x.id}" title="${x.title}" target="_self">
+                                <#if x.title?length gt 27>
+                                    ${x.title?substring(0,27)}...
+                                <#else>
+                                    ${x.title}
+                                </#if>
+                            </a>[${x.time}]</li>
+                        </#list>
+                            </ul>
+                        </div>
+                    </#if>
+                    <#if util_index gt 0>
+                        <div class="title_nr1" style="display: none;">
+                            <#assign y=util_index>
+                            <ul>
+                                <#list  util as x>
+
+                                    <li class="fix"><a href="showNewsDetail?shownewId=${x.id}" title="${x.title}" target="_self">
+                                        <#if x.title?length gt 29>
+                                            ${x.title?substring(0,29)}...
+                                        <#else>
+                                            ${x.title}
+                                        </#if>
+                                    </a>[${x.time}]</li>
+                                </#list>
+                            </ul>
+                        </div>
+                    </#if>
+                </#list>
+
+
+            </div>
+        </div>
+
+        <div class="main2_nrf fl">
+            <div class="title fix">
+
+                <#list rightTagList as util>
+                    <#if util_index == 0>
+                        <div class="title1 xz"><a href="getTagNews?tid=${util.tagId}" title="${util.tagName}" target="_self">${util.tagName}</a></div>
+                    </#if>
+                    <#if util_index != 0>
+                        <div class="title1"><a href="getTagNews?tid=${util.tagId}" title="${util.tagName}" target="_self">${util.tagName}</a></div>
+                    </#if>
+                </#list>
+            </div>
+            <div class="title_nr">
+                <#list rightNewsList as util>
+                    <#if util_index == 0>
+                        <div class="title_nr1" style="display: block;">
+                            <ul>
+                                <#list util as x>
+                                    <li class="fix"><a href="showNewsDetail?shownewId=${x.id}" title="${x.title}" target="_self">
+                                        <#if x.title?length gt 27>
+                                            ${x.title?substring(0,27)}...
+                                        <#else>
+                                            ${x.title}
+                                        </#if>
+                                    </a>[${x.time}]</li>
+                                </#list>
+                            </ul>
+                        </div>
+                    </#if>
+                    <#if util_index gt 0>
+                        <div class="title_nr1" style="display: none;">
+                            <ul>
+                                <#list  util as x>
+                                    <li class="fix"><a href="showNewsDetail?shownewId=${x.id}" title="${x.title}" target="_self">
+                                        <#if x.title?length gt 29>
+                                            ${x.title?substring(0,29)}...
+                                        <#else>
+                                            ${x.title}
+                                        </#if>
+                                    </a>[${x.time}]</li>
+                                </#list>
+                            </ul>
+                        </div>
+                    </#if>
+                </#list>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="main2_nr fl" style="height: 204px;">
+            <div class="title fix">
+                <div class="title1 xz"><a href="javascript:void(0);" title="政府信息公开" target="_blank">政府信息公开</a></div>
+                <div class="title1 xz"><a href="javascript:void(0);" title="领导分工" target="_blank">领导分工</a></div>
+                <div class="title1 xz"><a href="http://www.mxwz.com/comp/jb.aspx?fs=%E5%92%A8%E8%AF%A2" title="政策咨询" target="_blank">政策咨询</a></div>
+                <div class="title1 xz"><a href="http://www.lncom.gov.cn/bs/" title="在线办理" target="_blank">在线办理</a></div>
+            </div>
+            <div class="title_nr" style="height: 170px;">
+                <div class="listsection">
+                    <ul style="margin-left:25px;width: 100px">
+                        <li class="fix"><a href="http://www.fszwgk.gov.cn/szfxxgk/dw.asp?s=25" title="信息公开目录" target="_blank">信息公开目录</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </li>
+                        <li class="fix"><a href="http://www.fszwgk.gov.cn/szfxxgk/zn.asp?s=25" title="信息公开指南" target="_blank">信息公开指南</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </li>
+                        <li class="fix"><a href="javascript:void(0);" title="办事指南" target="_blank">办事指南</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      </li>
+                        <li class="fix"><a href="http://www.fszwgk.gov.cn/gk_list_Department.asp?d=25" title="行政权力公开" target="_blank">行政权力公开</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li class="fix"><a href="javascript:void(0);" title="依申请公开" target="_blank">依申请公开</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                    </ul>
+                </div>
+                <div class="listsection">
+                    <ul style="margin-left:18px;width: 100px">
+                        <li class="fix"><a href="javascript:void(0);" title="进入领导分工" target="_blank">进入领导分工</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                    </ul>
+                </div>
+                <div class="listsection">
+                    <ul style="margin-left:5px;width: 100px">
+
+                        <li class="fix"><a href="http://www.mxwz.com/comp/jb.aspx?fs=%E5%92%A8%E8%AF%A2" title="进入政策咨询" target="_blank">进入政策咨询</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                    </ul>
+                </div>
+                <div class="listsection">
+                    <ul style="margin-left:-5px;width: 100px">
+                        <li class="fix"><a href="http://www.lncom.gov.cn/bs/" title="进入在线办理" target="_blank">进入在线办理</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="main2_nr fl"  style="height: 204px;">
+            <div class="title fix">
+                <div class="title1 xz"><a href="javascript:void(0);" title="局长信箱" target="_blank">局长信箱</a></div>
+                <div class="title1 xz"><a href="http://www.fszwgk.gov.cn/surveyol.asp" title="意见征集" target="_blank">意见征集</a></div>
+                <div class="title1 xz"><a href="javascript:void(0);" title="双创政策" target="_blank">双创政策</a></div>
+            </div>
+            <div class="title_nr"  style="height: 170px;">
+                <div class="listsection">
+                    <ul>
+                        <li class="fix"><a href="javascript:void(0);" title="进入局长信箱" target="_blank">进入局长信箱</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li class="fix"><a href="javascript:void(0);" title="查看办理情况" target="_blank">查看办理情况</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                    </ul>
+                </div>
+                <div class="listsection">
+                    <ul>
+                        <li class="fix"><a href="http://www.fszwgk.gov.cn/surveyol.asp" title="进入意见征集" target="_blank">进入意见征集</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                    </ul>
+                </div>
+                <div class="listsection">
+                    <ul>
+                        <li class="fix"><a href="javascript:void(0);" title="进入双创政策" target="_blank">进入双创政策</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<#include "/foot.ftl" parse=false encoding="UTF-8">
+</body>
+</html>
+

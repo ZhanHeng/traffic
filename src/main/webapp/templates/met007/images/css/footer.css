@@ -1,0 +1,54 @@
+div#footer{
+    width: 100%;
+    border: 1px;
+    color: #fff;
+    background: #FFFBEF url("../jxjy_wrapper_body_bottom.png") repeat-x scroll center bottom;
+}
+.footcontent{
+    width: 960px;
+    margin: 0px auto;
+    height: 250px;
+    color: #FFF;
+    padding: 10px 0px;
+    background-color: #113965;
+    text-align: center;
+}
+
+.footcontent ul li {
+    float: left;
+    list-style: none;
+    padding: 10px 10px;
+}
+.linksection{
+    float: left;
+    width: 26%;
+    margin :20px 20px 20px 50px;
+
+}
+.linksection h3{
+    text-align: left;
+}
+.linksection ul li{
+    text-align: left;
+    padding: 5px 0 2px 0;
+}
+.footer_menu_list{
+    margin: 0px;
+    padding: 0px;
+    font-size: 12px;
+}
+.footer_menu_list li{
+    clear:both;
+    display:block
+}
+.footer_menu_list li a{
+    color:white;
+}
+#copyright {
+    margin-top: 5px;
+    text-align: center;
+    color: #FFF;
+}
+#copyright a{
+    color: #FFF;
+}

@@ -2,7 +2,6 @@ package com.traffic.action;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import com.traffic.dto.Execution;
 import com.traffic.dto.FileUploadUtil;
 import com.traffic.dto.LoginResult;
