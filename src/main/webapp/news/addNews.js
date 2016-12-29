@@ -5,6 +5,7 @@ window.onload = function () {
 var value = "";
 var state = ""
 $(function(){
+    $(window).scrollTop(0);
      value = $("#valueId").val();
     if (value) {
          state = $("#stateId").val();

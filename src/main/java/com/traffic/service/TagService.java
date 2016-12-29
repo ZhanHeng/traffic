@@ -79,6 +79,14 @@ public interface TagService {
     public List<Tag> findChildTagByparentIdAndLevel(int level , long parentId) throws DataAccessException;
 
     /**
+     * 新闻列表页面菜单的查询
+     * @param level
+     * @param parentId
+     * @return
+     */
+    public List<Tag> findChildTagByparentIdAndLevelForShowMenu(int level, long parentId);
+
+    /**
      * 根据hql灵活查询
      */
     public List<Tag> queryByHql(String hql);

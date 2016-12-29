@@ -46,7 +46,7 @@ public class Page
      */
     private int lastPage;
 
-    private final int PAGE_SIZE = 10;
+    private final int PAGE_SIZE = 15;
 
     private final int DEFAULT_PAGE = 1 ;
 

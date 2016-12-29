@@ -89,8 +89,9 @@
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>
-  ss
+
   <welcome-file-list>
-    <welcome-file>/index.jsp</welcome-file>
+    <welcome-file>/index.html</welcome-file>
+    <welcome-file>/welcome.jsp</welcome-file>
   </welcome-file-list>
 </web-app>

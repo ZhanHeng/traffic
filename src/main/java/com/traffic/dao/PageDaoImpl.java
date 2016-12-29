@@ -33,6 +33,7 @@ public class PageDaoImpl extends HibernateDaoSupport implements PageDao {
     public List<NewsAndNotice> findPageByProperty(NewsAndNotice news, Page page ,String tagPath) {
         String hql = modelToSql(news,tagPath);
         logger.info("+++++++++++++ hql = "+hql);
+        getCurrentSession().clear();
         Query query = getCurrentSession().createQuery(hql);
         //设置查到的所有数据
         page.setRecordCount(query.list().size());
@@ -50,6 +51,7 @@ public class PageDaoImpl extends HibernateDaoSupport implements PageDao {
             hql= hql+" and t.tagPath = '"+tagPath+"'order by t.time desc";
         }
         logger.info("+++++++++++++ hql = "+hql);
+        getCurrentSession().clear();
         Query query = getCurrentSession().createQuery(hql);
         //设置查到的所有数据
         page.setRecordCount(query.list().size());
@@ -63,11 +65,13 @@ public class PageDaoImpl extends HibernateDaoSupport implements PageDao {
     }
 
     public List<NewsAndNotice> frontSearchNews(String searchword,Page page){
-        String hql ="from NewsAndNotice as t where 1=1";
+        String hql ="from NewsAndNotice as t where 1=1 ";
         if(searchword!=null&&!"".equals(searchword)){
-            hql= hql+" and t.title like '%"+searchword+"%'order by t.time desc";
+            hql= hql+" and t.title like '%"+searchword.trim()+"%'";
         }
+        hql = hql +" order by t.time desc ";
         logger.info("+++++++++++++ hql = "+hql);
+        getCurrentSession().clear();
         Query query = getCurrentSession().createQuery(hql);
         //设置查到的所有数据
         page.setRecordCount(query.list().size());

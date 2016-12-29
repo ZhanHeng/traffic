@@ -1,5 +1,6 @@
 var state = "";
 $(function () {
+    $(window).scrollTop(0);
     state = $("#stateId").val();
     if(state < 0){
         $('#repeat').removeClass('alert-success').addClass('alert-danger').css('display','block').delay(1500).hide(0);
@@ -73,6 +74,10 @@ $(function () {
             alert("请输入名称");
             return false;
         }else{
+            if($.trim($('#weight').val())=='' && $('#position').val()!=0 ){
+                alert("请输入排序权重");
+                return false;
+            }
             $('#killPhoneModal').modal('hide');
             return true;
         }

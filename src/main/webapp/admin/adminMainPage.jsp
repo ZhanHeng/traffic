@@ -213,6 +213,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
+                                    <label class="col-sm-6 control-label " for = "level" style="color:#9e9e9e">Tips:权重数字越大，显示位置越靠左</label>
                                     <input type="button" class="btn btn-default" data-dismiss="modal" value="关闭">
                                     <input type="submit" id="tagId" class="btn btn-primary" value="提交">
                                 </div>

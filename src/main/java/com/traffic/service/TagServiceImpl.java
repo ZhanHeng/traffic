@@ -143,6 +143,17 @@ public class TagServiceImpl implements TagService {
             throw new DataAccessException(e.getMessage());
         }
     }
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public List<Tag> findChildTagByparentIdAndLevelForShowMenu(int level, long parentId) throws DataAccessException {
+        try {
+            List<Tag> list = tagDao.findChildTagByparentIdAndLevel(level,parentId);
+            return list ;
+        } catch (Exception e){
+            logger.error(e.getMessage() , e );
+            throw new DataAccessException(e.getMessage());
+        }
+    }
+
 
     public List<Tag> queryByHql(String hql)
     {

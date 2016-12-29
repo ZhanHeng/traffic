@@ -51,24 +51,14 @@ public class TagDaoImpl extends HibernateDaoSupport implements TagDao {
 
     public List<Tag> frontFindByPosition(int position) {
         if(position==1){
-            String hql = "from Tag where passFlag = 1 and ( position = ? or position = ? or position = ? )order by weight desc";
-            Query query = getCurrentSession().createQuery(hql) ;
-            query.setInteger(0,1);
-            query.setInteger(1,4);
-            query.setInteger(2,5);
-            return query.list();
+            String hql = "from Tag where passFlag = 1 and position in (1,4,5) order by weight desc";
+            return getCurrentSession().createQuery(hql).list();
         }else if(position==2){
-            String hql = "from Tag where passFlag = 1 and  ( position = ? or position= ? )order by weight desc";
-            Query query = getCurrentSession().createQuery(hql) ;
-            query.setInteger(0,2);
-            query.setInteger(1,4);
-            return query.list();
+            String hql = "from Tag where passFlag = 1 and position in (2,4) order by weight desc";
+            return getCurrentSession().createQuery(hql).list();
         }else{
-            String hql = "from Tag where passFlag = 1 and  ( position = ? or position= ? )order by weight desc";
-            Query query = getCurrentSession().createQuery(hql) ;
-            query.setInteger(0,3);
-            query.setInteger(1,5);
-            return query.list();
+            String hql = "from Tag where passFlag = 1 and position in (3,5) order by weight desc";
+            return getCurrentSession().createQuery(hql).list();
         }
     }
 
@@ -144,6 +134,15 @@ public class TagDaoImpl extends HibernateDaoSupport implements TagDao {
         query.setLong(1,parentId);
         return query.list();
     }
+
+    public List<Tag> findChildTagByparentIdAndLevelForShowMenu(int level, long parentId) {
+        String hql = "from Tag as t where t.passFlag = 1 and  t.tagLevel = ?  and t.parentTag.tagId = ? order by t.weight desc";
+        Query query = getCurrentSession().createQuery(hql) ;
+        query.setInteger(0,level);
+        query.setLong(1,parentId);
+        return query.list();
+    }
+
 
     public List<Tag> queryByHql(String hql)
     {

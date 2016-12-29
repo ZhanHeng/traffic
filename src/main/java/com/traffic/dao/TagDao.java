@@ -83,6 +83,7 @@ public interface TagDao {
      */
     public List<Tag> findChildTagByparentIdAndLevel(int level , long parentId);
 
+    public List<Tag> findChildTagByparentIdAndLevelForShowMenu(int level, long parentId);
 
     public List<Tag> queryByHql(String hql);
 }

@@ -16,14 +16,18 @@
     <!-- 配置数据源 使用的是Druid数据源 -->
     <bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
           init-method="init" destroy-method="close">
-        <property name="url" value=" jdbc:mysql://localhost:3306/traffic?useUnicode=true&amp;characterEncoding=utf-8" />
-        <property name="username" value="root" />
-        <property name="password" value="root" />
-        <!--
-         <property name="url" value=" jdbc:mysql://219.216.77.61:3306/traffic?useUnicode=true&amp;characterEncoding=utf-8" />
+
+        <!--<property name="url" value=" jdbc:mysql://localhost:3306/traffic?useUnicode=true&amp;characterEncoding=utf-8" />-->
+        <!--<property name="username" value="root" />-->
+        <!--<property name="password" value="sa" />-->
+
+   <property name="url" value=" jdbc:mysql://219.216.77.61:3306/traffic?useUnicode=true&amp;characterEncoding=utf-8" />
         <property name="username" value="root" />
         <property name="password" value="sa" />
-         -->
+ <!--<property name="url" value=" jdbc:mysql://localhost:3306/traffic?useUnicode=true&amp;characterEncoding=utf-8" />-->
+        <!--<property name="username" value="root" />-->
+        <!--<property name="password" value="root" />-->
+
         <!-- 初始化连接大小 -->
         <property name="initialSize" value="3" />
         <!-- 连接池最大使用连接数量 -->
@@ -75,6 +79,19 @@
                 hibernate.connection.characterEncoding=utf-8
                 current_session_context_class=thread
             </value>
+        </property>
+    </bean>
+
+    <!-- 配置FreeMarker模板引擎 -->
+    <bean id="freemakerCongfig"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath">
+            <value>/WEB-INF/templates/</value>
+        </property>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="defaultEncoding">UTF-8</prop>
+            </props>
         </property>
     </bean>
 

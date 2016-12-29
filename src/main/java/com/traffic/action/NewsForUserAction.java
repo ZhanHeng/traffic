@@ -8,6 +8,8 @@ import com.traffic.model.Tag;
 import com.traffic.service.NewsAndNoticeService;
 import com.traffic.service.PageService;
 import com.traffic.service.TagService;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -41,8 +43,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -75,7 +77,6 @@ public class NewsForUserAction extends ActionSupport {
     private List<NewsAndNotice> searchList;
 
 
-
     @Action(
             value="getTagNews",
             results={
@@ -88,53 +89,43 @@ public class NewsForUserAction extends ActionSupport {
     )
     public String getTagNew(){
         Tag tagtemp = tagService.findById(Long.parseLong(tid));
-        List<NewsAndNotice> list = null;
+        List<NewsAndNotice> list = null;//当前页新闻列表
+        List<NewsAndNotice> firstList = null;//第一页新闻列表
         List<Tag> aboveList =null;
         List<Tag> leftList =null;
+        Tag labelTag1  = null;
+        Tag labelTag2  = null;
         String tagPath = tid;
+        ActionContext.getContext().put("tagId",tid);
 
-        if(tagtemp.getParentTag() !=null)
-        {
+        if(tagtemp.getParentTag() !=null){
             tagPath = tagtemp.getParentTag().getTagId()+"/" +tagPath;
-            if(tagtemp.getParentTag().getParentTag() !=null)
-            {
+            if(tagtemp.getParentTag().getParentTag() !=null){
                 tagPath = tagtemp.getParentTag().getParentTag().getTagId()+"/" +tagPath;
             }
         }
 
-
-        if(tagtemp.getTagLevel()==1)
-        {
-            String hql ="";
-            hql="from Tag where passFlag = 1 and  parentTag.tagId ="+tagtemp.getTagId()+"order by weight desc";
-            leftList = tagService.queryByHql(hql);
-            if(leftList.size()>0)
-            {
-                hql="from Tag where passFlag = 1 and  parentTag.tagId ="+leftList.get(0).getTagId()+"order by weight desc";
-                aboveList = tagService.queryByHql(hql);
-            }
-        }
-        if(tagtemp.getTagLevel()==2)
-        {
-            String hql ="";
-            hql="from Tag where passFlag = 1 and  parentTag.tagId ="+tagtemp.getParentTag().getTagId()+"order by weight desc";
-            leftList = tagService.queryByHql(hql);
-            if(leftList.size()>0)
-            {
-                hql="from Tag where passFlag = 1 and  parentTag.tagId ="+tagtemp.getTagId()+"order by weight desc";
-                aboveList = tagService.queryByHql(hql);
-            }
-        }
-        if(tagtemp.getTagLevel()==3)
-        {
-            String hql ="";
-            hql="from Tag where passFlag = 1 and  parentTag.tagId ="+tagtemp.getParentTag().getParentTag().getTagId()+"order by weight desc";
-            leftList = tagService.queryByHql(hql);
-            if(leftList.size()>0)
-            {
-                hql="from Tag where passFlag = 1 and  parentTag.tagId ="+tagtemp.getParentTag().getTagId()+"order by weight desc";
-                aboveList = tagService.queryByHql(hql);
-            }
+        int level = tagtemp.getTagLevel() ;
+        switch (level){
+            case 1:
+                leftList = tagService.findChildTagByparentIdAndLevelForShowMenu(2,tagtemp.getTagId());
+                if(leftList!=null && leftList.size()>0) {
+                    aboveList = tagService.findChildTagByparentIdAndLevelForShowMenu(3,leftList.get(0).getTagId());
+                }
+                break;
+            case 2:
+                leftList = tagService.findChildTagByparentIdAndLevelForShowMenu(2,tagtemp.getParentTag().getTagId());
+                if(leftList!=null && leftList.size()>0) {
+                    aboveList = tagService.findChildTagByparentIdAndLevelForShowMenu(3,tagtemp.getTagId());
+                }
+                break;
+            case 3:
+                leftList = tagService.findChildTagByparentIdAndLevelForShowMenu(2,tagtemp.getParentTag().getParentTag().getTagId());
+                if(leftList!=null && leftList.size()>0) {
+                    aboveList = tagService.findChildTagByparentIdAndLevelForShowMenu(3,tagtemp.getParentTag().getTagId());
+                }
+                break;
+            default:break;
         }
         ActionContext.getContext().put("aboveList",aboveList);
         ActionContext.getContext().put("leftList",leftList);
@@ -143,21 +134,55 @@ public class NewsForUserAction extends ActionSupport {
 
         if(page==null){
             page = new Page();
-
+            int tempCurPage = page.getCurPage();
+            page.setCurPage(1);
+            firstList = pageService.findNewsListFront(page,tagPath);
+            page.setCurPage(tempCurPage);
             list = pageService.findNewsListFront(page,tagPath);
         }else{
+            int tempCurPage = page.getCurPage();
+            page.setCurPage(1);
+            firstList = pageService.findNewsListFront(page,tagPath);
+            page.setCurPage(tempCurPage);
             list = pageService.findNewsListFront(page,tagPath);
+
         }
 
-        if(list.size()>1) {
+        if((list.size()>1)||(list.size()==1&&firstList.size()!=0&&page.getCurPage()>1)) {
             ActionContext.getContext().put("list",list);
             aboveTagList = tagService.frontFindByPosition(1);
             ActionContext.getContext().put("aboveTagList",aboveTagList);
+            if(tagtemp.getTagLevel()==1){
+                labelTag1 = tagtemp;
+                labelTag2 = tagtemp;
+            }else if(tagtemp.getTagLevel()==2){
+                labelTag1 = tagtemp.getParentTag();
+                labelTag2 = tagtemp;
+            }else{
+                labelTag1 = tagtemp.getParentTag().getParentTag();
+                labelTag2 = tagtemp.getParentTag();
+            }
+
+            ActionContext.getContext().put("labelTag1",labelTag1);
+            ActionContext.getContext().put("labelTag2",labelTag2);
             return SUCCESS;
         }
         else if(list.size()==1) {
             chainnewId = list.get(0).getId();
             ActionContext.getContext().put("chainnewId",chainnewId);
+            if(tagtemp.getTagLevel()==1){
+                labelTag1 = tagtemp;
+                labelTag2 = tagtemp;
+            }else if(tagtemp.getTagLevel()==2){
+                labelTag1 = tagtemp.getParentTag();
+                labelTag2 = tagtemp;
+            }else{
+                labelTag1 = tagtemp.getParentTag().getParentTag();
+                labelTag2 = tagtemp.getParentTag();
+            }
+
+            ActionContext.getContext().put("labelTag1",labelTag1);
+            ActionContext.getContext().put("labelTag2",labelTag2);
             return "toone";
         }else{
             if(tagtemp.getTagLevel()==1){
@@ -168,10 +193,18 @@ public class NewsForUserAction extends ActionSupport {
                         ActionContext.getContext().put("list",list);
                         aboveTagList = tagService.frontFindByPosition(1);
                         ActionContext.getContext().put("aboveTagList",aboveTagList);
+                        labelTag1 = tagtemp;
+                        labelTag2 = leftList.get(0);
+                        ActionContext.getContext().put("labelTag1",labelTag1);
+                        ActionContext.getContext().put("labelTag2",labelTag2);
                         return SUCCESS;
                     }else if(list.size()==1){
                         chainnewId = list.get(0).getId();
                         ActionContext.getContext().put("chainnewId",chainnewId);
+                        labelTag1 = tagtemp;
+                        labelTag2 = leftList.get(0);
+                        ActionContext.getContext().put("labelTag1",labelTag1);
+                        ActionContext.getContext().put("labelTag2",labelTag2);
                         return "toone";
                     }else{
                         if(aboveList.size()!=0){
@@ -181,26 +214,50 @@ public class NewsForUserAction extends ActionSupport {
                                 ActionContext.getContext().put("list",list);
                                 aboveTagList = tagService.frontFindByPosition(1);
                                 ActionContext.getContext().put("aboveTagList",aboveTagList);
+                                labelTag1 = tagtemp;
+                                labelTag2 = leftList.get(0);
+                                ActionContext.getContext().put("labelTag1",labelTag1);
+                                ActionContext.getContext().put("labelTag2",labelTag2);
                                 return SUCCESS;
                             }else if(list.size()==1){
                                 chainnewId = list.get(0).getId();
+                                labelTag1 = tagtemp;
+                                labelTag2 = leftList.get(0);
                                 ActionContext.getContext().put("chainnewId",chainnewId);
+                                ActionContext.getContext().put("labelTag1",labelTag1);
+                                ActionContext.getContext().put("labelTag2",labelTag2);
                                 return "toone";
                             }else{
                                 ActionContext.getContext().put("chainnewId",null);
+                                labelTag1 = tagtemp;
+                                labelTag2 = leftList.get(0);
+                                ActionContext.getContext().put("labelTag1",labelTag1);
+                                ActionContext.getContext().put("labelTag2",labelTag2);
                                 return "toone";
                             }
                         }
                         ActionContext.getContext().put("chainnewId",null);
+                        labelTag1 = tagtemp;
+                        labelTag2 = leftList.get(0);
+                        ActionContext.getContext().put("labelTag1",labelTag1);
+                        ActionContext.getContext().put("labelTag2",labelTag2);
                         return "toone";
                     }
 
                 }
                 ActionContext.getContext().put("chainnewId",null);
+                labelTag1 = tagtemp;
+                labelTag2 = tagtemp;
+                ActionContext.getContext().put("labelTag1",labelTag1);
+                ActionContext.getContext().put("labelTag2",labelTag2);
                 return "toone";
             }
 
-            if(tagtemp.getTagLevel()==2){
+            else if(tagtemp.getTagLevel()==2){
+                labelTag1 = tagtemp.getParentTag();
+                labelTag2 = tagtemp;
+                ActionContext.getContext().put("labelTag1",labelTag1);
+                ActionContext.getContext().put("labelTag2",labelTag2);
                 if(aboveList.size()!=0){
                     page = new Page();
                     list = pageService.findNewsListFront(page,tagtemp.getParentTag().getTagId()+"/"+tagtemp.getTagId()+"/"+aboveList.get(0).getTagId());
@@ -221,7 +278,11 @@ public class NewsForUserAction extends ActionSupport {
                 ActionContext.getContext().put("chainnewId",null);
                 return "toone";
             }
-            if(tagtemp.getTagLevel()==3){
+            else{
+                labelTag1 = tagtemp.getParentTag().getParentTag();
+                labelTag2 = tagtemp.getParentTag();
+                ActionContext.getContext().put("labelTag1",labelTag1);
+                ActionContext.getContext().put("labelTag2",labelTag2);
                 page = new Page();
                 list = pageService.findNewsListFront(page,tagtemp.getParentTag().getParentTag().getTagId()+"/"+tagtemp.getParentTag().getTagId()+"/"+tagtemp.getTagId());
                 if(list.size()>1) {
@@ -238,8 +299,7 @@ public class NewsForUserAction extends ActionSupport {
                     return "toone";
                 }
             }
-            ActionContext.getContext().put("chainnewId",null);
-            return "toone";
+
         }
 
     }
@@ -255,9 +315,9 @@ public class NewsForUserAction extends ActionSupport {
 */
 
     @Action(
-            value="loadFrontTags",
+            value="home",
             results={
-                    @Result(name="success",location="/index.jsp")
+                    @Result(name="success",location="/index.html")
 
             },
             interceptorRefs={
@@ -265,59 +325,102 @@ public class NewsForUserAction extends ActionSupport {
             }
     )
     public String loadFrontTags(){
-//上部列表加载
-        aboveTagList = tagService.frontFindByPosition(1);
-        ActionContext.getContext().put("aboveTagList",aboveTagList);
-        //通知公告位置新闻列表加载
-        List <NewsAndNotice> noticeList = newsAndNoticeService.findNewsByTag("39");
-        ActionContext.getContext().put("noticeList",noticeList);
-        //左下位置列表加载
-        leftTagList = tagService.frontFindByPosition(2);
-        ActionContext.getContext().put("leftTagList",leftTagList);
-        List<List<NewsAndNotice>> leftNewsList= new ArrayList<List<NewsAndNotice>>();
-        if(leftTagList.size()!=0){
-            for(int i=0;i<leftTagList.size();i++){
-               Tag tagtemp = leftTagList.get(i);
-                String pathtemp = String.valueOf(tagtemp.getTagId());
-                if(tagtemp.getParentTag() !=null)
-                {
-                    pathtemp = tagtemp.getParentTag().getTagId()+"/" +pathtemp;
-                    if(tagtemp.getParentTag().getParentTag() !=null)
-                    {
-                        pathtemp = tagtemp.getParentTag().getParentTag().getTagId()+"/" +pathtemp;
-                    }
+        // 将得到数据 添加到静态的页面中
+        Configuration cf = new Configuration();
+        cf.setEncoding(Locale.CHINA, "UTF-8");
+        cf.setServletContextForTemplateLoading(request.getSession().getServletContext(), "WEB-INF/templates/");
+        Map<String, Object> map = new HashMap<String, Object>();
+        // 获取当前应用的路径
+        String path = request.getSession().getServletContext().getRealPath("");
+        // 获取当前工程
+        FileOutputStream os = null;
+        OutputStreamWriter osw = null;
+        Writer out = null;
+        try {
+            //生成静态html
+            Template template= cf.getTemplate("showIndex.html","UTF-8");
+            /*********************************************************************/
+            List<NewsAndNotice> focusPictureList = newsAndNoticeService.showFocusPicture();
+            map.put("focusPictureList",focusPictureList);
+            //上部列表加载
+            aboveTagList = tagService.frontFindByPosition(1);
+            map.put("aboveTagList",aboveTagList);
+            //通知公告位置新闻列表加载
+            List <NewsAndNotice> noticeList = newsAndNoticeService.findNewsByTag("39");
+            if(noticeList!=null&&!noticeList.isEmpty()){
+                if(noticeList.size()>7){
+                    noticeList = noticeList.subList(0,7);
                 }
-                List temp = newsAndNoticeService.findNewsByTag(pathtemp);
-                leftNewsList.add(temp);
+            }
+           map.put("noticeList",noticeList);
+            //左下位置列表加载
+            leftTagList = tagService.frontFindByPosition(2);
+            map.put("leftTagList",leftTagList);
+            List<List<NewsAndNotice>> leftNewsList= new ArrayList<List<NewsAndNotice>>();
+            if(leftTagList.size()!=0){
+                for(int i=0;i<leftTagList.size();i++){
+                    Tag tagtemp = leftTagList.get(i);
+                    String pathtemp = String.valueOf(tagtemp.getTagId());
+                    if(tagtemp.getParentTag() !=null){
+                        pathtemp = tagtemp.getParentTag().getTagId()+"/" +pathtemp;
+                        if(tagtemp.getParentTag().getParentTag() !=null){
+                            pathtemp = tagtemp.getParentTag().getParentTag().getTagId()+"/" +pathtemp;
+                        }
+                    }
+                    List temp = newsAndNoticeService.findNewsByTag(pathtemp);
+                    if(temp!=null&&!temp.isEmpty()){
+                        if(temp.size()>8)
+                            temp = temp.subList(0,8);
+                    }
+                    leftNewsList.add(temp);
+                }
+            }
+            map.put("leftNewsList",leftNewsList);
+
+            //右下位置列表加载
+            rightTagList = tagService.frontFindByPosition(3);
+            map.put("rightTagList",rightTagList);
+            List<List<NewsAndNotice>> rightNewsList= new ArrayList<List<NewsAndNotice>>();
+            if(rightTagList!=null && rightTagList.size()!=0){
+                for(int i=0;i<rightTagList.size();i++){
+                    Tag tagtemp = rightTagList.get(i);
+                    String pathtemp = String.valueOf(tagtemp.getTagId());
+                    if(tagtemp.getParentTag() !=null)
+                    {
+                        pathtemp = tagtemp.getParentTag().getTagId()+"/" +pathtemp;
+                        if(tagtemp.getParentTag().getParentTag() !=null)
+                        {
+                            pathtemp = tagtemp.getParentTag().getParentTag().getTagId()+"/" +pathtemp;
+                        }
+                    }
+                    List temp = newsAndNoticeService.findNewsByTag(pathtemp);
+                    if(temp!=null&&!temp.isEmpty()){
+                        if(temp.size()>8)
+                            temp = temp.subList(0,8);
+                    }
+                    rightNewsList.add(temp);
+                }
+            }
+            map.put("rightNewsList",rightNewsList);
+        /*********************************************************************/
+            //开始生成
+            File f=new File(path+"/index.html");
+            os=new FileOutputStream(f);
+            osw=new OutputStreamWriter(os,"UTF-8");
+            out = new BufferedWriter(osw);
+            template.process(map, out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            try {
+                os.close();
+                osw.close();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-        ActionContext.getContext().put("leftNewsList",leftNewsList);
-
-        //右下位置列表加载
-        rightTagList = tagService.frontFindByPosition(3);
-        ActionContext.getContext().put("rightTagList",rightTagList);
-        List<List<NewsAndNotice>> rightNewsList= new ArrayList<List<NewsAndNotice>>();
-        if(rightTagList.size()!=0){
-            for(int i=0;i<rightTagList.size();i++){
-                Tag tagtemp = rightTagList.get(i);
-                String pathtemp = String.valueOf(tagtemp.getTagId());
-                if(tagtemp.getParentTag() !=null)
-                {
-                    pathtemp = tagtemp.getParentTag().getTagId()+"/" +pathtemp;
-                    if(tagtemp.getParentTag().getParentTag() !=null)
-                    {
-                        pathtemp = tagtemp.getParentTag().getParentTag().getTagId()+"/" +pathtemp;
-                    }
-                }
-                List temp = newsAndNoticeService.findNewsByTag(pathtemp);
-                rightNewsList.add(temp);
-            }
-        }
-        ActionContext.getContext().put("rightNewsList",rightNewsList);
-
-
-
-        return "success";
+        return SUCCESS;
     }
 
 
@@ -336,17 +439,18 @@ public class NewsForUserAction extends ActionSupport {
 //上部列表加载
         aboveTagList = tagService.frontFindByPosition(1);
         ActionContext.getContext().put("aboveTagList",aboveTagList);
-        if(page==null)
-        {
+        if(page==null) {
             page = new Page();
-            searchList = pageService.frontSearchNews(searchword.trim(),page);
+            searchList = pageService.frontSearchNews(searchword,page);
         }else{
-            searchList = pageService.frontSearchNews(searchword.trim(),page);
+            searchList = pageService.frontSearchNews(searchword,page);
         }
 
         ActionContext.getContext().put("searchList",searchList);
+        if(searchword!=null){
+            ActionContext.getContext().put("presearchword",searchword.trim());
+        }
 
-        ActionContext.getContext().put("presearchword",searchword.trim());
 
 
         return "success";
@@ -421,4 +525,5 @@ public class NewsForUserAction extends ActionSupport {
     public void setSearchList(List<NewsAndNotice> searchList) {
         this.searchList = searchList;
     }
+
 }
